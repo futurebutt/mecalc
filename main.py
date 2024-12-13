@@ -51,7 +51,7 @@ class MainWidget(QWidget):
 
     def update_TalentBar_max_ranks(self):
         for tb in self.talent_bars:
-            # Lowest of: 12, level + 1, rank + unallocated
+            # Lowest of: 12, level + 1, talent rank + remaining points
             rank = min((12, self.levelSpin.value() + 1, tb.rank + self.unallocated_points))
             tb.set_max_rank(rank)
 
@@ -73,8 +73,8 @@ class MainWidget(QWidget):
 
     def update_levelSpin_min(self):
         # 1) Make sure there's at least as many total points as allocated
-        index = bisect.bisect_left(point_totals, self.allocated_points)
-        min_lvl_by_total = pts_to_lvl[point_totals[index]]
+        zero_indexed_level = bisect.bisect_left(point_totals, self.allocated_points)
+        min_lvl_by_total = zero_indexed_level + 1
         # 2) Make sure ranks are not greater than level + 1
         highest_rank = max([tb.rank for tb in self.talent_bars])
         min_lvl_by_rank = highest_rank - 1
