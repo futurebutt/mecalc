@@ -68,9 +68,6 @@ class MainWidget(QWidget):
         self.update_unallocated_point_display()
         self.update_total_point_display()
 
-    def update_totalPointSpin_min(self):
-        self.totalPointSpin.setMinimum(self.allocated_points)
-
     def update_levelSpin_min(self):
         # 1) Make sure there's at least as many total points as allocated
         zero_indexed_level = bisect.bisect_left(point_totals, self.allocated_points)
