@@ -341,9 +341,10 @@ class TalentTree(QWidget):
 
     def set_class_soldier(self):
         self.delete_all_talent_bars()
-        self.add_talent_bar(tl.TalentPistols(0))
-        self.add_talent_bar(tl.TalentAssaultTraining(0))
-        self.add_talent_bar(tl.TalentFitness(0))
+        self.add_talent_bar(tl.Pistols(0))
+        self.add_talent_bar(tl.AssaultRifles(0))
+        self.add_talent_bar(tl.AssaultTraining(0))
+        self.add_talent_bar(tl.Fitness(0))
     
     def get_talents(self):
         return [bar.talent for bar in self.findChildren(TalentBar)]

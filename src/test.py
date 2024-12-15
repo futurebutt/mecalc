@@ -22,10 +22,12 @@ class MainWidget(QWidget):
         talents = self.talentTree.get_talents()
         for summarize in (
             sm.summarize_Shepard,
+            sm.summarize_Pistol,
+            sm.summarize_Assault_Rifle,
             sm.summarize_Adrenaline_Burst,
             sm.summarize_Immunity,
-            sm.summarize_Pistol,
             sm.summarize_Marksman,
+            sm.summarize_Overkill,
         ):
             summary = summarize(talents)
             if summary:

@@ -40,7 +40,7 @@ class Talent:
         return self.ability_levels
 
 
-class TalentAssaultTraining(Talent):
+class AssaultTraining(Talent):
 
     name = "Assault Training"
     ability_table = {
@@ -52,7 +52,7 @@ class TalentAssaultTraining(Talent):
     }
 
 
-class TalentFitness(Talent):
+class Fitness(Talent):
 
     name = "Fitness"
     ability_table = {
@@ -63,7 +63,20 @@ class TalentFitness(Talent):
     }
 
 
-class TalentPistols(Talent):
+class AssaultRifles(Talent):
+
+    name = "Assault Rifles"
+    ability_table = {
+        AbilityLevel.OVERKILL: {1: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        PercentModifier.ASSAULT_RIFLE_ACCURACY: {2: 0.10, 3: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
+        PercentModifier.ASSAULT_RIFLE_DAMAGE:   {2: 0.05, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
+    }
+
+
+
+class Pistols(Talent):
 
     name = "Pistols"
     ability_table = {
