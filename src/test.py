@@ -7,6 +7,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 
 import talents as tl
+import summarize as sm
 from widgets import TalentBar
 
 
@@ -89,9 +90,9 @@ class MainWidget(QWidget):
         self.summaryTextEdit.clear()
         talents = [tb.talent for tb in self.talent_bars]
         for summarize in (
-            tl.summarize_Shepard,
-            tl.summarize_Pistol,
-            tl.summarize_Marksman,
+            sm.summarize_Shepard,
+            sm.summarize_Pistol,
+            sm.summarize_Marksman,
         ):
             self.summaryTextEdit.append(summarize(talents))
 
