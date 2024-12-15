@@ -209,7 +209,6 @@ class BonusValue(Enum):
     SABOTAGE_DURATION = auto()
 
     # Barrier Specialization
-    BARRIER_DURATION = auto()
     BARRIER_REGEN = auto()
     BARRIER_STRENGTH = auto()
     # Lift Specialization

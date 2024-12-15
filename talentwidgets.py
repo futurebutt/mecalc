@@ -2,6 +2,8 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSize
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QPushButton, QSizePolicy, QWidget
 
+from talents import Talent
+
 
 class TalentPoint(QLabel):
 
@@ -29,9 +31,17 @@ class TalentBar(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi()
-        self.rank: int = 0
+        self.talent = Talent(0)
         self._max_rank: int = 2
         self._update_buttons()
+
+    @property
+    def rank(self) -> int:
+        return self.talent.rank
+
+    @rank.setter
+    def rank(self, rank: int):
+        self.talent.rank = rank
 
     def setupUi(self):
         self.resize(431, 47)
@@ -94,17 +104,24 @@ class TalentBar(QWidget):
 
     @pyqtSlot()
     def increment_clicked(self):
-        self.tps[self.rank].set_on()
         self.rank += 1
+        self.display_rank()
         self._update_buttons()
         self.rankChanged.emit()
 
     @pyqtSlot()
     def decrement_clicked(self):
         self.rank -= 1
-        self.tps[self.rank].set_off()
+        self.display_rank()
         self._update_buttons()
         self.rankChanged.emit()
+
+    def display_rank(self):
+        for i, tp in enumerate(self.tps, start=1):
+            if i <= self.rank:
+                tp.set_on()
+            else:
+                tp.set_off()
 
     def _update_buttons(self):
         self.decrementButton.setEnabled(self.rank != 0)
@@ -113,6 +130,11 @@ class TalentBar(QWidget):
     def set_max_rank(self, rank: int):
         self._max_rank = rank
         self._update_buttons()
+    
+    def set_talent(self, talent: Talent):
+        assert talent.rank == 0
+        self.talent = talent
+        self.nameLabel.setText(talent.name)
 
 
 if __name__ == "__main__":

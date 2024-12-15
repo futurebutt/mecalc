@@ -5,6 +5,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 
+import talents as tl
 from talentwidgets import TalentBar
 
 
@@ -24,12 +25,16 @@ class MainWidget(QWidget):
         uic.loadUi("test.ui", self)
 
         # ideally use more flexible container for creating/loading talent sets
-        self.talent_bars: list[TalentBar] = [self.TalentBar, self.TalentBar_2]
+        self.talent_bars: list[TalentBar] = [self.TalentBar, self.TalentBar_2, self.TalentBar_3]
+        self.TalentBar.set_talent(tl.TalentAssaultTraining(0))
+        self.TalentBar_2.set_talent(tl.TalentFitness(0))
+        self.TalentBar_3.set_talent(tl.TalentPistols(0))
 
         for tb in self.talent_bars:
             tb.rankChanged.connect(self.talent_bars_rankChanged)
 
         self.levelSpin.valueChanged.connect(self.levelSpin_valueChanged)
+        self.summaryButton.clicked.connect(self.summarizeButton_clicked)
 
     @property
     def total_points(self) -> int:
@@ -78,6 +83,16 @@ class MainWidget(QWidget):
         # Use high
         min_level = max((min_lvl_by_total, min_lvl_by_rank))
         self.levelSpin.setMinimum(min_level)
+    
+    def summarizeButton_clicked(self):
+        self.summaryTextEdit.clear()
+        talents = [tb.talent for tb in self.talent_bars]
+        for summarize in (
+            tl.summarize_Shepard,
+            tl.summarize_Pistol,
+            tl.summarize_Marksman,
+        ):
+            self.summaryTextEdit.append(summarize(talents))
 
 
 if __name__ == "__main__":
