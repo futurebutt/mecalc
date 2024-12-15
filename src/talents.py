@@ -55,6 +55,9 @@ class TalentAssaultTraining(Talent):
 class TalentFitness(Talent):
 
     name = "Fitness"
+    ability_table = {
+        AbilityLevel.IMMUNITY: {4: 1, 8: 2, 12: 3}
+    }
     modifier_table = {
         PercentModifier.HEALTH: {1: 0.10, 2: 0.14, 3: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30},
     }

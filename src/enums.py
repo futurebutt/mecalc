@@ -11,4 +11,5 @@ class PercentModifier(Enum):
 
 class AbilityLevel(Enum):
     ADRENALINE_BURST = auto()
+    IMMUNITY = auto()
     MARKSMAN = auto()

@@ -92,6 +92,7 @@ class MainWidget(QWidget):
         for summarize in (
             sm.summarize_Shepard,
             sm.summarize_Adrenaline_Burst,
+            sm.summarize_Immunity,
             sm.summarize_Pistol,
             sm.summarize_Marksman,
         ):

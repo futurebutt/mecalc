@@ -42,11 +42,16 @@ def summarize_object(
         modifiers: dict[str, float] = {},
         durations: dict[str, float] = {},
         flat_percents: dict[str, float] = {},
+        order: Iterable[str] = ["modifiers", "durations", "flat_percents"],
     ) -> str:
     summary_lines: list[str] = [title]
-    summary_lines.extend(format_modifier(label, value) for label, value in modifiers.items() if value != 0)
-    summary_lines.extend(format_duration(label, value) for label, value in durations.items())
-    summary_lines.extend(format_flat_percent(label, value) for label, value in flat_percents.items())
+    for category in order:
+        if category == "modifiers":
+            summary_lines.extend(format_modifier(label, value) for label, value in modifiers.items() if value != 0)
+        elif category == "durations":
+            summary_lines.extend(format_duration(label, value) for label, value in durations.items())
+        elif category == "flat_percents":
+            summary_lines.extend(format_flat_percent(label, value) for label, value in flat_percents.items())
     summary = "\n".join(summary_lines)
     return summary
 
@@ -73,6 +78,22 @@ def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
     durations = {"Recharge": recharge}
     flat_percents = {"Accuracy Cost": accuracy_cost}
     summary = summarize_object(title, durations=durations, flat_percents=flat_percents)
+    return summary
+
+
+def summarize_Immunity(talents: Iterable[Talent]) -> str:
+    rank = get_ability_level(talents, AbilityLevel.IMMUNITY)
+    if rank == 0:
+        return ""
+
+    title = "Immunity" + {1: "", 2: " (Advanced)", 3: " (Master)"}[rank]
+    damage_reduction = {1: 0.75, 2: 0.85, 3: 0.90}[rank]
+    duration = 6
+    recharge = 45
+
+    flat_percents = {"Damage Reduction": damage_reduction}
+    durations = {"Duration": duration, "Recharge": recharge}
+    summary = summarize_object(title, durations=durations, flat_percents=flat_percents, order=["flat_percents", "durations"])
     return summary
 
 
