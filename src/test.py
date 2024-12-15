@@ -6,7 +6,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 
 import talents as tl
-from talentwidgets import TalentBar
+from widgets import TalentBar
 
 
 # 1-5: 3 points per level
@@ -22,7 +22,7 @@ class MainWidget(QWidget):
     def __init__(self, parent=None):
 
         super().__init__(parent)
-        uic.loadUi("test.ui", self)
+        uic.loadUi(r"data\test.ui", self)
 
         # ideally use more flexible container for creating/loading talent sets
         self.talent_bars: list[TalentBar] = [self.TalentBar, self.TalentBar_2, self.TalentBar_3]
