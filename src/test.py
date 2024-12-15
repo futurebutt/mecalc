@@ -1,5 +1,6 @@
 import bisect
 import itertools
+from pathlib import Path
 
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
@@ -22,7 +23,7 @@ class MainWidget(QWidget):
     def __init__(self, parent=None):
 
         super().__init__(parent)
-        uic.loadUi(r"data\test.ui", self)
+        uic.loadUi(Path(__file__).with_name("test.ui"), self)
 
         # ideally use more flexible container for creating/loading talent sets
         self.talent_bars: list[TalentBar] = [self.TalentBar, self.TalentBar_2, self.TalentBar_3]

@@ -209,7 +209,7 @@
   <customwidget>
    <class>TalentBar</class>
    <extends>QWidget</extends>
-   <header>talentwidgets</header>
+   <header>widgets</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
