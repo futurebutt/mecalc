@@ -1,19 +1,19 @@
 from collections.abc import Iterable
 
-from enums import AbilityRank, PercentModifier
+from enums import AbilityLevel, PercentModifier
 from talents import Talent
 
 
 def calculate_bonus(talents: Iterable[Talent], dependencies: Iterable[PercentModifier]) -> float:
     value: float = 0.0
     for talent in talents:
-        bonuses = talent.get_bonuses()
+        modifiers = talent.get_modifiers()
         for dep in dependencies:
-            value += bonuses.get(dep, 0)
+            value += modifiers.get(dep, 0)
     return value
 
 
-def get_ability_rank(talents: Iterable[Talent], dependency: AbilityRank) -> int:
+def get_ability_level(talents: Iterable[Talent], dependency: AbilityLevel) -> int:
     rank: int = 0
     for talent in talents:
         abilities = talent.get_abilities()
@@ -25,18 +25,28 @@ def percent(value: float) -> float:
     return round(100 * value, 3)
 
 
-def format_percent(label: str, value: float) -> str:
+def format_modifier(label: str, value: float) -> str:
     return f"    {label} + {percent(value)} %"
+
+
+def format_flat_percent(label: str, value: float) -> str:
+    return f"    {label} {percent(value)} %"
 
 
 def format_duration(label: str, value: float) -> str:
     return f"    {label} {value} sec"
 
 
-def summarize_object(title: str, modifiers: dict[str, float] = {}, durations: dict[str, float] = {}) -> str:
+def summarize_object(
+        title: str,
+        modifiers: dict[str, float] = {},
+        durations: dict[str, float] = {},
+        flat_percents: dict[str, float] = {},
+    ) -> str:
     summary_lines: list[str] = [title]
-    summary_lines.extend(format_percent(label, value) for label, value in modifiers.items() if value != 0)
+    summary_lines.extend(format_modifier(label, value) for label, value in modifiers.items() if value != 0)
     summary_lines.extend(format_duration(label, value) for label, value in durations.items())
+    summary_lines.extend(format_flat_percent(label, value) for label, value in flat_percents.items())
     summary = "\n".join(summary_lines)
     return summary
 
@@ -51,27 +61,45 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
     return summary
 
 
-def summarize_Pistol(talents: Iterable[Talent]) -> str:
-    dmg = calculate_bonus(talents, (PercentModifier.PISTOL_DAMAGE, PercentModifier.WEAPON_DAMAGE))
-    acc = calculate_bonus(talents, (PercentModifier.PISTOL_ACCURACY, ))
-    if dmg == acc == 0:
+def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
+    rank = get_ability_level(talents, AbilityLevel.ADRENALINE_BURST)
+    if rank == 0:
         return ""
 
-    modifiers = {"Damage": dmg, "Accuracy": acc}
+    title = "Adrenaline Burst" + {1: "", 2: " (Advanced)", 3: " (Master)"}[rank]
+    recharge = {1: 120, 2: 90, 3: 45}[rank]
+    accuracy_cost = 0.30
+
+    durations = {"Recharge": recharge}
+    flat_percents = {"Accuracy Cost": accuracy_cost}
+    summary = summarize_object(title, durations=durations, flat_percents=flat_percents)
+    return summary
+
+
+def summarize_Pistol(talents: Iterable[Talent]) -> str:
+    damage = calculate_bonus(talents, (PercentModifier.PISTOL_DAMAGE, PercentModifier.WEAPON_DAMAGE))
+    accuracy = calculate_bonus(talents, (PercentModifier.PISTOL_ACCURACY, ))
+    if damage == accuracy == 0:
+        return ""
+
+    modifiers = {"Damage": damage, "Accuracy": accuracy}
     summary = summarize_object("Pistol", modifiers=modifiers)
     return summary
 
 
 def summarize_Marksman(talents: Iterable[Talent]) -> str:
-    rank = get_ability_rank(talents, AbilityRank.MARKSMAN)
+    rank = get_ability_level(talents, AbilityLevel.MARKSMAN)
     if rank == 0:
         return ""
 
-    dmg = {1: 0.25, 2: 0.50, 3: 0.75}[rank]
-    headshot = {1: 0.50, 2: 0.75, 3: 1.00}[rank]
     title = "Marksman" + {1: "", 2: " (Advanced)", 3: " (Master)"}[rank]
+    accuracy = 0.60
+    damage = {1: 0.25, 2: 0.50, 3: 0.75}[rank]
+    headshot_damage = {1: 0.50, 2: 0.75, 3: 1.00}[rank]
+    duration = 6
+    recharge = 45
 
-    modifiers = {"Accuracy": 0.60, "Damage": dmg, "Headshot Damage": headshot}
-    durations = {"Duration": 6, "Recharge": 45}
+    modifiers = {"Accuracy": accuracy, "Damage": damage, "Headshot Damage": headshot_damage}
+    durations = {"Duration": duration, "Recharge": recharge}
     summary = summarize_object(title, modifiers=modifiers, durations=durations)
     return summary

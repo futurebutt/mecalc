@@ -9,5 +9,6 @@ class PercentModifier(Enum):
     WEAPON_DAMAGE = auto()
 
 
-class AbilityRank(Enum):
+class AbilityLevel(Enum):
+    ADRENALINE_BURST = auto()
     MARKSMAN = auto()

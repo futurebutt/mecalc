@@ -91,10 +91,13 @@ class MainWidget(QWidget):
         talents = [tb.talent for tb in self.talent_bars]
         for summarize in (
             sm.summarize_Shepard,
+            sm.summarize_Adrenaline_Burst,
             sm.summarize_Pistol,
             sm.summarize_Marksman,
         ):
-            self.summaryTextEdit.append(summarize(talents))
+            summary = summarize(talents)
+            if summary:
+                self.summaryTextEdit.append(summary)
 
 
 if __name__ == "__main__":
