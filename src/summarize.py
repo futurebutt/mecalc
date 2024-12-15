@@ -78,6 +78,22 @@ def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Assassination(talents: Iterable[Talent]) -> str:
+    rank = get_ability_level(talents, AbilityLevel.ASSASSINATION)
+    if rank == 0:
+        return ""
+
+    title = "Assassination" + {1: "", 2: " (Advanced)", 3: " (Master)"}[rank]
+    damage_dps = {1: 2.00, 2: 2.50, 3: 3.00}[rank]
+    duration = 6
+    recharge = 45
+
+    flat_percents = {"Damage": damage_dps}
+    durations = {"Duration": duration, "Recharge": recharge}
+    summary = summarize_object(title, flat_percents=flat_percents, durations=durations, order=["flat_percents", "durations"])
+    return summary
+
+
 def summarize_Assault_Rifle(talents: Iterable[Talent]) -> str:
     damage = calculate_bonus(talents, (PercentModifier.ASSAULT_RIFLE_DAMAGE, PercentModifier.WEAPON_DAMAGE))
     accuracy = calculate_bonus(talents, (PercentModifier.ASSAULT_RIFLE_ACCURACY, ))
@@ -120,6 +136,18 @@ def summarize_Immunity(talents: Iterable[Talent]) -> str:
     flat_percents = {"Damage Reduction": damage_reduction}
     durations = {"Duration": duration, "Recharge": recharge}
     summary = summarize_object(title, durations=durations, flat_percents=flat_percents, order=["flat_percents", "durations"])
+    return summary
+
+
+def summarize_Light_Armor(talents: Iterable[Talent]) -> str:
+
+    damage_reduction = calculate_bonus(talents, (PercentModifier.LIGHT_ARMOR_DR, ))
+    hardening = calculate_bonus(talents, (PercentModifier.LIGHT_ARMOR_HARDENING, ))
+    if damage_reduction == hardening == 0:
+        return ""
+
+    modifiers = {"Damage Reduction": damage_reduction, "Hardening": hardening}
+    summary = summarize_object("Light Armor", modifiers=modifiers)
     return summary
 
 
@@ -180,6 +208,23 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Shield_Boost(talents: Iterable[Talent]) -> str:
+    rank = get_ability_level(talents, AbilityLevel.SHIELD_BOOST)
+    if rank == 0:
+        return ""
+
+    title = "Shield Boost" + {1: "", 2: " (Advanced)", 3: " (Master)"}[rank]
+    shields_restored = {1: 0.30, 2: 0.40, 3: 0.50}[rank]
+    accuracy_cost = 0.30
+    duration = 2
+    recharge = 45
+
+    flat_percents = {"Shields Restored": shields_restored, "Accuracy Cost": accuracy_cost}
+    durations = {"Duration": duration, "Recharge": recharge}
+    summary = summarize_object(title, flat_percents=flat_percents, durations=durations, order=["flat_percents", "durations"])
+    return summary
+
+
 def summarize_Shotgun(talents: Iterable[Talent]) -> str:
     damage = calculate_bonus(talents, (PercentModifier.SHOTGUN_DAMAGE, PercentModifier.WEAPON_DAMAGE))
     accuracy = calculate_bonus(talents, (PercentModifier.SHOTGUN_ACCURACY, ))
@@ -199,20 +244,4 @@ def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
 
     modifiers = {"Damage": damage, "Accuracy": accuracy}
     summary = summarize_object("Sniper Rifle", modifiers=modifiers)
-    return summary
-
-
-def summarize_Assassination(talents: Iterable[Talent]) -> str:
-    rank = get_ability_level(talents, AbilityLevel.ASSASSINATION)
-    if rank == 0:
-        return ""
-
-    title = "Assassination" + {1: "", 2: " (Advanced)", 3: " (Master)"}[rank]
-    damage_dps = {1: 2.00, 2: 2.50, 3: 3.00}[rank]
-    duration = 6
-    recharge = 45
-
-    flat_percents = {"Damage": damage_dps}
-    durations = {"Duration": duration, "Recharge": recharge}
-    summary = summarize_object(title, flat_percents=flat_percents, durations=durations, order=["flat_percents", "durations"])
     return summary

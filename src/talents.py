@@ -65,6 +65,18 @@ class AssaultTraining(Talent):
     }
 
 
+class BasicArmor(Talent):
+
+    name = "Basic Armor"
+    ability_table = {
+        AbilityLevel.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        PercentModifier.LIGHT_ARMOR_DR:        {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
+        PercentModifier.LIGHT_ARMOR_HARDENING: {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
+    }
+
+
 class Fitness(Talent):
 
     name = "Fitness"

@@ -5,6 +5,8 @@ class PercentModifier(Enum):
     ASSAULT_RIFLE_ACCURACY  = auto()
     ASSAULT_RIFLE_DAMAGE    = auto()
     HEALTH                  = auto()
+    LIGHT_ARMOR_DR          = auto()
+    LIGHT_ARMOR_HARDENING   = auto()
     MELEE_DAMAGE            = auto()
     PISTOL_ACCURACY         = auto()
     PISTOL_DAMAGE           = auto()
@@ -22,3 +24,4 @@ class AbilityLevel(Enum):
     IMMUNITY            = auto()
     MARKSMAN            = auto()
     OVERKILL            = auto()
+    SHIELD_BOOST        = auto()
