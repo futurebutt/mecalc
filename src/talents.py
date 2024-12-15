@@ -40,6 +40,19 @@ class Talent:
         return self.ability_levels
 
 
+class AssaultRifles(Talent):
+
+    name = "Assault Rifles"
+    ability_table = {
+        AbilityLevel.OVERKILL: {1: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        PercentModifier.ASSAULT_RIFLE_ACCURACY: {2: 0.10, 3: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
+        PercentModifier.ASSAULT_RIFLE_DAMAGE:   {2: 0.05, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
+    }
+
+
+
 class AssaultTraining(Talent):
 
     name = "Assault Training"
@@ -56,24 +69,11 @@ class Fitness(Talent):
 
     name = "Fitness"
     ability_table = {
-        AbilityLevel.IMMUNITY: {4: 1, 8: 2, 12: 3}
+        AbilityLevel.IMMUNITY: {4: 1, 8: 2, 12: 3},
     }
     modifier_table = {
         PercentModifier.HEALTH: {1: 0.10, 2: 0.14, 3: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30},
     }
-
-
-class AssaultRifles(Talent):
-
-    name = "Assault Rifles"
-    ability_table = {
-        AbilityLevel.OVERKILL: {1: 1, 8: 2, 12: 3},
-    }
-    modifier_table = {
-        PercentModifier.ASSAULT_RIFLE_ACCURACY: {2: 0.10, 3: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
-        PercentModifier.ASSAULT_RIFLE_DAMAGE:   {2: 0.05, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
-    }
-
 
 
 class Pistols(Talent):
@@ -86,3 +86,26 @@ class Pistols(Talent):
         PercentModifier.PISTOL_ACCURACY: {1: 0.10, 2: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
         PercentModifier.PISTOL_DAMAGE:   {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
     }
+
+
+class Shotguns(Talent):
+    name = "Shotguns"
+    ability_table = {
+        AbilityLevel.CARNAGE: {4: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        PercentModifier.SHOTGUN_ACCURACY: {1: 0.10, 2: 0.14, 3: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
+        PercentModifier.SHOTGUN_DAMAGE:   {1: 0.05, 2: 0.08, 3: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
+    }
+
+
+class SniperRifles(Talent):
+    name = "Sniper Rifles"
+    ability_table = {
+        AbilityLevel.ASSASSINATION: {4: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        PercentModifier.SNIPER_RIFLE_ACCURACY: {1: 0.10, 2: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
+        PercentModifier.SNIPER_RIFLE_DAMAGE:   {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
+    }
+

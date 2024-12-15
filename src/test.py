@@ -24,10 +24,14 @@ class MainWidget(QWidget):
             sm.summarize_Shepard,
             sm.summarize_Pistol,
             sm.summarize_Assault_Rifle,
+            sm.summarize_Shotgun,
+            sm.summarize_Sniper_Rifles,
             sm.summarize_Adrenaline_Burst,
             sm.summarize_Immunity,
             sm.summarize_Marksman,
             sm.summarize_Overkill,
+            sm.summarize_Carnage,
+            sm.summarize_Assassination,
         ):
             summary = summarize(talents)
             if summary:
