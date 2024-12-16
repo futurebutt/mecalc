@@ -90,6 +90,17 @@ class CombatArmor(Talent):
     }
 
 
+class Decryption(Talent):
+    
+    name = "Decryption"
+    ability_table = {
+        AbilityLevel.SABOTAGE: {1: 1, 5: 2, 9: 3},
+    }
+    modifier_table = {
+        Modifier.TECH_MINE_DAMAGE: {2: 0.10, 3: 0.14, 4: 0.18, 6: 0.20, 7: 0.22, 8: 0.24, 10: 0.26, 11: 0.28, 12: 0.30},
+    }
+
+
 class FirstAid(Talent):
     
     name = "First Aid"
@@ -155,6 +166,7 @@ class SoldierCommando(Soldier):
 
 
 class SniperRifles(Talent):
+
     name = "Sniper Rifles"
     ability_table = {
         AbilityLevel.ASSASSINATION: {4: 1, 8: 2, 12: 3},

@@ -341,6 +341,32 @@ def summarize_Pistol(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Sabotage(talents: Iterable[Talent]) -> str:
+    
+    level = get_ability_level(talents, AbilityLevel.SABOTAGE)
+    if level == 0:
+        return ""
+
+    title = "Sabotage"
+    tech_mine_damage = {1: 50, 2: 100, 3: 150}[level] + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, ))
+    radius = {1: 6, 2: 8, 3: 10}[level]
+    burn_dps = {1: 2, 2: 3, 3: 4}[level]
+    duration = {1: 15, 2: 20, 3: 25}[level]
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+    accuracy_cost = 0.60
+
+    summary = summarize(
+        format_ability_title(title, level),
+        f"Tech Mine Damage {truncate(tech_mine_damage)}",
+        f"Burn DPS {burn_dps}",
+        format_radius(radius),
+        format_duration(duration),
+        format_recharge(recharge),
+        format_accuracy_cost(accuracy_cost),
+    )
+    return summary
+
+
 def summarize_Shepard(talents: Iterable[Talent]) -> str:
 
     title = "Shepard"

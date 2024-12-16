@@ -20,6 +20,7 @@ class Modifier(Enum):
     SHOTGUN_DAMAGE          = auto()
     SNIPER_RIFLE_ACCURACY   = auto()
     SNIPER_RIFLE_DAMAGE     = auto()
+    TECH_MINE_DAMAGE        = auto()
     WEAPON_DAMAGE           = auto()
 
 
@@ -30,6 +31,7 @@ class AbilityLevel(Enum):
     IMMUNITY            = auto()
     MARKSMAN            = auto()
     OVERKILL            = auto()
+    SABOTAGE            = auto()
     SHIELD_BOOST        = auto()
 
 
