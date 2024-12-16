@@ -31,3 +31,8 @@ class AbilityLevel(Enum):
     MARKSMAN            = auto()
     OVERKILL            = auto()
     SHIELD_BOOST        = auto()
+
+
+class AbilitySpec(Enum):
+    ASSASSINATION   = auto()
+    IMMUNITY        = auto()

@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 
-from enums import AbilityLevel, Modifier
+from enums import AbilityLevel, AbilitySpec, Modifier
 from talents import Talent
 
 
@@ -19,6 +19,15 @@ def get_ability_level(talents: Iterable[Talent], dependency: AbilityLevel) -> in
         abilities = talent.get_abilities()
         rank = max(rank, abilities.get(dependency, 0))
     return rank
+
+
+def get_ability_specialization(talents: Iterable[Talent], dependency: AbilitySpec) -> bool:
+    for talent in talents:
+        abilities = talent.get_abilities()
+        if abilities.get(dependency, False):
+            return True
+    else:
+        return False
 
 
 def truncate(value: float) -> int | float:
@@ -119,8 +128,12 @@ def summarize_Assassination(talents: Iterable[Talent]) -> str:
     duration = 6
     recharge = 45
 
+    if specialized := get_ability_specialization(talents, AbilitySpec.ASSASSINATION):
+        recharge *= (1 - 0.25)
+
     summary = summarize(
         format_ability_title(title, level),
+        "Assassination Specialization" if specialized else "",
         format_percent_dps(percent_dps),
         format_duration(duration),
         format_recharge(recharge),
@@ -207,12 +220,17 @@ def summarize_Immunity(talents: Iterable[Talent]) -> str:
     duration = 6
     recharge = 45
 
+    if specialized := get_ability_specialization(talents, AbilitySpec.IMMUNITY):
+        recharge *= (1 - 0.25)
+
     summary = summarize(
         format_ability_title(title, level),
+        "Immunity Specialization" if specialized else "",
         f"Damage Reduction {truncate(damage_reduction_mult * 100)}%",
         format_duration(duration),
         format_recharge(recharge),
     )
+
     return summary
 
 
@@ -245,8 +263,12 @@ def summarize_Marksman(talents: Iterable[Talent]) -> str:
     duration = 6
     recharge = 45
 
+    if specialized := get_ability_specialization(talents, AbilitySpec.ASSASSINATION):
+        recharge *= (1 - 0.25)
+
     summary = summarize(
         format_ability_title(title, level),
+        "Assassination Specialization" if specialized else "",
         format_accuracy_bonus(accuracy),
         format_damage_bonus(damage),
         f"Headshot Damage + {truncate(headshot_damage * 100)}%",

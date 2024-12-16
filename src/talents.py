@@ -1,4 +1,4 @@
-from enums import AbilityLevel, Modifier
+from enums import AbilityLevel, AbilitySpec, Modifier
 
 # Rank -> Value at Rank
 Lookup = dict[int, float]
@@ -24,6 +24,8 @@ class Talent:
             self.modifiers[modifier] = best_value
 
     def calculate_ability_levels(self):
+        # TODO: Happens to cover ability specialization unlocks, but this should
+        # be made more explicit.
         for ability, level_lookup in self.ability_table.items():
             best_level: int = 0
             for threshold, level in level_lookup.items():
@@ -38,7 +40,7 @@ class Talent:
     def get_abilities(self) -> dict[AbilityLevel, int]:
         self.calculate_ability_levels()
         return self.ability_levels
-
+    
 
 class AssaultRifles(Talent):
 
@@ -136,6 +138,19 @@ class Soldier(Talent):
     modifier_table = {
         Modifier.HEALTH: {1: 0.04, 2: 0.06, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14},
         Modifier.HEALTH_REGEN: {1: 3.0, 2: 3.5, 3: 4.0, 4: 4.5, 5: 5.0, 6: 5.5},
+    }
+
+
+class SoldierCommando(Soldier):
+
+    name = "Commando"
+    ability_table = {
+        AbilitySpec.IMMUNITY: {9: True},
+        AbilitySpec.ASSASSINATION: {12: True},
+    }
+    modifier_table = {
+        **Soldier.modifier_table,
+        Modifier.WEAPON_DAMAGE: {7: 0.06, 8: 0.09, 9: 0.12, 10: 0.15, 11: 0.18, 12: 0.21},
     }
 
 
