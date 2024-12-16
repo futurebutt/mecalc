@@ -6,6 +6,7 @@ class Modifier(Enum):
     ASSAULT_RIFLE_DAMAGE    = auto()
     FIRST_AID_HEALING       = auto()
     HEALTH                  = auto()
+    HEALTH_REGEN            = auto()
     HEAVY_ARMOR_DR          = auto()
     HEAVY_ARMOR_HARDENING   = auto()
     LIGHT_ARMOR_DR          = auto()

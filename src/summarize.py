@@ -314,6 +314,7 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
 
     title = "Shepard"
     hp = calculate_bonus(talents, (Modifier.HEALTH, ))
+    health_regen = calculate_bonus(talents, (Modifier.HEALTH_REGEN, ))
     melee = calculate_bonus(talents, (Modifier.MELEE_DAMAGE, ))
     if hp == melee == 0:
         return ""
@@ -321,6 +322,7 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
     summary = summarize(
         title,
         format_health_bonus(hp),
+        f"Health Regen {truncate(health_regen)}/sec",
         f"Melee Damage + {truncate(melee * 100)}%"
     )
     return summary

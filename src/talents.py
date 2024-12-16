@@ -52,7 +52,6 @@ class AssaultRifles(Talent):
     }
 
 
-
 class AssaultTraining(Talent):
 
     name = "Assault Training"
@@ -128,6 +127,15 @@ class Shotguns(Talent):
     modifier_table = {
         Modifier.SHOTGUN_ACCURACY: {1: 0.10, 2: 0.14, 3: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
         Modifier.SHOTGUN_DAMAGE:   {1: 0.05, 2: 0.08, 3: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
+    }
+
+
+class Soldier(Talent):
+
+    name = "Soldier"
+    modifier_table = {
+        Modifier.HEALTH: {1: 0.04, 2: 0.06, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14},
+        Modifier.HEALTH_REGEN: {1: 3.0, 2: 3.5, 3: 4.0, 4: 4.5, 5: 5.0, 6: 5.5},
     }
 
 
