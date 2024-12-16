@@ -123,6 +123,18 @@ def summarize_Carnage(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Heavy_Armor(talents: Iterable[Talent]) -> str:
+
+    damage_reduction = calculate_bonus(talents, (PercentModifier.HEAVY_ARMOR_DR, ))
+    hardening = calculate_bonus(talents, (PercentModifier.HEAVY_ARMOR_HARDENING, ))
+    if damage_reduction == hardening == 0:
+        return ""
+
+    modifiers = {"Damage Reduction": damage_reduction, "Hardening": hardening}
+    summary = summarize_object("Heavy Armor", modifiers=modifiers)
+    return summary
+
+
 def summarize_Immunity(talents: Iterable[Talent]) -> str:
     rank = get_ability_level(talents, AbilityLevel.IMMUNITY)
     if rank == 0:
@@ -166,6 +178,18 @@ def summarize_Marksman(talents: Iterable[Talent]) -> str:
     modifiers = {"Accuracy": accuracy, "Damage": damage, "Headshot Damage": headshot_damage}
     durations = {"Duration": duration, "Recharge": recharge}
     summary = summarize_object(title, modifiers=modifiers, durations=durations)
+    return summary
+
+
+def summarize_Medium_Armor(talents: Iterable[Talent]) -> str:
+
+    damage_reduction = calculate_bonus(talents, (PercentModifier.MED_ARMOR_DR, ))
+    hardening = calculate_bonus(talents, (PercentModifier.MED_ARMOR_HARDENING, ))
+    if damage_reduction == hardening == 0:
+        return ""
+
+    modifiers = {"Damage Reduction": damage_reduction, "Hardening": hardening}
+    summary = summarize_object("Medium Armor", modifiers=modifiers)
     return summary
 
 

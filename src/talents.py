@@ -77,6 +77,18 @@ class BasicArmor(Talent):
     }
 
 
+class CombatArmor(Talent):
+
+    name = "Combat Armor"
+    ability_table = {
+        AbilityLevel.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        PercentModifier.HEAVY_ARMOR_DR:        {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
+        PercentModifier.HEAVY_ARMOR_HARDENING: {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
+    }
+
+
 class Fitness(Talent):
 
     name = "Fitness"
@@ -121,3 +133,14 @@ class SniperRifles(Talent):
         PercentModifier.SNIPER_RIFLE_DAMAGE:   {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
     }
 
+
+class TacticalArmor(Talent):
+
+    name = "Tactical Armor"
+    ability_table = {
+        AbilityLevel.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        PercentModifier.MED_ARMOR_DR:        {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
+        PercentModifier.MED_ARMOR_HARDENING: {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
+    }
