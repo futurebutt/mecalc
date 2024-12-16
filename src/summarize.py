@@ -43,22 +43,28 @@ def format_ability_title(name: str, level: int) -> str:
     return fstr
 
 
-def format_accuracy_cost(value: float):
+def format_accuracy_cost(value: float) -> str:
     fstr = f"Accuracy Cost {truncate(value * 100)}%"
     return fstr
 
 
 def format_accuracy_bonus(value: float) -> str:
+    if value == 0:
+        return ""
     fstr = f"Accuracy + {truncate(value * 100)}%"
     return fstr
 
 
 def format_damage_bonus(value: float) -> str:
+    if value == 0:
+        return ""
     fstr = f"Damage + {truncate(value * 100)}%"
     return fstr
 
 
 def format_damage_reduction(value: float) -> str:
+    if value == 0:
+        return ""
     fstr = f"Damage Protection + {truncate(value * 100)}%"
     return fstr
 
@@ -69,11 +75,15 @@ def format_duration(value: int | float) -> str:
 
 
 def format_hardening(value: float) -> str:
+    if value == 0:
+        return ""
     fstr = f"Hardening + {truncate(value * 100)}%"
     return fstr
 
 
 def format_health_bonus(value: float) -> str:
+    if value == 0:
+        return ""
     fstr = f"Health + {truncate(value * 100)}%"
     return fstr
 
@@ -94,9 +104,7 @@ def format_recharge(seconds: int | float) -> str:
 
 
 def summarize(title: str, *desc: str, indent: int = 4) -> str:
-    desc = [" "*indent + d for d in desc]
-    summary = "\n".join([title] + desc)
-    return summary
+    return "\n".join([title] + [f"{' ' * indent}{d}" for d in desc if d])
 
 
 def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
@@ -182,13 +190,14 @@ def summarize_Carnage(talents: Iterable[Talent]) -> str:
 def summarize_First_Aid(talents: Iterable[Talent]) -> str:
 
     title = "First Aid"
-    healing = calculate_bonus(talents, (Modifier.FIRST_AID_HEALING, ))
-    if healing == 0:
-        return ""
+    # 40 = base heal
+    healing = 40 + calculate_bonus(talents, (Modifier.FIRST_AID_HEALING, ))
+    recharge = 20
     
     summary = summarize(
         title,
-        f"Health Restored + {healing}",
+        f"Health Restored {truncate(healing)}",
+        format_recharge(recharge),
     )
     return summary
 
@@ -338,14 +347,14 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
     hp = calculate_bonus(talents, (Modifier.HEALTH, ))
     health_regen = calculate_bonus(talents, (Modifier.HEALTH_REGEN, ))
     melee = calculate_bonus(talents, (Modifier.MELEE_DAMAGE, ))
-    if hp == melee == 0:
+    if hp == melee == health_regen == 0:
         return ""
     
     summary = summarize(
         title,
         format_health_bonus(hp),
-        f"Health Regen {truncate(health_regen)}/sec",
-        f"Melee Damage + {truncate(melee * 100)}%"
+        f"Health Regen {truncate(health_regen)}/sec" if health_regen else "",
+        f"Melee Damage + {truncate(melee * 100)}%" if melee else ""
     )
     return summary
 

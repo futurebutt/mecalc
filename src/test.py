@@ -14,6 +14,7 @@ class MainWidget(QWidget):
         uic.loadUi(Path(__file__).with_name("test.ui"), self)
 
         self.talentTree.set_class_soldier()
+        self.adjustSize()
         
         self.summaryButton.clicked.connect(self.summarizeButton_clicked)
 
