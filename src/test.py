@@ -23,6 +23,7 @@ class MainWidget(QWidget):
         talents = self.talentTree.get_talents()
         for summarize in (
             sm.summarize_Shepard,
+            sm.summarize_First_Aid,
             sm.summarize_Pistol,
             sm.summarize_Assault_Rifle,
             sm.summarize_Shotgun,
@@ -38,7 +39,8 @@ class MainWidget(QWidget):
             sm.summarize_Heavy_Armor,
             sm.summarize_Shield_Boost,
             sm.summarize_Sabotage,
-            sm.summarize_First_Aid,
+            sm.summarize_Overload,
+            sm.summarize_Mako,
         ):
             summary = summarize(talents)
             if summary:

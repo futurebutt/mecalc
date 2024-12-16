@@ -9,6 +9,7 @@ class Modifier(Enum):
     HEALTH_REGEN            = auto()
     HEAVY_ARMOR_DR          = auto()
     HEAVY_ARMOR_HARDENING   = auto()
+    HULL_REPAIR             = auto()
     LIGHT_ARMOR_DR          = auto()
     LIGHT_ARMOR_HARDENING   = auto()
     MED_ARMOR_DR            = auto()
@@ -16,6 +17,7 @@ class Modifier(Enum):
     MELEE_DAMAGE            = auto()
     PISTOL_ACCURACY         = auto()
     PISTOL_DAMAGE           = auto()
+    SHIELD_CAPACITY         = auto()
     SHOTGUN_ACCURACY        = auto()
     SHOTGUN_DAMAGE          = auto()
     SNIPER_RIFLE_ACCURACY   = auto()
@@ -31,6 +33,7 @@ class AbilityLevel(Enum):
     IMMUNITY            = auto()
     MARKSMAN            = auto()
     OVERKILL            = auto()
+    OVERLOAD            = auto()
     SABOTAGE            = auto()
     SHIELD_BOOST        = auto()
 

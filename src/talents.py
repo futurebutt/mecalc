@@ -101,6 +101,18 @@ class Decryption(Talent):
     }
 
 
+class Electronics(Talent):
+
+    name = "Electronics"
+    ability_table = {
+        AbilityLevel.OVERLOAD: {1: 1, 5: 2, 9: 3},
+    }
+    modifier_table = {
+        Modifier.HULL_REPAIR: {2: 400, 3: 600, 4: 800, 6: 1200, 7: 1400, 8: 1600, 10: 2000, 11: 2200, 12: 2400},
+        Modifier.SHIELD_CAPACITY: {2: 30, 3: 60, 4: 90, 6: 120, 7: 150, 8: 180, 10: 210, 11: 240, 12: 270},
+    }
+
+
 class FirstAid(Talent):
     
     name = "First Aid"
