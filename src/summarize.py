@@ -1,10 +1,10 @@
 from collections.abc import Iterable
 
-from enums import AbilityLevel, PercentModifier
+from enums import AbilityLevel, Modifier
 from talents import Talent
 
 
-def calculate_bonus(talents: Iterable[Talent], dependencies: Iterable[PercentModifier]) -> float:
+def calculate_bonus(talents: Iterable[Talent], dependencies: Iterable[Modifier]) -> float:
     value: float = 0.0
     for talent in talents:
         modifiers = talent.get_modifiers()
@@ -131,8 +131,8 @@ def summarize_Assassination(talents: Iterable[Talent]) -> str:
 def summarize_Assault_Rifle(talents: Iterable[Talent]) -> str:
 
     title = "Assault Rifles"
-    damage = calculate_bonus(talents, (PercentModifier.ASSAULT_RIFLE_DAMAGE, PercentModifier.WEAPON_DAMAGE))
-    accuracy = calculate_bonus(talents, (PercentModifier.ASSAULT_RIFLE_ACCURACY, ))
+    damage = calculate_bonus(talents, (Modifier.ASSAULT_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE))
+    accuracy = calculate_bonus(talents, (Modifier.ASSAULT_RIFLE_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
 
@@ -166,11 +166,25 @@ def summarize_Carnage(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_First_Aid(talents: Iterable[Talent]) -> str:
+
+    title = "First Aid"
+    healing = calculate_bonus(talents, (Modifier.FIRST_AID_HEALING, ))
+    if healing == 0:
+        return ""
+    
+    summary = summarize(
+        title,
+        f"Health Restored + {healing}",
+    )
+    return summary
+
+
 def summarize_Heavy_Armor(talents: Iterable[Talent]) -> str:
 
     title = "Heavy Armor"
-    damage_reduction = calculate_bonus(talents, (PercentModifier.HEAVY_ARMOR_DR, ))
-    hardening = calculate_bonus(talents, (PercentModifier.HEAVY_ARMOR_HARDENING, ))
+    damage_reduction = calculate_bonus(talents, (Modifier.HEAVY_ARMOR_DR, ))
+    hardening = calculate_bonus(talents, (Modifier.HEAVY_ARMOR_HARDENING, ))
     if damage_reduction == hardening == 0:
         return ""
     
@@ -205,8 +219,8 @@ def summarize_Immunity(talents: Iterable[Talent]) -> str:
 def summarize_Light_Armor(talents: Iterable[Talent]) -> str:
 
     title = "Light Armor"
-    damage_reduction = calculate_bonus(talents, (PercentModifier.LIGHT_ARMOR_DR, ))
-    hardening = calculate_bonus(talents, (PercentModifier.LIGHT_ARMOR_HARDENING, ))
+    damage_reduction = calculate_bonus(talents, (Modifier.LIGHT_ARMOR_DR, ))
+    hardening = calculate_bonus(talents, (Modifier.LIGHT_ARMOR_HARDENING, ))
     if damage_reduction == hardening == 0:
         return ""
     
@@ -245,8 +259,8 @@ def summarize_Marksman(talents: Iterable[Talent]) -> str:
 def summarize_Medium_Armor(talents: Iterable[Talent]) -> str:
 
     title = "Medium Armor"
-    damage_reduction = calculate_bonus(talents, (PercentModifier.MED_ARMOR_DR, ))
-    hardening = calculate_bonus(talents, (PercentModifier.MED_ARMOR_HARDENING, ))
+    damage_reduction = calculate_bonus(talents, (Modifier.MED_ARMOR_DR, ))
+    hardening = calculate_bonus(talents, (Modifier.MED_ARMOR_HARDENING, ))
     if damage_reduction == hardening == 0:
         return ""
     
@@ -283,8 +297,8 @@ def summarize_Overkill(talents: Iterable[Talent]) -> str:
 def summarize_Pistol(talents: Iterable[Talent]) -> str:
 
     title = "Pistol"
-    damage = calculate_bonus(talents, (PercentModifier.PISTOL_DAMAGE, PercentModifier.WEAPON_DAMAGE))
-    accuracy = calculate_bonus(talents, (PercentModifier.PISTOL_ACCURACY, ))
+    damage = calculate_bonus(talents, (Modifier.PISTOL_DAMAGE, Modifier.WEAPON_DAMAGE))
+    accuracy = calculate_bonus(talents, (Modifier.PISTOL_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
     
@@ -299,8 +313,8 @@ def summarize_Pistol(talents: Iterable[Talent]) -> str:
 def summarize_Shepard(talents: Iterable[Talent]) -> str:
 
     title = "Shepard"
-    hp = calculate_bonus(talents, (PercentModifier.HEALTH, ))
-    melee = calculate_bonus(talents, (PercentModifier.MELEE_DAMAGE, ))
+    hp = calculate_bonus(talents, (Modifier.HEALTH, ))
+    melee = calculate_bonus(talents, (Modifier.MELEE_DAMAGE, ))
     if hp == melee == 0:
         return ""
     
@@ -337,8 +351,8 @@ def summarize_Shield_Boost(talents: Iterable[Talent]) -> str:
 def summarize_Shotgun(talents: Iterable[Talent]) -> str:
 
     title = "Shotgun"
-    damage = calculate_bonus(talents, (PercentModifier.SHOTGUN_DAMAGE, PercentModifier.WEAPON_DAMAGE))
-    accuracy = calculate_bonus(talents, (PercentModifier.SHOTGUN_ACCURACY, ))
+    damage = calculate_bonus(talents, (Modifier.SHOTGUN_DAMAGE, Modifier.WEAPON_DAMAGE))
+    accuracy = calculate_bonus(talents, (Modifier.SHOTGUN_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
     
@@ -353,8 +367,8 @@ def summarize_Shotgun(talents: Iterable[Talent]) -> str:
 def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
 
     title = "Sniper Rifle"
-    damage = calculate_bonus(talents, (PercentModifier.SNIPER_RIFLE_DAMAGE, PercentModifier.WEAPON_DAMAGE))
-    accuracy = calculate_bonus(talents, (PercentModifier.SNIPER_RIFLE_ACCURACY, ))
+    damage = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE))
+    accuracy = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
     

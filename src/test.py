@@ -36,6 +36,7 @@ class MainWidget(QWidget):
             sm.summarize_Medium_Armor,
             sm.summarize_Heavy_Armor,
             sm.summarize_Shield_Boost,
+            sm.summarize_First_Aid,
         ):
             summary = summarize(talents)
             if summary:

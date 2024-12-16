@@ -1,16 +1,17 @@
 from enum import auto, Enum
 
 
-class PercentModifier(Enum):
+class Modifier(Enum):
     ASSAULT_RIFLE_ACCURACY  = auto()
     ASSAULT_RIFLE_DAMAGE    = auto()
+    FIRST_AID_HEALING       = auto()
     HEALTH                  = auto()
     HEAVY_ARMOR_DR          = auto()
     HEAVY_ARMOR_HARDENING   = auto()
     LIGHT_ARMOR_DR          = auto()
     LIGHT_ARMOR_HARDENING   = auto()
-    MED_ARMOR_DR          = auto()
-    MED_ARMOR_HARDENING   = auto()
+    MED_ARMOR_DR            = auto()
+    MED_ARMOR_HARDENING     = auto()
     MELEE_DAMAGE            = auto()
     PISTOL_ACCURACY         = auto()
     PISTOL_DAMAGE           = auto()

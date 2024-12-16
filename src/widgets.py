@@ -350,6 +350,7 @@ class TalentTree(QWidget):
         # self.add_talent_bar(tl.BasicArmor(0))
         self.add_talent_bar(tl.CombatArmor(0))
         # self.add_talent_bar(tl.TacticalArmor(0))
+        self.add_talent_bar(tl.FirstAid(0))
     
     def get_talents(self):
         return [bar.talent for bar in self.findChildren(TalentBar)]
