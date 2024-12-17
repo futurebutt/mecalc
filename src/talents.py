@@ -66,6 +66,18 @@ class AssaultTraining(Talent):
     }
 
 
+class Barrier(Talent):
+
+    name = "Barrier"
+    ability_table = {
+        AbilityLevel.BARRIER: {1: 1, 7: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.BARRIER_DURATION: {1: 10.0, 2: 10.5, 3: 11.0, 4: 11.5, 5: 12.0, 6: 12.5, 7: 16.5, 8: 17.0, 9: 17.5, 10: 18.0, 11: 18.5, 12: 23.0},
+        Modifier.BARRIER_SHIELDING: {1: 400, 2: 420, 3: 440, 4: 460, 5: 480, 6: 500, 7: 700, 8: 720, 9: 740, 10: 760, 11: 780, 12: 1000},
+    }
+
+
 class BasicArmor(Talent):
 
     name = "Basic Armor"

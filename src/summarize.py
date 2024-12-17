@@ -185,6 +185,30 @@ def summarize_Assault_Rifle(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Barrier(talents: Iterable[Talent]) -> str:
+
+    level = get_ability_level(talents, AbilityLevel.BARRIER)
+    if level == 0:
+        return ""
+
+    title = "Barrier"
+    duration = calculate_bonus(talents, (Modifier.BARRIER_DURATION, ))
+    strength = calculate_bonus(talents, (Modifier.BARRIER_SHIELDING, ))
+    assert duration and strength, "should never happen if level is not zero"
+
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+    acc_cost = 0.80
+
+    summary = summarize(
+        format_ability_title(title, level),
+        f"Shielding {strength}",
+        format_duration(duration),
+        format_recharge(recharge),
+        format_accuracy_cost(acc_cost),
+    )
+    return summary
+
+
 def summarize_Carnage(talents: Iterable[Talent]) -> str:
 
     rank = get_ability_level(talents, AbilityLevel.CARNAGE)

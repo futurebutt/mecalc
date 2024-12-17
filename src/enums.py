@@ -4,6 +4,8 @@ from enum import auto, Enum
 class Modifier(Enum):
     ASSAULT_RIFLE_ACCURACY  = auto()
     ASSAULT_RIFLE_DAMAGE    = auto()
+    BARRIER_DURATION        = auto()
+    BARRIER_SHIELDING       = auto()
     FIRST_AID_HEALING       = auto()
     HEALTH                  = auto()
     HEALTH_REGEN            = auto()
@@ -32,6 +34,7 @@ class AbilityLevel(Enum):
     ADRENALINE_BURST    = auto()
     AI_HACKING          = auto()
     ASSASSINATION       = auto()
+    BARRIER             = auto()
     CARNAGE             = auto()
     DAMPING             = auto()
     IMMUNITY            = auto()
