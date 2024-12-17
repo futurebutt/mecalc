@@ -114,11 +114,16 @@ def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
         return ""
 
     title = "Adrenaline Burst"
+
     recharge = {1: 120, 2: 90, 3: 45}[level]
+    if specialized := get_ability_specialization(talents, AbilitySpec.ADRENALINE_BURST):
+        recharge *= (1 - 0.25)
+
     accuracy_cost = 0.30
 
     summary = summarize(
         format_ability_title(title, level),
+        "Adrenaline Burst Specialization" if specialized else "",
         format_recharge(recharge),
         format_accuracy_cost(accuracy_cost),
     )
@@ -206,10 +211,18 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
     recharge *= (1.00 - bio_haste)
 
     acc_cost = 0.80
+    regen = 0
+
+    if specialized := get_ability_specialization(talents, AbilitySpec.BARRIER):
+        duration *= 1.25
+        strength *= 1.25
+        regen = 40
 
     summary = summarize(
         format_ability_title(title, level),
+        "Barrier Specialization" if specialized else "",
         f"Shielding {strength}",
+        f"Regen {regen} pts / sec" if regen else "",
         format_duration(duration),
         format_recharge(recharge),
         format_accuracy_cost(acc_cost),

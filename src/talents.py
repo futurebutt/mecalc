@@ -346,8 +346,15 @@ class SoldierCommando(Soldier):
 class SoldierShockTrooper(Soldier):
 
     name = "Shock Trooper"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        AbilitySpec.IMMUNITY: {9: True},
+        AbilitySpec.ADRENALINE_BURST: {12: True},
+    }
+    modifier_table = {
+        **Soldier.modifier_table,
+        Modifier.DAMAGE_PROTECTION: {7: 0.06, 8: 0.08, 9: 0.10, 10: 0.12, 11: 0.14, 12: 0.16},
+        Modifier.HEALTH: {**Soldier.modifier_table[Modifier.HEALTH], 7: 0.18, 8: 0.20, 9: 0.22, 10: 0.24, 11: 0.26, 12: 0.28},
+    }
 
 
 class SniperRifles(Talent):

@@ -5,9 +5,11 @@ class Modifier(Enum):
     ASSAULT_RIFLE_ACCURACY  = auto()
     ASSAULT_RIFLE_DAMAGE    = auto()
     BARRIER_DURATION        = auto()
+    BARRIER_REGEN           = auto()
     BARRIER_SHIELDING       = auto()
     BIOTIC_HASTE            = auto()
     BIOTIC_PROTECTION       = auto()
+    DAMAGE_PROTECTION       = auto()
     FIRST_AID_HASTE         = auto()
     FIRST_AID_HEALING       = auto()
     HEALTH                  = auto()
@@ -62,5 +64,7 @@ class AbilityLevel(Enum):
 
 
 class AbilitySpec(Enum):
-    ASSASSINATION   = auto()
-    IMMUNITY        = auto()
+    ADRENALINE_BURST    = auto()
+    ASSASSINATION       = auto()
+    BARRIER             = auto()
+    IMMUNITY            = auto()
