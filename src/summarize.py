@@ -263,7 +263,8 @@ def summarize_First_Aid(talents: Iterable[Talent]) -> str:
     title = "First Aid"
     # 40 = base heal
     healing = 40 + calculate_bonus(talents, (Modifier.FIRST_AID_HEALING, ))
-    recharge = 20
+    haste = calculate_bonus(talents, (Modifier.FIRST_AID_HASTE, ))
+    recharge = 20 * (1.00 - haste)
 
     summary = summarize(
         title,
