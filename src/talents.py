@@ -132,6 +132,17 @@ class Fitness(Talent):
     }
 
 
+class Hacking(Talent):
+
+    name = "Hacking"
+    ability_table = {
+        AbilityLevel.AI_HACKING: {1: 1, 7: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.TECH_MINE_HASTE: {2: 0.06, 3: 0.09, 4: 0.12, 5: 0.15, 6: 0.18, 8: 0.21, 9: 0.24, 10: 0.27, 11: 0.30},
+    }
+
+
 class Pistols(Talent):
 
     name = "Pistols"

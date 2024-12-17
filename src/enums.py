@@ -23,11 +23,13 @@ class Modifier(Enum):
     SNIPER_RIFLE_ACCURACY   = auto()
     SNIPER_RIFLE_DAMAGE     = auto()
     TECH_MINE_DAMAGE        = auto()
+    TECH_MINE_HASTE         = auto()
     WEAPON_DAMAGE           = auto()
 
 
 class AbilityLevel(Enum):
     ADRENALINE_BURST    = auto()
+    AI_HACKING          = auto()
     ASSASSINATION       = auto()
     CARNAGE             = auto()
     IMMUNITY            = auto()

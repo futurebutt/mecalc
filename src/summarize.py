@@ -125,6 +125,26 @@ def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_AI_Hacking(talents: Iterable[Talent]) -> str:
+
+    level = get_ability_level(talents, AbilityLevel.AI_HACKING)
+    if level == 0:
+        return ""
+    
+    title = "AI Hacking"
+    duration = {1: 20, 2: 25, 3: 30}[level]
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+    accuracy_cost = 0.80
+
+    summary = summarize(
+        format_ability_title(title, level),
+        format_duration(duration),
+        format_recharge(recharge),
+        format_accuracy_cost(accuracy_cost),
+    )
+    return summary
+
+
 def summarize_Assassination(talents: Iterable[Talent]) -> str:
 
     level = get_ability_level(talents, AbilityLevel.ASSASSINATION)
