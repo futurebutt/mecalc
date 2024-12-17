@@ -130,7 +130,7 @@ def summarize_AI_Hacking(talents: Iterable[Talent]) -> str:
     level = get_ability_level(talents, AbilityLevel.AI_HACKING)
     if level == 0:
         return ""
-    
+
     title = "AI Hacking"
     duration = {1: 20, 2: 25, 3: 30}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
@@ -232,7 +232,7 @@ def summarize_Carnage(talents: Iterable[Talent]) -> str:
 
 
 def summarize_Damping(talents: Iterable[Talent]) -> str:
-    
+
     level = get_ability_level(talents, AbilityLevel.DAMPING)
     if level == 0:
         return ""
@@ -264,7 +264,7 @@ def summarize_First_Aid(talents: Iterable[Talent]) -> str:
     # 40 = base heal
     healing = 40 + calculate_bonus(talents, (Modifier.FIRST_AID_HEALING, ))
     recharge = 20
-    
+
     summary = summarize(
         title,
         f"Health Restored {truncate(healing)}",
@@ -280,7 +280,7 @@ def summarize_Heavy_Armor(talents: Iterable[Talent]) -> str:
     hardening = calculate_bonus(talents, (Modifier.HEAVY_ARMOR_HARDENING, ))
     if damage_reduction == hardening == 0:
         return ""
-    
+
     summary = summarize(
         title,
         format_damage_reduction(damage_reduction),
@@ -315,7 +315,27 @@ def summarize_Immunity(talents: Iterable[Talent]) -> str:
 
 
 def summarize_Lift(talents: Iterable[Talent]) -> str:
-    ...
+
+    level = get_ability_level(talents, AbilityLevel.LIFT)
+    if level == 0:
+        return ""
+
+    title = "Lift"
+
+    duration = calculate_bonus(talents, (Modifier.LIFT_DURATION, ))
+
+    radius = {1: 4, 2: 5, 3: 6}[level]
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+    acc_cost = {1: 0.80, 2: 0.60, 3: 0.40}[level]
+
+    summary = summarize(
+        format_ability_title(title, level),
+        format_duration(duration),
+        format_radius(radius),
+        format_recharge(recharge),
+        format_accuracy_cost(acc_cost),
+    )
+    return summary
 
 
 def summarize_Light_Armor(talents: Iterable[Talent]) -> str:
@@ -325,7 +345,7 @@ def summarize_Light_Armor(talents: Iterable[Talent]) -> str:
     hardening = calculate_bonus(talents, (Modifier.LIGHT_ARMOR_HARDENING, ))
     if damage_reduction == hardening == 0:
         return ""
-    
+
     summary = summarize(
         title,
         format_damage_reduction(damage_reduction),
@@ -340,7 +360,7 @@ def summarize_Mako(talents: Iterable[Talent]) -> str:
     repair = calculate_bonus(talents, (Modifier.HULL_REPAIR, ))
     if repair == 0:
         return ""
-    
+
     summary = summarize(
         title,
         f"Mako Hull Repair + {repair}",
@@ -376,10 +396,6 @@ def summarize_Marksman(talents: Iterable[Talent]) -> str:
     return summary
 
 
-def summarize_Medicine(talents: Iterable[Talent]) -> str:
-    ...
-
-
 def summarize_Medium_Armor(talents: Iterable[Talent]) -> str:
 
     title = "Medium Armor"
@@ -387,11 +403,33 @@ def summarize_Medium_Armor(talents: Iterable[Talent]) -> str:
     hardening = calculate_bonus(talents, (Modifier.MED_ARMOR_HARDENING, ))
     if damage_reduction == hardening == 0:
         return ""
-    
+
     summary = summarize(
         title,
         format_damage_reduction(damage_reduction),
         format_hardening(hardening),
+    )
+    return summary
+
+
+def summarize_Neural_Shock(talents: Iterable[Talent]) -> str:
+
+    level = get_ability_level(talents, AbilityLevel.NEURAL_SHOCK)
+    if level == 0:
+        return ""
+
+    title = "Neural Shock"
+    toxic_damage = {1: 40, 2: 80, 3: 120}[level]
+    knockout = {1: 1, 2: 3, 3: 5}[level]
+    recharge = 45
+    acc_cost = 0.60
+
+    summary = summarize(
+        format_ability_title(title, level),
+        f"Toxic Damage {toxic_damage}",
+        f"Knockout {knockout} sec",
+        format_recharge(recharge),
+        format_accuracy_cost(acc_cost),
     )
     return summary
 
@@ -419,7 +457,7 @@ def summarize_Overkill(talents: Iterable[Talent]) -> str:
 
 
 def summarize_Overload(talents: Iterable[Talent]) -> str:
-    
+
     level = get_ability_level(talents, AbilityLevel.OVERLOAD)
     if level == 0:
         return ""
@@ -456,7 +494,7 @@ def summarize_Pistol(talents: Iterable[Talent]) -> str:
     accuracy = calculate_bonus(talents, (Modifier.PISTOL_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
-    
+
     summary = summarize(
         title,
         format_damage_bonus(damage),
@@ -466,7 +504,7 @@ def summarize_Pistol(talents: Iterable[Talent]) -> str:
 
 
 def summarize_Sabotage(talents: Iterable[Talent]) -> str:
-    
+
     level = get_ability_level(talents, AbilityLevel.SABOTAGE)
     if level == 0:
         return ""
@@ -503,7 +541,7 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
     shields = calculate_bonus(talents, (Modifier.SHIELD_CAPACITY, ))
     if hp == melee == health_regen == shields == 0:
         return ""
-    
+
     summary = summarize(
         title,
         format_health_bonus(hp),
@@ -543,7 +581,7 @@ def summarize_Shotgun(talents: Iterable[Talent]) -> str:
     accuracy = calculate_bonus(talents, (Modifier.SHOTGUN_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
-    
+
     summary = summarize(
         title,
         format_damage_bonus(damage),
@@ -553,7 +591,28 @@ def summarize_Shotgun(talents: Iterable[Talent]) -> str:
 
 
 def summarize_Singularity(talents: Iterable[Talent]) -> str:
-    ...
+
+    level = get_ability_level(talents, AbilityLevel.SINGULARITY)
+    if level == 0:
+        return ""
+
+    title = "Singularity"
+
+    radius = calculate_bonus(talents, (Modifier.SINGULARITY_RADIUS, ))
+
+    duration = {1: 4, 2: 6, 3: 8}[level]
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+
+    acc_cost = 0.80
+
+    summary = summarize(
+        format_ability_title(title, level),
+        format_radius(radius),
+        format_duration(duration),
+        format_recharge(recharge),
+        format_accuracy_cost(acc_cost),
+    )
+    return summary
 
 
 def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
@@ -563,7 +622,7 @@ def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
     accuracy = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
-    
+
     summary = summarize(
         title,
         format_damage_bonus(damage),
@@ -573,12 +632,76 @@ def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
 
 
 def summarize_Stasis(talents: Iterable[Talent]) -> str:
-    ...
+
+    level = get_ability_level(talents, AbilityLevel.STASIS)
+    if level == 0:
+        return ""
+
+    title = "Stasis"
+
+    duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, ))
+
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+
+    acc_cost = 0.80
+
+    summary = summarize(
+        format_ability_title(title, level),
+        format_duration(duration),
+        format_recharge(recharge),
+        format_accuracy_cost(acc_cost),
+    )
+    return summary
 
 
 def summarize_Throw(talents: Iterable[Talent]) -> str:
-    ...
+
+    level = get_ability_level(talents, AbilityLevel.THROW)
+    if level == 0:
+        return ""
+
+    title = "Throw"
+
+    force = calculate_bonus(talents, (Modifier.THROW_FORCE, ))
+
+    radius = {1: 4, 2: 5, 3: 6}[level]
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+    acc_cost = {1: 0.60, 2: 0.45, 3: 0.30}[level]
+
+    summary = summarize(
+        format_ability_title(title, level),
+        f"Force {force}N",
+        format_radius(radius),
+        format_recharge(recharge),
+        format_accuracy_cost(acc_cost),
+    )
+    return summary
 
 
 def summarize_Warp(talents: Iterable[Talent]) -> str:
-    ...
+
+    level = get_ability_level(talents, AbilityLevel.WARP)
+    if level == 0:
+        return ""
+
+    title = "Warp"
+
+    duration = calculate_bonus(talents, (Modifier.WARP_DURATION, ))
+
+    dps = {1: 6, 2: 8, 3: 10}[level]
+    sunder = {1: 0.50, 2: 0.60, 3: 0.75}[level]
+    radius = {1: 4, 2: 5, 3: 6}[level]
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+
+    acc_cost = 0.80
+
+    summary = summarize(
+        format_ability_title(title, level),
+        f"DPS {dps}",
+        f"Reduce Damage Protection {truncate(sunder * 100)}%",
+        format_radius(radius),
+        format_duration(duration),
+        format_recharge(recharge),
+        format_accuracy_cost(acc_cost),
+    )
+    return summary

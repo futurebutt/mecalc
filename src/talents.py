@@ -169,7 +169,12 @@ class Hacking(Talent):
 class Lift(Talent):
 
     name = "Lift"
-    ...
+    ability_table = {
+        AbilityLevel.LIFT: {1: 1, 7: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.LIFT_DURATION: {1: 6.0, 2: 6.4, 3: 6.8, 4: 7.2, 5: 7.6, 6: 8.0, 7: 9.0, 8: 9.4, 9: 9.8, 10: 10.2, 11: 10.6, 12: 12.0},
+    }
 
 
 class Pistols(Talent):
@@ -187,7 +192,12 @@ class Pistols(Talent):
 class Medicine(Talent):
 
     name = "Medicine"
-    ...
+    ability_table = {
+        AbilityLevel.NEURAL_SHOCK: {1: 1, 7: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.FIRST_AID_HASTE: {2: 0.10, 3: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 8: 0.24, 9: 0.26, 10: 0.28, 11: 0.30},
+    }
 
 
 class Shotguns(Talent):
@@ -205,7 +215,12 @@ class Shotguns(Talent):
 class Singularity(Talent):
 
     name = "Singularity"
-    ...
+    ability_table = {
+        AbilityLevel.SINGULARITY: {1: 1, 7: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.SINGULARITY_RADIUS: {1: 4, 2: 4.25, 3: 4.5, 4: 5.0, 6: 5.25, 7: 6.25, 8: 6.5, 9: 6.75, 10: 7.0, 11: 7.25, 12: 8.25},
+    }
 
 
 class Soldier(Talent):
@@ -245,7 +260,12 @@ class SniperRifles(Talent):
 class Stasis(Talent):
 
     name = "Stasis"
-    ...
+    ability_table = {
+        AbilityLevel.STASIS: {1: 1, 6: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.STASIS_DURATION: {1: 12.5, 2: 13, 3: 13.5, 4: 14, 5: 14.5, 6: 17, 7: 17.5, 8: 18, 9: 18.5, 10: 19, 11: 19.5, 12: 21},
+    }
 
 
 class TacticalArmor(Talent):
@@ -263,4 +283,20 @@ class TacticalArmor(Talent):
 class Throw(Talent):
 
     name = "Throw"
-    ...
+    ability_table = {
+        AbilityLevel.THROW: {1: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.THROW_FORCE: {1: 600, 2: 650, 3: 700, 4: 750, 5: 800, 6: 850, 7: 900, 8: 1000, 9: 1050, 10: 1100, 11: 1150, 12: 1250},
+    }
+
+
+class Warp(Talent):
+
+    name = "Warp"
+    ability_table = {
+        AbilityLevel.WARP: {1: 1, 6: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.WARP_DURATION: {1: 7, 2: 8, 3: 9, 4: 10, 5: 11, 6: 13, 7: 14, 8: 15, 9: 16, 10: 17, 11: 18, 12: 20},
+    }
