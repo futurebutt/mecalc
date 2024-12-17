@@ -166,6 +166,12 @@ class Hacking(Talent):
     }
 
 
+class Lift(Talent):
+
+    name = "Lift"
+    ...
+
+
 class Pistols(Talent):
 
     name = "Pistols"
@@ -178,7 +184,14 @@ class Pistols(Talent):
     }
 
 
+class Medicine(Talent):
+
+    name = "Medicine"
+    ...
+
+
 class Shotguns(Talent):
+
     name = "Shotguns"
     ability_table = {
         AbilityLevel.CARNAGE: {4: 1, 8: 2, 12: 3},
@@ -187,6 +200,12 @@ class Shotguns(Talent):
         Modifier.SHOTGUN_ACCURACY: {1: 0.10, 2: 0.14, 3: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
         Modifier.SHOTGUN_DAMAGE:   {1: 0.05, 2: 0.08, 3: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
     }
+
+
+class Singularity(Talent):
+
+    name = "Singularity"
+    ...
 
 
 class Soldier(Talent):
@@ -223,6 +242,12 @@ class SniperRifles(Talent):
     }
 
 
+class Stasis(Talent):
+
+    name = "Stasis"
+    ...
+
+
 class TacticalArmor(Talent):
 
     name = "Tactical Armor"
@@ -233,3 +258,9 @@ class TacticalArmor(Talent):
         Modifier.MED_ARMOR_DR:        {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
         Modifier.MED_ARMOR_HARDENING: {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
     }
+
+
+class Throw(Talent):
+
+    name = "Throw"
+    ...

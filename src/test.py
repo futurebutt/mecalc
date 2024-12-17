@@ -42,7 +42,13 @@ class MainWidget(QWidget):
             sm.summarize_Overload,
             sm.summarize_AI_Hacking,
             sm.summarize_Damping,
+            sm.summarize_Neural_Shock,
             sm.summarize_Barrier,
+            sm.summarize_Lift,
+            sm.summarize_Singularity,
+            sm.summarize_Stasis,
+            sm.summarize_Throw,
+            sm.summarize_Warp,
             sm.summarize_Mako,
         ):
             summary = summarize(talents)

@@ -314,6 +314,10 @@ def summarize_Immunity(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Lift(talents: Iterable[Talent]) -> str:
+    ...
+
+
 def summarize_Light_Armor(talents: Iterable[Talent]) -> str:
 
     title = "Light Armor"
@@ -370,6 +374,10 @@ def summarize_Marksman(talents: Iterable[Talent]) -> str:
         format_recharge(recharge),
     )
     return summary
+
+
+def summarize_Medicine(talents: Iterable[Talent]) -> str:
+    ...
 
 
 def summarize_Medium_Armor(talents: Iterable[Talent]) -> str:
@@ -544,6 +552,10 @@ def summarize_Shotgun(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Singularity(talents: Iterable[Talent]) -> str:
+    ...
+
+
 def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
 
     title = "Sniper Rifle"
@@ -558,3 +570,15 @@ def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
         format_accuracy_bonus(accuracy)
     )
     return summary
+
+
+def summarize_Stasis(talents: Iterable[Talent]) -> str:
+    ...
+
+
+def summarize_Throw(talents: Iterable[Talent]) -> str:
+    ...
+
+
+def summarize_Warp(talents: Iterable[Talent]) -> str:
+    ...
