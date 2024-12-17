@@ -192,11 +192,14 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
         return ""
 
     title = "Barrier"
+
     duration = calculate_bonus(talents, (Modifier.BARRIER_DURATION, ))
     strength = calculate_bonus(talents, (Modifier.BARRIER_SHIELDING, ))
-    assert duration and strength, "should never happen if level is not zero"
+    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1.00 - bio_haste)
+
     acc_cost = 0.80
 
     summary = summarize(
@@ -324,9 +327,11 @@ def summarize_Lift(talents: Iterable[Talent]) -> str:
     title = "Lift"
 
     duration = calculate_bonus(talents, (Modifier.LIFT_DURATION, ))
+    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1.00 - bio_haste)
     acc_cost = {1: 0.80, 2: 0.60, 3: 0.40}[level]
 
     summary = summarize(
@@ -536,17 +541,21 @@ def summarize_Sabotage(talents: Iterable[Talent]) -> str:
 def summarize_Shepard(talents: Iterable[Talent]) -> str:
 
     title = "Shepard"
+
     hp = calculate_bonus(talents, (Modifier.HEALTH, ))
     health_regen = calculate_bonus(talents, (Modifier.HEALTH_REGEN, ))
     melee = calculate_bonus(talents, (Modifier.MELEE_DAMAGE, ))
     shields = calculate_bonus(talents, (Modifier.SHIELD_CAPACITY, ))
-    if hp == melee == health_regen == shields == 0:
+    bio_prot = calculate_bonus(talents, (Modifier.BIOTIC_PROTECTION, ))
+
+    if hp == melee == health_regen == shields == bio_prot == 0:
         return ""
 
     summary = summarize(
         title,
         format_health_bonus(hp),
-        f"Shields + {truncate(shields)}",
+        f"Shields + {truncate(shields)}" if shields else "",
+        f"Biotic Protection + {truncate(bio_prot * 100)}%",
         f"Health Regen {truncate(health_regen)} per sec" if health_regen else "",
         f"Melee Damage + {truncate(melee * 100)}%" if melee else "",
     )
@@ -600,9 +609,11 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
     title = "Singularity"
 
     radius = calculate_bonus(talents, (Modifier.SINGULARITY_RADIUS, ))
+    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     duration = {1: 4, 2: 6, 3: 8}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1.00 - bio_haste)
 
     acc_cost = 0.80
 
@@ -641,8 +652,10 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
     title = "Stasis"
 
     duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, ))
+    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1.00 - bio_haste)
 
     acc_cost = 0.80
 
@@ -664,9 +677,11 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
     title = "Throw"
 
     force = calculate_bonus(talents, (Modifier.THROW_FORCE, ))
+    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1.00 - bio_haste)
     acc_cost = {1: 0.60, 2: 0.45, 3: 0.30}[level]
 
     summary = summarize(
@@ -688,11 +703,13 @@ def summarize_Warp(talents: Iterable[Talent]) -> str:
     title = "Warp"
 
     duration = calculate_bonus(talents, (Modifier.WARP_DURATION, ))
+    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     dps = {1: 6, 2: 8, 3: 10}[level]
     sunder = {1: 0.50, 2: 0.60, 3: 0.75}[level]
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1.00 - bio_haste)
 
     acc_cost = 0.80
 

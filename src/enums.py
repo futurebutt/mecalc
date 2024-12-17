@@ -6,6 +6,8 @@ class Modifier(Enum):
     ASSAULT_RIFLE_DAMAGE    = auto()
     BARRIER_DURATION        = auto()
     BARRIER_SHIELDING       = auto()
+    BIOTIC_HASTE            = auto()
+    BIOTIC_PROTECTION       = auto()
     FIRST_AID_HASTE         = auto()
     FIRST_AID_HEALING       = auto()
     HEALTH                  = auto()

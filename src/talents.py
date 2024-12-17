@@ -45,7 +45,10 @@ class Talent:
 class Adept(Talent):
 
     name = "Adept"
-    modifier_table = {}
+    modifier_table = {
+        Modifier.BIOTIC_HASTE: {1: 0.04, 2: 0.06, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14},
+        Modifier.BIOTIC_PROTECTION: {1: 0.06, 2: 0.09, 3: 0.12, 4: 0.15, 5: 0.18, 6: 0.21},
+    }
 
 
 class AdeptBastion(Adept):
