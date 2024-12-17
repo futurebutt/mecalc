@@ -41,6 +41,7 @@ class MainWidget(QWidget):
             sm.summarize_Sabotage,
             sm.summarize_Overload,
             sm.summarize_AI_Hacking,
+            sm.summarize_Damping,
             sm.summarize_Mako,
         ):
             summary = summarize(talents)

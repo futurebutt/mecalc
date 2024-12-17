@@ -207,6 +207,33 @@ def summarize_Carnage(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Damping(talents: Iterable[Talent]) -> str:
+    
+    level = get_ability_level(talents, AbilityLevel.DAMPING)
+    if level == 0:
+        return ""
+
+    title = "Damping"
+    tech_mine_damage = {1: 50, 2: 100, 3: 100}[level]
+    tech_mine_damage *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, )))
+    stun_duration = 3
+    radius = {1: 6, 2: 8, 3: 10}[level]
+    radius *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, )))
+    recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1 - calculate_bonus(talents, (Modifier.TECH_MINE_HASTE, )))
+    accuracy_cost = 0.60
+
+    summary = summarize(
+        format_ability_title(title, level),
+        f"Tech Mine Damage {truncate(tech_mine_damage)}",
+        f"Stun {stun_duration} sec",
+        format_radius(radius),
+        format_recharge(recharge),
+        format_accuracy_cost(accuracy_cost),
+    )
+    return summary
+
+
 def summarize_First_Aid(talents: Iterable[Talent]) -> str:
 
     title = "First Aid"
@@ -370,9 +397,11 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
     tech_mine_damage *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, )))
     shield_damage = {1: 200, 2: 400, 3: 600}[level]
     radius = {1: 6, 2: 8, 3: 10}[level]
+    radius *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, )))
     sunder = {1: 0.20, 2: 0.25, 3: 0.30}[level]
     duration = 10
     recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1 - calculate_bonus(talents, (Modifier.TECH_MINE_HASTE, )))
     accuracy_cost = 0.60
 
     summary = summarize(
@@ -414,9 +443,11 @@ def summarize_Sabotage(talents: Iterable[Talent]) -> str:
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
     tech_mine_damage *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, )))
     radius = {1: 6, 2: 8, 3: 10}[level]
+    radius *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, )))
     burn_dps = {1: 2, 2: 3, 3: 4}[level]
     duration = {1: 15, 2: 20, 3: 25}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
+    recharge *= (1 - calculate_bonus(talents, (Modifier.TECH_MINE_HASTE, )))
     accuracy_cost = 0.60
 
     summary = summarize(
@@ -444,8 +475,8 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
     summary = summarize(
         title,
         format_health_bonus(hp),
-        f"Shields + {shields}",
-        f"Health Regen {truncate(health_regen)}/sec" if health_regen else "",
+        f"Shields + {truncate(shields)}",
+        f"Health Regen {truncate(health_regen)} per sec" if health_regen else "",
         f"Melee Damage + {truncate(melee * 100)}%" if melee else "",
     )
     return summary

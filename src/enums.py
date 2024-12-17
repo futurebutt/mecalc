@@ -24,6 +24,7 @@ class Modifier(Enum):
     SNIPER_RIFLE_DAMAGE     = auto()
     TECH_MINE_DAMAGE        = auto()
     TECH_MINE_HASTE         = auto()
+    TECH_MINE_RADIUS        = auto()
     WEAPON_DAMAGE           = auto()
 
 
@@ -32,6 +33,7 @@ class AbilityLevel(Enum):
     AI_HACKING          = auto()
     ASSASSINATION       = auto()
     CARNAGE             = auto()
+    DAMPING             = auto()
     IMMUNITY            = auto()
     MARKSMAN            = auto()
     OVERKILL            = auto()

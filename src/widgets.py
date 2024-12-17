@@ -356,6 +356,7 @@ class TalentTree(QWidget):
         self.add_talent_bar(tl.Decryption(0))
         self.add_talent_bar(tl.Electronics(0))
         self.add_talent_bar(tl.Hacking(0))
+        self.add_talent_bar(tl.Damping(0))
     
     def get_talents(self):
         return [bar.talent for bar in self.findChildren(TalentBar)]

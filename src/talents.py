@@ -90,6 +90,17 @@ class CombatArmor(Talent):
     }
 
 
+class Damping(Talent):
+
+    name = "Damping"
+    ability_table = {
+        AbilityLevel.DAMPING: {1: 1, 6: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.TECH_MINE_RADIUS: {2: 0.10, 3: 0.14, 4: 0.18, 5: 0.20, 7: 0.22, 8: 0.24, 9: 0.26, 10: 0.28, 11: 0.30},
+    }
+
+
 class Decryption(Talent):
     
     name = "Decryption"
