@@ -42,6 +42,26 @@ class Talent:
         return self.ability_levels
     
 
+class Adept(Talent):
+
+    name = "Adept"
+    modifier_table = {}
+
+
+class AdeptBastion(Adept):
+
+    name = "Bastion"
+    ability_table = {}
+    modifier_table = {}
+
+
+class AdeptNemesis(Adept):
+
+    name = "Nemesis"
+    ability_table = {}
+    modifier_table = {}
+
+
 class AssaultRifles(Talent):
 
     name = "Assault Rifles"
@@ -90,6 +110,12 @@ class BasicArmor(Talent):
     }
 
 
+class Charm(Talent):
+
+    name = "Charm"
+    modifier_table = {}
+
+
 class CombatArmor(Talent):
 
     name = "Combat Armor"
@@ -136,6 +162,26 @@ class Electronics(Talent):
     }
 
 
+class Engineer(Talent):
+
+    name = "Engineer"
+    modifier_table = {}
+
+
+class EngineerMedic(Engineer):
+
+    name = "Medic"
+    ability_table = {}
+    modifier_table = {}
+
+
+class EngineerOperative(Engineer):
+
+    name = "Operative"
+    ability_table = {}
+    modifier_table = {}
+
+
 class FirstAid(Talent):
     
     name = "First Aid"
@@ -164,6 +210,32 @@ class Hacking(Talent):
     modifier_table = {
         Modifier.TECH_MINE_HASTE: {2: 0.06, 3: 0.09, 4: 0.12, 5: 0.15, 6: 0.18, 8: 0.21, 9: 0.24, 10: 0.27, 11: 0.30},
     }
+
+
+class Infiltrator(Talent):
+
+    name = "Infiltrator"
+    modifier_table = {}
+
+
+class InfiltratorCommando(Infiltrator):
+
+    name = "Commando"
+    ability_table = {}
+    modifier_table = {}
+
+
+class InfiltratorOperative(Infiltrator):
+
+    name = "Operative"
+    ability_table = {}
+    modifier_table = {}
+
+
+class Intimidate(Talent):
+
+    name = "Intimidate"
+    modifier_table = {}
 
 
 class Lift(Talent):
@@ -198,6 +270,26 @@ class Medicine(Talent):
     modifier_table = {
         Modifier.FIRST_AID_HASTE: {2: 0.10, 3: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 8: 0.24, 9: 0.26, 10: 0.28, 11: 0.30},
     }
+
+
+class Sentinel(Talent):
+
+    name = "Sentinel"
+    modifier_table = {}
+
+
+class SentinelBastion(Sentinel):
+
+    name = "Bastion"
+    ability_table = {}
+    modifier_table = {}
+
+
+class SentinelMedic(Sentinel):
+
+    name = "Medic"
+    ability_table = {}
+    modifier_table = {}
 
 
 class Shotguns(Talent):
@@ -245,6 +337,13 @@ class SoldierCommando(Soldier):
     }
 
 
+class SoldierShockTrooper(Soldier):
+
+    name = "Shock Trooper"
+    ability_table = {}
+    modifier_table = {}
+
+
 class SniperRifles(Talent):
 
     name = "Sniper Rifles"
@@ -255,6 +354,13 @@ class SniperRifles(Talent):
         Modifier.SNIPER_RIFLE_ACCURACY: {1: 0.10, 2: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
         Modifier.SNIPER_RIFLE_DAMAGE:   {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20,},
     }
+
+
+class SpectreTraining(Talent):
+
+    name = "Spectre Training"
+    ability_table = {}
+    modifier_table = {}
 
 
 class Stasis(Talent):
@@ -289,6 +395,26 @@ class Throw(Talent):
     modifier_table = {
         Modifier.THROW_FORCE: {1: 600, 2: 650, 3: 700, 4: 750, 5: 800, 6: 850, 7: 900, 8: 1000, 9: 1050, 10: 1100, 11: 1150, 12: 1250},
     }
+
+
+class Vanguard(Talent):
+
+    name = "Vanguard"
+    modifier_table = {}
+
+
+class VanguardNemesis(Talent):
+
+    name = "Nemesis"
+    ability_table = {}
+    modifier_table = {}
+
+
+class VanguardShockTrooper(Talent):
+
+    name = "Shock Trooper"
+    ability_table = {}
+    modifier_table = {}
 
 
 class Warp(Talent):
