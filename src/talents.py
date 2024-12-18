@@ -246,21 +246,37 @@ class Hacking(Talent):
 class Infiltrator(Talent):
 
     name = "Infiltrator"
-    modifier_table = {}
+    modifier_table = {
+        Modifier.PISTOL_COOLING:       {1: 0.05, 2: 0.06, 3: 0.07, 4: 0.08, 5: 0.09, 6: 0.10},
+        Modifier.SNIPER_RIFLE_COOLING: {1: 0.05, 2: 0.06, 3: 0.07, 4: 0.08, 5: 0.09, 6: 0.10},
+        Modifier.TECH_MINE_DAMAGE: {1: 0.05, 2: 0.07, 3: 0.09, 4: 0.11, 5: 0.13, 6: 0.15},
+    }
 
 
 class InfiltratorCommando(Infiltrator):
 
     name = "Commando"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        Specialization.IMMUNITY: {9: True},
+        Specialization.ASSASSINATION: {12: True},
+    }
+    modifier_table = {
+        **Infiltrator.modifier_table,
+        Modifier.WEAPON_DAMAGE: {7: 0.06, 8: 0.09, 9: 0.12, 10: 0.15, 11: 0.18, 12: 0.21},
+    }
 
 
 class InfiltratorOperative(Infiltrator):
 
     name = "Operative"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        Specialization.OVERLOAD: {9: True},
+        Specialization.SABOTAGE: {12: True},
+    }
+    modifier_table = {
+        **Infiltrator.modifier_table,
+        Modifier.TECH_HASTE: {7: 0.04, 8: 0.06, 9: 0.08, 10: 0.10, 11: 0.12, 12: 0.14},
+    }
 
 
 class Intimidate(Talent):

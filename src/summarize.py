@@ -544,13 +544,15 @@ def summarize_Pistol(talents: Iterable[Talent]) -> str:
     title = "Pistol"
     damage = calculate_bonus(talents, (Modifier.PISTOL_DAMAGE, Modifier.WEAPON_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.PISTOL_ACCURACY, ))
-    if damage == accuracy == 0:
+    cooling = calculate_bonus(talents, (Modifier.PISTOL_COOLING, ))
+    if damage == accuracy == cooling == 0:
         return ""
 
     summary = summarize(
         title,
         format_damage_bonus(damage),
-        format_accuracy_bonus(accuracy)
+        format_accuracy_bonus(accuracy),
+        f"Cooling + {truncate(cooling * 100)}%" if cooling else "",
     )
     return summary
 
@@ -688,16 +690,18 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
 
 def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
 
-    title = "Sniper Rifle"
+    title = "Sniper Rifles"
     damage = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_ACCURACY, ))
-    if damage == accuracy == 0:
+    cooling = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_COOLING, ))
+    if damage == accuracy == cooling == 0:
         return ""
 
     summary = summarize(
         title,
         format_damage_bonus(damage),
-        format_accuracy_bonus(accuracy)
+        format_accuracy_bonus(accuracy),
+        f"Cooling + {truncate(cooling * 100)}%" if cooling else "",
     )
     return summary
 
