@@ -378,6 +378,7 @@ class TalentTree(QWidget):
         self.add_talent_bar(tl.Warp(0))
         # self.add_talent_bar(tl.Vanguard(0))
         self.add_talent_bar(tl.VanguardNemesis(0))
+        self.add_talent_bar(tl.SpectreTraining(0))
         # self.add_talent_bar(tl.VanguardShockTrooper(0))
     
     def get_talents(self):

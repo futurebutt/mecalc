@@ -2,6 +2,9 @@ from enum import auto, Enum
 
 
 class Modifier(Enum):
+    ACCURACY_REGEN          = auto()
+    ALL_DAMAGE              = auto()
+    ALL_DURATION            = auto()
     ASSAULT_RIFLE_ACCURACY  = auto()
     ASSAULT_RIFLE_DAMAGE    = auto()
     BARRIER_DURATION        = auto()
@@ -20,6 +23,7 @@ class Modifier(Enum):
     LIFT_DURATION           = auto()
     LIGHT_ARMOR_DR          = auto()
     LIGHT_ARMOR_HARDENING   = auto()
+    MAX_ACCURACY            = auto()
     MED_ARMOR_DR            = auto()
     MED_ARMOR_HARDENING     = auto()
     MEDIC_HASTE             = auto()
@@ -66,6 +70,7 @@ class AbilityLevel(Enum):
     SINGULARITY         = auto()
     STASIS              = auto()
     THROW               = auto()
+    UNITY               = auto()
     WARP                = auto()
 
 

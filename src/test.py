@@ -49,6 +49,7 @@ class MainWidget(QWidget):
             sm.summarize_Stasis,
             sm.summarize_Throw,
             sm.summarize_Warp,
+            sm.summarize_Unity,
             sm.summarize_Mako,
         ):
             summary = summarize(talents)

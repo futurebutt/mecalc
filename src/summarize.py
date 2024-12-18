@@ -139,8 +139,9 @@ def summarize_AI_Hacking(talents: Iterable[Talent]) -> str:
     title = "AI Hacking"
 
     haste = calculate_bonus(talents, (Modifier.TECH_HASTE, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
 
-    duration = {1: 20, 2: 25, 3: 30}[level]
+    duration = {1: 20, 2: 25, 3: 30}[level] * (1 + duration_bonus)
     recharge = {1: 60, 2: 50, 3: 40}[level]
     recharge *= (1.00 - haste)
 
@@ -182,7 +183,7 @@ def summarize_Assassination(talents: Iterable[Talent]) -> str:
 def summarize_Assault_Rifle(talents: Iterable[Talent]) -> str:
 
     title = "Assault Rifles"
-    damage = calculate_bonus(talents, (Modifier.ASSAULT_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.ASSAULT_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE, Modifier.ALL_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.ASSAULT_RIFLE_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
@@ -204,21 +205,24 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
     title = "Barrier"
 
     duration = calculate_bonus(talents, (Modifier.BARRIER_DURATION, ))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
-    duration *= (1.00 + duration_bonus)
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
     strength = calculate_bonus(talents, (Modifier.BARRIER_SHIELDING, ))
+    strength_bonus = 0
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    recharge *= (1.00 - haste)
 
     acc_cost = 0.80
     regen = 0
 
     if specialized := get_ability_specialization(talents, Specialization.BARRIER):
-        duration *= 1.25
-        strength *= 1.25
+        duration_bonus += 0.25
+        strength_bonus += 0.25
         regen = 40
+
+    duration *= (1.00 + duration_bonus)
+    strength *= (1.00 + strength_bonus)
+    recharge *= (1.00 - haste)
 
     summary = summarize(
         format_ability_title(title, level),
@@ -241,7 +245,7 @@ def summarize_Carnage(talents: Iterable[Talent]) -> str:
     title = "Carnage"
     percent_dps = {1: 2.00, 2: 2.25, 3: 2.50}[rank]
     radius = {1: 2, 2: 2.5, 3: 3}[rank]
-    duration = 6
+    duration = 6 + calculate_bonus(talents, (Modifier.ALL_DURATION, ))
     recharge = 45
 
     summary = summarize(
@@ -262,8 +266,8 @@ def summarize_Damping(talents: Iterable[Talent]) -> str:
 
     title = "Damping"
     tech_mine_damage = {1: 50, 2: 100, 3: 100}[level]
-    tech_mine_damage *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, )))
-    stun_duration = 3
+    tech_mine_damage *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, Modifier.ALL_DAMAGE)))
+    stun_duration = 3 * (1 + calculate_bonus(talents, (Modifier.ALL_DURATION, )))
     radius = {1: 6, 2: 8, 3: 10}[level]
     radius *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, )))
     recharge = {1: 60, 2: 50, 3: 40}[level]
@@ -328,7 +332,7 @@ def summarize_Immunity(talents: Iterable[Talent]) -> str:
 
     title = "Immunity"
     damage_reduction_mult = {1: 0.75, 2: 0.85, 3: 0.90}[level]
-    duration = 6
+    duration = 6 * (1 + calculate_bonus(talents, (Modifier.ALL_DURATION, )))
     recharge = 45
 
     if specialized := get_ability_specialization(talents, Specialization.IMMUNITY):
@@ -356,7 +360,7 @@ def summarize_Lift(talents: Iterable[Talent]) -> str:
     # TODO: This highlights need to distinguish ability base values from bonuses:
     # ----
     duration = calculate_bonus(talents, (Modifier.LIFT_DURATION,))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
     duration *= (1.00 + duration_bonus)
     # ----
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
@@ -465,14 +469,19 @@ def summarize_Neural_Shock(talents: Iterable[Talent]) -> str:
     haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.MEDIC_HASTE, Modifier.SENTINEL_HASTE))
 
     toxic_damage = {1: 40, 2: 80, 3: 120}[level]
+    toxic_damage_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
     knockout = {1: 1, 2: 3, 3: 5}[level]
+    knockout_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
 
     recharge = 45 * (1.00 - haste)
     acc_cost = 0.60
 
     if specialized := get_ability_specialization(talents, Specialization.NEURAL_SHOCK):
         toxic_damage += 40
-        knockout *= 1.25
+        knockout_bonus += 0.25
+
+    toxic_damage *= (1 + toxic_damage_bonus)
+    knockout *= (1 + knockout_bonus)
 
     summary = summarize(
         format_ability_title(title, level),
@@ -492,14 +501,14 @@ def summarize_Overkill(talents: Iterable[Talent]) -> str:
         return ""
 
     title = "Overkill"
-    heat_reduction = {1: 0.80, 2: 0.90, 3: 1.00}[level]
+    cooling = {1: 0.80, 2: 0.90, 3: 1.00}[level]
     damage = {1: 0.50, 2: 0.75, 3: 1.00}[level]
-    duration = 6
+    duration = 6 * (1 + calculate_bonus(talents, (Modifier.ALL_DURATION, )))
     recharge = 45
 
     summary = summarize(
         format_ability_title(title, level),
-        f"Reduced Heat {truncate(heat_reduction * 100)}%",
+        f"Cooling {truncate(cooling * 100)}%",
         format_damage_bonus(damage),
         format_duration(duration),
         format_recharge(recharge),
@@ -514,16 +523,20 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
         return ""
 
     title = "Overload"
+
+    tmd_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, Modifier.ALL_DAMAGE))
+    sd_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
+    radius_bonus = 1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, ))
+    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.TECH_MINE_HASTE, Modifier.SENTINEL_HASTE))
+
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
-    tech_mine_damage *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, )))
     shield_damage = {1: 200, 2: 400, 3: 600}[level]
     radius = {1: 6, 2: 8, 3: 10}[level]
-    radius *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, )))
     sunder = {1: 0.20, 2: 0.25, 3: 0.30}[level]
-    duration = 10
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.TECH_MINE_HASTE, Modifier.SENTINEL_HASTE))
-    recharge *= (1.00 - haste)
+
+    duration = 10
     accuracy_cost = 0.60
 
     if specialized := get_ability_specialization(talents, Specialization.OVERLOAD):
@@ -531,6 +544,12 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
         tech_mine_damage += 50
         shield_damage += 200
         sunder += 0.05
+
+    tech_mine_damage *= (1.00 + tmd_bonus)
+    shield_damage *= (1.00 + sd_bonus)
+    duration *= (1.00 + duration_bonus)
+    radius *= (1.00 + radius_bonus)
+    recharge *= (1.00 - haste)
 
     summary = summarize(
         format_ability_title(title, level),
@@ -549,7 +568,7 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
 def summarize_Pistol(talents: Iterable[Talent]) -> str:
 
     title = "Pistol"
-    damage = calculate_bonus(talents, (Modifier.PISTOL_DAMAGE, Modifier.WEAPON_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.PISTOL_DAMAGE, Modifier.WEAPON_DAMAGE, Modifier.ALL_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.PISTOL_ACCURACY, ))
     cooling = calculate_bonus(talents, (Modifier.PISTOL_COOLING, ))
     if damage == accuracy == cooling == 0:
@@ -571,23 +590,32 @@ def summarize_Sabotage(talents: Iterable[Talent]) -> str:
         return ""
 
     title = "Sabotage"
+
+    tmd_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, Modifier.ALL_DAMAGE))
+    dps_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE))
+    radius_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
+    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.TECH_MINE_HASTE, Modifier.SENTINEL_HASTE))
+
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
-    tech_mine_damage *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, )))
     radius = {1: 6, 2: 8, 3: 10}[level]
-    radius *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, )))
     burn_dps = {1: 2, 2: 3, 3: 4}[level]
     duration = {1: 15, 2: 20, 3: 25}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.TECH_MINE_HASTE, Modifier.SENTINEL_HASTE))
-    recharge *= (1.00 - haste)
-    accuracy_cost = 0.60
 
+    accuracy_cost = 0.60
 
     if specialized := get_ability_specialization(talents, Specialization.SABOTAGE):
         radius += 2
         tech_mine_damage += 50
         burn_dps += 1
         duration += 5
+
+    tech_mine_damage *= (1.00 + tmd_bonus)
+    burn_dps *= (1.00 + dps_bonus)
+    radius *= (1.00 + radius_bonus)
+    duration *= (1.00 + duration_bonus)
+    recharge *= (1.00 - haste)
 
     summary = summarize(
         format_ability_title(title, level),
@@ -607,8 +635,10 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
     title = "Shepard"
 
     hp = calculate_bonus(talents, (Modifier.HEALTH, ))
+    max_acc = calculate_bonus(talents, (Modifier.MAX_ACCURACY, ))
+    acc_regen = calculate_bonus(talents, (Modifier.ACCURACY_REGEN, ))
     health_regen = calculate_bonus(talents, (Modifier.HEALTH_REGEN, ))
-    melee = calculate_bonus(talents, (Modifier.MELEE_DAMAGE, ))
+    melee = calculate_bonus(talents, (Modifier.MELEE_DAMAGE, Modifier.ALL_DAMAGE))
     shields = calculate_bonus(talents, (Modifier.SHIELD_CAPACITY, ))
     bio_prot = calculate_bonus(talents, (Modifier.BIOTIC_PROTECTION, ))
     tech_prot = calculate_bonus(talents, (Modifier.TECH_PROTECTION, ))
@@ -624,6 +654,8 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
         f"Biotic Protection + {truncate(bio_prot * 100)}%" if bio_prot else "",
         f"Health Regen {truncate(health_regen)} per sec" if health_regen else "",
         f"Melee Damage + {truncate(melee * 100)}%" if melee else "",
+        f"Max Accuracy + {truncate(max_acc)}%" if max_acc else "",
+        f"Accuracy Regen + {truncate(acc_regen)}%" if acc_regen else "",
     )
     return summary
 
@@ -653,7 +685,7 @@ def summarize_Shield_Boost(talents: Iterable[Talent]) -> str:
 def summarize_Shotgun(talents: Iterable[Talent]) -> str:
 
     title = "Shotgun"
-    damage = calculate_bonus(talents, (Modifier.SHOTGUN_DAMAGE, Modifier.WEAPON_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.SHOTGUN_DAMAGE, Modifier.WEAPON_DAMAGE, Modifier.ALL_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.SHOTGUN_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
@@ -676,10 +708,10 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
 
     radius = calculate_bonus(talents, (Modifier.SINGULARITY_RADIUS, ))
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
-    nemesis_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
 
     duration = {1: 4, 2: 6, 3: 8}[level]
-    duration *= (1.00 + nemesis_bonus)
+    duration *= (1.00 + duration_bonus)
     recharge = {1: 60, 2: 50, 3: 40}[level]
     recharge *= (1.00 - haste)
 
@@ -698,7 +730,7 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
 def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
 
     title = "Sniper Rifles"
-    damage = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE, Modifier.ALL_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_ACCURACY, ))
     cooling = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_COOLING, ))
     if damage == accuracy == cooling == 0:
@@ -722,7 +754,7 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
     title = "Stasis"
 
     duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, ))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
     duration *= (1.00 + duration_bonus)
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
@@ -755,7 +787,7 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
     force = calculate_bonus(talents, (Modifier.THROW_FORCE, ))
     force_bonus = calculate_bonus(talents, ( Modifier.NEMESIS_BONUS, ))
     force *= (1.00 + force_bonus)
-    damage = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    damage = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DAMAGE))
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
@@ -774,6 +806,28 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
     return summary
 
 
+def summarize_Unity(talents: Iterable[Talent]) -> str:
+
+    level = get_ability_level(talents, AbilityLevel.UNITY)
+    if level == 0:
+        return ""
+
+    title = "Unity"
+    health = {1: 0.15, 2: 0.20, 3: 0.30}[level]
+    shields = {1: 0.40, 2: 0.60, 3: 1.00}[level]
+    recharge = {1: 150, 2: 120, 3: 90}[level]
+    acc_cost = 0.45
+
+    summary = summarize(
+        format_ability_title(title, level),
+        f"Health {truncate(health * 100)}%",
+        f"Shields {truncate(shields * 100)}%",
+        format_recharge(recharge),
+        format_accuracy_cost(acc_cost),
+    )
+    return summary
+
+
 def summarize_Warp(talents: Iterable[Talent]) -> str:
 
     level = get_ability_level(talents, AbilityLevel.WARP)
@@ -782,22 +836,25 @@ def summarize_Warp(talents: Iterable[Talent]) -> str:
 
     title = "Warp"
 
-    duration = calculate_bonus(talents, (Modifier.WARP_DURATION, ))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
-    duration *= (1 + duration_bonus)
-    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
-
     dps = {1: 6, 2: 8, 3: 10}[level]
     sunder = {1: 0.50, 2: 0.60, 3: 0.75}[level]
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    recharge *= (1.00 - haste)
-    
-    if specialized := get_ability_specialization(talents, Specialization.WARP):
-        radius += 2
-        dps *= 1.25
 
     acc_cost = 0.80
+
+    duration = calculate_bonus(talents, (Modifier.WARP_DURATION, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
+    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
+    dps_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
+
+    if specialized := get_ability_specialization(talents, Specialization.WARP):
+        radius += 2
+        dps_bonus += 0.25
+
+    dps *= (1 + dps_bonus)
+    duration *= (1 + duration_bonus)
+    recharge *= (1.00 - haste)
 
     summary = summarize(
         format_ability_title(title, level),

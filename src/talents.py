@@ -436,8 +436,16 @@ class SniperRifles(Talent):
 class SpectreTraining(Talent):
 
     name = "Spectre Training"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        AbilityLevel.UNITY: {4: 1, 8: 2, 12: 3},
+    }
+    modifier_table = {
+        Modifier.ACCURACY_REGEN: {1: 0.004, 2: 0.006, 3: 0.008, 5: 0.01, 6: 0.012, 7: 0.014, 9: 0.016, 10: 0.018, 11: 0.02},
+        Modifier.ALL_DAMAGE:   {1: 0.01, 2: 0.015, 3: 0.02, 5: 0.025, 6: 0.03, 7: 0.035, 9: 0.04, 10: 0.045, 11: 0.05},
+        Modifier.ALL_DURATION: {1: 0.01, 2: 0.015, 3: 0.02, 5: 0.025, 6: 0.03, 7: 0.035, 9: 0.04, 10: 0.045, 11: 0.05},
+        Modifier.HEALTH: {1: 0.05, 2: 0.055, 3: 0.06, 5: 0.065, 6: 0.07, 7: 0.075, 9: 0.08, 10: 0.085, 11: 0.09},
+        Modifier.MAX_ACCURACY: {1: 0.02, 2: 0.03, 3: 0.04, 5: 0.05, 6: 0.06, 7: 0.07, 9: 0.08, 10: 0.09, 11: 0.10},
+    }
 
 
 class Stasis(Talent):
