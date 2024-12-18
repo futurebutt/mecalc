@@ -203,7 +203,9 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
 
     title = "Barrier"
 
-    duration = calculate_bonus(talents, (Modifier.BARRIER_DURATION, Modifier.NEMESIS_BONUS))
+    duration = calculate_bonus(talents, (Modifier.BARRIER_DURATION, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    duration *= (1.00 + duration_bonus)
     strength = calculate_bonus(talents, (Modifier.BARRIER_SHIELDING, ))
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
@@ -351,7 +353,12 @@ def summarize_Lift(talents: Iterable[Talent]) -> str:
 
     title = "Lift"
 
-    duration = calculate_bonus(talents, (Modifier.LIFT_DURATION, Modifier.NEMESIS_BONUS))
+    # TODO: This highlights need to distinguish ability base values from bonuses:
+    # ----
+    duration = calculate_bonus(talents, (Modifier.LIFT_DURATION,))
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    duration *= (1.00 + duration_bonus)
+    # ----
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
@@ -550,8 +557,8 @@ def summarize_Pistol(talents: Iterable[Talent]) -> str:
 
     summary = summarize(
         title,
-        format_damage_bonus(damage),
-        format_accuracy_bonus(accuracy),
+        format_damage_bonus(truncate(damage)),
+        format_accuracy_bonus(truncate(accuracy)),
         f"Cooling + {truncate(cooling * 100)}%" if cooling else "",
     )
     return summary
@@ -653,8 +660,8 @@ def summarize_Shotgun(talents: Iterable[Talent]) -> str:
 
     summary = summarize(
         title,
-        format_damage_bonus(damage),
-        format_accuracy_bonus(accuracy)
+        format_damage_bonus(truncate(damage)),
+        format_accuracy_bonus(truncate(accuracy))
     )
     return summary
 
@@ -672,7 +679,7 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
     nemesis_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
 
     duration = {1: 4, 2: 6, 3: 8}[level]
-    duration += nemesis_bonus
+    duration *= (1.00 + nemesis_bonus)
     recharge = {1: 60, 2: 50, 3: 40}[level]
     recharge *= (1.00 - haste)
 
@@ -714,7 +721,9 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
 
     title = "Stasis"
 
-    duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, Modifier.NEMESIS_BONUS))
+    duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    duration *= (1.00 + duration_bonus)
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
@@ -743,7 +752,9 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
 
     title = "Throw"
 
-    force = calculate_bonus(talents, (Modifier.THROW_FORCE, Modifier.NEMESIS_BONUS))
+    force = calculate_bonus(talents, (Modifier.THROW_FORCE, ))
+    force_bonus = calculate_bonus(talents, ( Modifier.NEMESIS_BONUS, ))
+    force *= (1.00 + force_bonus)
     damage = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
@@ -754,7 +765,7 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
 
     summary = summarize(
         format_ability_title(title, level),
-        f"Force {force}N",
+        f"Force {truncate(force)}N",
         format_damage_bonus(damage),
         format_radius(radius),
         format_recharge(recharge),
@@ -771,7 +782,9 @@ def summarize_Warp(talents: Iterable[Talent]) -> str:
 
     title = "Warp"
 
-    duration = calculate_bonus(talents, (Modifier.WARP_DURATION, Modifier.NEMESIS_BONUS))
+    duration = calculate_bonus(talents, (Modifier.WARP_DURATION, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    duration *= (1 + duration_bonus)
     haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     dps = {1: 6, 2: 8, 3: 10}[level]

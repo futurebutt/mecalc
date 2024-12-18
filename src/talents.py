@@ -477,21 +477,38 @@ class Throw(Talent):
 class Vanguard(Talent):
 
     name = "Vanguard"
-    modifier_table = {}
+    modifier_table = {
+        Modifier.BIOTIC_PROTECTION: {1: 0.06, 2: 0.09, 3: 0.12, 4: 0.15, 5: 0.18, 6: 0.21},
+        Modifier.PISTOL_DAMAGE:  {1: 0.05, 2: 0.06, 3: 0.07, 4: 0.08, 5: 0.09, 6: 0.10},
+        Modifier.SHOTGUN_DAMAGE: {1: 0.05, 2: 0.06, 3: 0.07, 4: 0.08, 5: 0.09, 6: 0.10},
+    }
 
 
-class VanguardNemesis(Talent):
+class VanguardNemesis(Vanguard):
 
     name = "Nemesis"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        Specialization.WARP: {9: True},
+        Specialization.LIFT: {12: True},
+    }
+    modifier_table = {
+        **Vanguard.modifier_table,
+        Modifier.NEMESIS_BONUS: {7: 0.04, 8: 0.06, 9: 0.08, 10: 0.10, 11: 0.12, 12: 0.14},
+    }
 
 
-class VanguardShockTrooper(Talent):
+class VanguardShockTrooper(Vanguard):
 
     name = "Shock Trooper"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        Specialization.BARRIER: {9: True},
+        Specialization.ADRENALINE_BURST: {12: True},
+    }
+    modifier_table = {
+        **Vanguard.modifier_table,
+        Modifier.HEALTH: {7: 0.04, 8: 0.06, 9: 0.08, 10: 0.10, 11: 0.12, 12: 0.14},
+        Modifier.DAMAGE_PROTECTION: {7: 0.06, 8: 0.08, 9: 0.10, 10: 0.12, 11: 0.14, 12: 0.16},
+    }
 
 
 class Warp(Talent):
