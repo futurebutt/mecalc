@@ -203,7 +203,7 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
 
     title = "Barrier"
 
-    duration = calculate_bonus(talents, (Modifier.BARRIER_DURATION, ))
+    duration = calculate_bonus(talents, (Modifier.BARRIER_DURATION, Modifier.NEMESIS_BONUS))
     strength = calculate_bonus(talents, (Modifier.BARRIER_SHIELDING, ))
     bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
@@ -345,16 +345,20 @@ def summarize_Lift(talents: Iterable[Talent]) -> str:
 
     title = "Lift"
 
-    duration = calculate_bonus(talents, (Modifier.LIFT_DURATION, ))
-    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
+    duration = calculate_bonus(talents, (Modifier.LIFT_DURATION, Modifier.NEMESIS_BONUS))
+    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    recharge *= (1.00 - bio_haste)
+    recharge *= (1.00 - haste)
     acc_cost = {1: 0.80, 2: 0.60, 3: 0.40}[level]
+
+    if specialized := get_ability_specialization(talents, AbilitySpec.LIFT):
+        radius += 4
 
     summary = summarize(
         format_ability_title(title, level),
+        "Lift Specialization" if specialized else "",
         format_duration(duration),
         format_radius(radius),
         format_recharge(recharge),
@@ -636,11 +640,13 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
     title = "Singularity"
 
     radius = calculate_bonus(talents, (Modifier.SINGULARITY_RADIUS, ))
-    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
+    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
+    nemesis_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
 
     duration = {1: 4, 2: 6, 3: 8}[level]
+    duration += nemesis_bonus
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    recharge *= (1.00 - bio_haste)
+    recharge *= (1.00 - haste)
 
     acc_cost = 0.80
 
@@ -678,7 +684,7 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
 
     title = "Stasis"
 
-    duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, ))
+    duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, Modifier.NEMESIS_BONUS))
     bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
@@ -686,8 +692,12 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
 
     acc_cost = 0.80
 
+    specialized = get_ability_specialization(talents, AbilitySpec.STASIS)
+
     summary = summarize(
         format_ability_title(title, level),
+        "Stasis Specialization:" if specialized else "",
+        "    Damage enemies in Stasis" if specialized else "",
         format_duration(duration),
         format_recharge(recharge),
         format_accuracy_cost(acc_cost),
@@ -703,17 +713,19 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
 
     title = "Throw"
 
-    force = calculate_bonus(talents, (Modifier.THROW_FORCE, ))
-    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
+    force = calculate_bonus(talents, (Modifier.THROW_FORCE, Modifier.NEMESIS_BONUS))
+    damage = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    recharge *= (1.00 - bio_haste)
+    recharge *= (1.00 - haste)
     acc_cost = {1: 0.60, 2: 0.45, 3: 0.30}[level]
 
     summary = summarize(
         format_ability_title(title, level),
         f"Force {force}N",
+        format_damage_bonus(damage),
         format_radius(radius),
         format_recharge(recharge),
         format_accuracy_cost(acc_cost),
@@ -729,19 +741,24 @@ def summarize_Warp(talents: Iterable[Talent]) -> str:
 
     title = "Warp"
 
-    duration = calculate_bonus(talents, (Modifier.WARP_DURATION, ))
-    bio_haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
+    duration = calculate_bonus(talents, (Modifier.WARP_DURATION, Modifier.NEMESIS_BONUS))
+    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
 
     dps = {1: 6, 2: 8, 3: 10}[level]
     sunder = {1: 0.50, 2: 0.60, 3: 0.75}[level]
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    recharge *= (1.00 - bio_haste)
+    recharge *= (1.00 - haste)
+    
+    if specialized := get_ability_specialization(talents, AbilitySpec.WARP):
+        radius += 2
+        dps *= 1.25
 
     acc_cost = 0.80
 
     summary = summarize(
         format_ability_title(title, level),
+        "Warp Specialization" if specialized else "",
         f"DPS {dps}",
         f"Reduce Damage Protection {truncate(sunder * 100)}%",
         format_radius(radius),

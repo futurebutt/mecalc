@@ -54,15 +54,27 @@ class Adept(Talent):
 class AdeptBastion(Adept):
 
     name = "Bastion"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        AbilitySpec.BARRIER: {9: True},
+        AbilitySpec.STASIS: {12: True},
+    }
+    modifier_table = {
+        **Adept.modifier_table,
+        Modifier.BIOTIC_HASTE: {**Adept.modifier_table[Modifier.BIOTIC_HASTE], 7: 0.18, 8: 0.20, 9: 0.22, 10: 0.24, 11: 0.26, 12: 0.28},
+    }
 
 
 class AdeptNemesis(Adept):
 
     name = "Nemesis"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        AbilitySpec.WARP: {9: True},
+        AbilitySpec.LIFT: {12: True},
+    }
+    modifier_table = {
+        **Adept.modifier_table,
+        Modifier.NEMESIS_BONUS: {7: 0.04, 8: 0.06, 9: 0.08, 10: 0.10, 11: 0.12, 12: 0.14},
+    }
 
 
 class AssaultRifles(Talent):
