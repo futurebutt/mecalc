@@ -1,4 +1,4 @@
-from enums import AbilityLevel, AbilitySpec, Modifier
+from enums import AbilityLevel, Specialization, Modifier
 
 # Rank -> Value at Rank
 Lookup = dict[int, float]
@@ -55,8 +55,8 @@ class AdeptBastion(Adept):
 
     name = "Bastion"
     ability_table = {
-        AbilitySpec.BARRIER: {9: True},
-        AbilitySpec.STASIS: {12: True},
+        Specialization.BARRIER: {9: True},
+        Specialization.STASIS: {12: True},
     }
     modifier_table = {
         **Adept.modifier_table,
@@ -68,8 +68,8 @@ class AdeptNemesis(Adept):
 
     name = "Nemesis"
     ability_table = {
-        AbilitySpec.WARP: {9: True},
-        AbilitySpec.LIFT: {12: True},
+        Specialization.WARP: {9: True},
+        Specialization.LIFT: {12: True},
     }
     modifier_table = {
         **Adept.modifier_table,
@@ -189,15 +189,28 @@ class Engineer(Talent):
 class EngineerMedic(Engineer):
 
     name = "Medic"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        Specialization.NEURAL_SHOCK: {9: True},
+        Specialization.FIRST_AID: {12: True},
+    }
+    modifier_table = {
+        **Engineer.modifier_table,
+        Modifier.TECH_HASTE: {**Engineer.modifier_table[Modifier.TECH_HASTE], 7: 0.20},
+        Modifier.MEDIC_HASTE: {7: 0.20, 8: 0.23, 9: 0.26, 10: 0.29, 11: 0.32, 12: 0.35},
+    }
 
 
 class EngineerOperative(Engineer):
 
     name = "Operative"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        Specialization.OVERLOAD: {9: True},
+        Specialization.SABOTAGE: {12: True},
+    }
+    modifier_table = {
+        **Engineer.modifier_table,
+        Modifier.TECH_HASTE: {**Engineer.modifier_table[Modifier.TECH_HASTE], 7: 0.18, 8: 0.20, 9: 0.22, 10: 0.24, 11: 0.26, 12: 0.28},
+    }
 
 
 class FirstAid(Talent):
@@ -346,8 +359,8 @@ class SoldierCommando(Soldier):
 
     name = "Commando"
     ability_table = {
-        AbilitySpec.IMMUNITY: {9: True},
-        AbilitySpec.ASSASSINATION: {12: True},
+        Specialization.IMMUNITY: {9: True},
+        Specialization.ASSASSINATION: {12: True},
     }
     modifier_table = {
         **Soldier.modifier_table,
@@ -359,8 +372,8 @@ class SoldierShockTrooper(Soldier):
 
     name = "Shock Trooper"
     ability_table = {
-        AbilitySpec.IMMUNITY: {9: True},
-        AbilitySpec.ADRENALINE_BURST: {12: True},
+        Specialization.IMMUNITY: {9: True},
+        Specialization.ADRENALINE_BURST: {12: True},
     }
     modifier_table = {
         **Soldier.modifier_table,

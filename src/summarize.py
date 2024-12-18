@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 
-from enums import AbilityLevel, AbilitySpec, Modifier
+from enums import AbilityLevel, Specialization, Modifier
 from talents import Talent
 
 
@@ -21,7 +21,7 @@ def get_ability_level(talents: Iterable[Talent], dependency: AbilityLevel) -> in
     return rank
 
 
-def get_ability_specialization(talents: Iterable[Talent], dependency: AbilitySpec) -> bool:
+def get_ability_specialization(talents: Iterable[Talent], dependency: Specialization) -> bool:
     for talent in talents:
         abilities = talent.get_abilities()
         if abilities.get(dependency, False):
@@ -116,7 +116,7 @@ def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
     title = "Adrenaline Burst"
 
     recharge = {1: 120, 2: 90, 3: 45}[level]
-    if specialized := get_ability_specialization(talents, AbilitySpec.ADRENALINE_BURST):
+    if specialized := get_ability_specialization(talents, Specialization.ADRENALINE_BURST):
         recharge *= (1 - 0.25)
 
     accuracy_cost = 0.30
@@ -166,7 +166,7 @@ def summarize_Assassination(talents: Iterable[Talent]) -> str:
     duration = 6
     recharge = 45
 
-    if specialized := get_ability_specialization(talents, AbilitySpec.ASSASSINATION):
+    if specialized := get_ability_specialization(talents, Specialization.ASSASSINATION):
         recharge *= (1 - 0.25)
 
     summary = summarize(
@@ -213,7 +213,7 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
     acc_cost = 0.80
     regen = 0
 
-    if specialized := get_ability_specialization(talents, AbilitySpec.BARRIER):
+    if specialized := get_ability_specialization(talents, Specialization.BARRIER):
         duration *= 1.25
         strength *= 1.25
         regen = 40
@@ -285,11 +285,17 @@ def summarize_First_Aid(talents: Iterable[Talent]) -> str:
     title = "First Aid"
     # 40 = base heal
     healing = 40 + calculate_bonus(talents, (Modifier.FIRST_AID_HEALING, ))
-    haste = calculate_bonus(talents, (Modifier.FIRST_AID_HASTE, Modifier.TECH_HASTE))
+    haste = calculate_bonus(talents, (Modifier.FIRST_AID_HASTE, Modifier.TECH_HASTE, Modifier.MEDIC_HASTE))
     recharge = 20 * (1.00 - haste)
+
+    if specialized := get_ability_specialization(talents, Specialization.FIRST_AID):
+        healing += 80
 
     summary = summarize(
         title,
+        "First Aid Specialization:" if specialized else "",
+        "    Ignore toxic damage" if specialized else "",
+        "    Revive fallen party members" if specialized else "",
         f"Health Restored {truncate(healing)}",
         format_recharge(recharge),
     )
@@ -323,7 +329,7 @@ def summarize_Immunity(talents: Iterable[Talent]) -> str:
     duration = 6
     recharge = 45
 
-    if specialized := get_ability_specialization(talents, AbilitySpec.IMMUNITY):
+    if specialized := get_ability_specialization(talents, Specialization.IMMUNITY):
         recharge *= (1 - 0.25)
 
     summary = summarize(
@@ -353,7 +359,7 @@ def summarize_Lift(talents: Iterable[Talent]) -> str:
     recharge *= (1.00 - haste)
     acc_cost = {1: 0.80, 2: 0.60, 3: 0.40}[level]
 
-    if specialized := get_ability_specialization(talents, AbilitySpec.LIFT):
+    if specialized := get_ability_specialization(talents, Specialization.LIFT):
         radius += 4
 
     summary = summarize(
@@ -410,7 +416,7 @@ def summarize_Marksman(talents: Iterable[Talent]) -> str:
     duration = 6
     recharge = 45
 
-    if specialized := get_ability_specialization(talents, AbilitySpec.ASSASSINATION):
+    if specialized := get_ability_specialization(talents, Specialization.ASSASSINATION):
         recharge *= (1 - 0.25)
 
     summary = summarize(
@@ -449,7 +455,7 @@ def summarize_Neural_Shock(talents: Iterable[Talent]) -> str:
 
     title = "Neural Shock"
 
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, ))
+    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.MEDIC_HASTE))
 
     toxic_damage = {1: 40, 2: 80, 3: 120}[level]
     knockout = {1: 1, 2: 3, 3: 5}[level]
@@ -457,8 +463,13 @@ def summarize_Neural_Shock(talents: Iterable[Talent]) -> str:
     recharge = 45 * (1.00 - haste)
     acc_cost = 0.60
 
+    if specialized := get_ability_specialization(talents, Specialization.NEURAL_SHOCK):
+        toxic_damage += 40
+        knockout *= 1.25
+
     summary = summarize(
         format_ability_title(title, level),
+        "Neural Shock Specialization" if specialized else "",
         f"Toxic Damage {toxic_damage}",
         f"Knockout {knockout} sec",
         format_recharge(recharge),
@@ -508,8 +519,15 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
     recharge *= (1.00 - haste)
     accuracy_cost = 0.60
 
+    if specialized := get_ability_specialization(talents, Specialization.OVERLOAD):
+        radius += 2
+        tech_mine_damage += 50
+        shield_damage += 200
+        sunder += 0.05
+
     summary = summarize(
         format_ability_title(title, level),
+        "Overload Specialization" if specialized else "",
         f"Tech Mine Damage {truncate(tech_mine_damage)}",
         f"Shield Damage {shield_damage}",
         f"Reduce Damage Protection {truncate(sunder * 100)}%",
@@ -555,8 +573,16 @@ def summarize_Sabotage(talents: Iterable[Talent]) -> str:
     recharge *= (1.00 - haste)
     accuracy_cost = 0.60
 
+
+    if specialized := get_ability_specialization(talents, Specialization.SABOTAGE):
+        radius += 2
+        tech_mine_damage += 50
+        burn_dps += 1
+        duration += 5
+
     summary = summarize(
         format_ability_title(title, level),
+        "Sabotage Specialization" if specialized else "",
         f"Tech Mine Damage {truncate(tech_mine_damage)}",
         f"Burn DPS {burn_dps}",
         format_radius(radius),
@@ -692,7 +718,7 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
 
     acc_cost = 0.80
 
-    specialized = get_ability_specialization(talents, AbilitySpec.STASIS)
+    specialized = get_ability_specialization(talents, Specialization.STASIS)
 
     summary = summarize(
         format_ability_title(title, level),
@@ -750,7 +776,7 @@ def summarize_Warp(talents: Iterable[Talent]) -> str:
     recharge = {1: 60, 2: 50, 3: 40}[level]
     recharge *= (1.00 - haste)
     
-    if specialized := get_ability_specialization(talents, AbilitySpec.WARP):
+    if specialized := get_ability_specialization(talents, Specialization.WARP):
         radius += 2
         dps *= 1.25
 

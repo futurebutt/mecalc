@@ -22,6 +22,7 @@ class Modifier(Enum):
     LIGHT_ARMOR_HARDENING   = auto()
     MED_ARMOR_DR            = auto()
     MED_ARMOR_HARDENING     = auto()
+    MEDIC_HASTE             = auto()
     MELEE_DAMAGE            = auto()
     NEMESIS_BONUS           = auto()
     PISTOL_ACCURACY         = auto()
@@ -64,11 +65,15 @@ class AbilityLevel(Enum):
     WARP                = auto()
 
 
-class AbilitySpec(Enum):
+class Specialization(Enum):
     ADRENALINE_BURST    = auto()
     ASSASSINATION       = auto()
     BARRIER             = auto()
+    FIRST_AID           = auto()
     IMMUNITY            = auto()
     LIFT                = auto()
+    NEURAL_SHOCK        = auto()
+    OVERLOAD            = auto()
+    SABOTAGE            = auto()
     STASIS              = auto()
     WARP                = auto()
