@@ -28,6 +28,8 @@ class Modifier(Enum):
     PISTOL_ACCURACY         = auto()
     PISTOL_COOLING          = auto()
     PISTOL_DAMAGE           = auto()
+    SENTINEL_BASTION_HASTE  = auto()
+    SENTINEL_HASTE          = auto()
     SHIELD_CAPACITY         = auto()
     SHOTGUN_ACCURACY        = auto()
     SHOTGUN_DAMAGE          = auto()

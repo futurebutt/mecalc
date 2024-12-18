@@ -322,21 +322,44 @@ class Medicine(Talent):
 class Sentinel(Talent):
 
     name = "Sentinel"
-    modifier_table = {}
+    ability_table ={
+        AbilityLevel.MARKSMAN: {6: 1},
+    }
+    modifier_table = {
+        Modifier.PISTOL_ACCURACY: {1: 0.04, 2: 0.07, 3: 0.10, 4: 0.13, 5: 0.16},
+        Modifier.PISTOL_DAMAGE: {1: 0.02, 2: 0.04, 3: 0.06, 4: 0.08, 5: 0.10, 6: 0.12},
+        Modifier.SENTINEL_HASTE: {1: 0.03, 2: 0.05, 3: 0.07, 4: 0.08, 5: 0.09, 6: 0.10},
+    }
 
 
 class SentinelBastion(Sentinel):
 
     name = "Bastion"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        **Sentinel.ability_table,
+        Specialization.BARRIER: {9: True},
+        Specialization.STASIS: {12: True},
+    }
+    modifier_table = {
+        **Sentinel.modifier_table,
+        Modifier.PISTOL_ACCURACY: {**Sentinel.modifier_table[Modifier.PISTOL_ACCURACY], 12: 0.23},
+        Modifier.SENTINEL_BASTION_HASTE: {7: 0.13, 8: 0.15, 9: 0.17, 10: 0.19, 11: 0.21, 12: 0.28},
+    }
 
 
 class SentinelMedic(Sentinel):
 
     name = "Medic"
-    ability_table = {}
-    modifier_table = {}
+    ability_table = {
+        **Sentinel.ability_table,
+        Specialization.NEURAL_SHOCK: {9: True},
+        Specialization.FIRST_AID: {12: True},
+    }
+    modifier_table = {
+        **Sentinel.modifier_table,
+        Modifier.SENTINEL_HASTE: {**Sentinel.modifier_table[Modifier.SENTINEL_HASTE],  7: 0.15},
+        Modifier.MEDIC_HASTE: {7: 0.15, 8: 0.18, 9: 0.21, 10: 0.24, 11: 0.27, 12: 0.30},
+    }
 
 
 class Shotguns(Talent):
