@@ -538,7 +538,7 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
     tmd_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, Modifier.ALL_DAMAGE))
     sd_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
     duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
-    radius_bonus = 1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, ))
+    radius_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, ))
     haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.TECH_MINE_HASTE, Modifier.SENTINEL_HASTE))
 
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
