@@ -15,7 +15,7 @@ class Modifier(Enum):
     ACCURACY_REGEN          = auto()
     AI_HACKING_HASTE        = auto()
     ALL_DAMAGE              = auto()
-    ALL_DURATION            = auto()
+    ALL_DURATIONS           = auto()
     ASSAULT_RIFLE_ACCURACY  = auto()
     ASSAULT_RIFLE_DAMAGE    = auto()
     BARRIER_DURATION        = auto()
