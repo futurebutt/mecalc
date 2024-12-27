@@ -208,7 +208,7 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
     duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
     strength = calculate_bonus(talents, (Modifier.BARRIER_SHIELDING, ))
     strength_bonus = 0
-    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
+    haste = calculate_bonus(talents, (Modifier.BARRIER_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
 
@@ -363,7 +363,7 @@ def summarize_Lift(talents: Iterable[Talent]) -> str:
     duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
     duration *= (1.00 + duration_bonus)
     # ----
-    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
+    haste = calculate_bonus(talents, (Modifier.LIFT_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
@@ -707,7 +707,7 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
     title = "Singularity"
 
     radius = calculate_bonus(talents, (Modifier.SINGULARITY_RADIUS, ))
-    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
+    haste = calculate_bonus(talents, (Modifier.SINGULARITY_HASTE, ))
     duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
 
     duration = {1: 4, 2: 6, 3: 8}[level]
@@ -756,7 +756,7 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
     duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, ))
     duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
     duration *= (1.00 + duration_bonus)
-    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
+    haste = calculate_bonus(talents, (Modifier.STASIS_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
     recharge *= (1.00 - haste)
@@ -788,7 +788,7 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
     force_bonus = calculate_bonus(talents, ( Modifier.NEMESIS_BONUS, ))
     force *= (1.00 + force_bonus)
     damage = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DAMAGE))
-    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
+    haste = calculate_bonus(talents, (Modifier.THROW_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
@@ -845,7 +845,7 @@ def summarize_Warp(talents: Iterable[Talent]) -> str:
 
     duration = calculate_bonus(talents, (Modifier.WARP_DURATION, ))
     duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
-    haste = calculate_bonus(talents, (Modifier.BIOTIC_HASTE, ))
+    haste = calculate_bonus(talents, (Modifier.WARP_HASTE, ))
     dps_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
 
     if specialized := get_ability_specialization(talents, Specialization.WARP):

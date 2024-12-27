@@ -45,8 +45,14 @@ class Talent:
 class Adept(Talent):
 
     name = "Adept"
+    haste = {1: 0.04, 2: 0.06, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14}
     modifier_table = {
-        Modifier.BIOTIC_HASTE: {1: 0.04, 2: 0.06, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14},
+        Modifier.BARRIER_HASTE: haste,
+        Modifier.LIFT_HASTE: haste,
+        Modifier.SINGULARITY_HASTE: haste,
+        Modifier.STASIS_HASTE: haste,
+        Modifier.THROW_HASTE: haste,
+        Modifier.WARP_HASTE: haste,
         Modifier.BIOTIC_PROTECTION: {1: 0.06, 2: 0.09, 3: 0.12, 4: 0.15, 5: 0.18, 6: 0.21},
     }
 
@@ -54,13 +60,19 @@ class Adept(Talent):
 class AdeptBastion(Adept):
 
     name = "Bastion"
+    haste = {**Adept.haste, 7: 0.18, 8: 0.20, 9: 0.22, 10: 0.24, 11: 0.26, 12: 0.28}
     ability_table = {
         Specialization.BARRIER: {9: True},
         Specialization.STASIS: {12: True},
     }
     modifier_table = {
         **Adept.modifier_table,
-        Modifier.BIOTIC_HASTE: {**Adept.modifier_table[Modifier.BIOTIC_HASTE], 7: 0.18, 8: 0.20, 9: 0.22, 10: 0.24, 11: 0.26, 12: 0.28},
+        Modifier.BARRIER_HASTE: haste,
+        Modifier.LIFT_HASTE: haste,
+        Modifier.SINGULARITY_HASTE: haste,
+        Modifier.STASIS_HASTE: haste,
+        Modifier.THROW_HASTE: haste,
+        Modifier.WARP_HASTE: haste,
     }
 
 
