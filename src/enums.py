@@ -65,7 +65,6 @@ class Modifier(Enum):
     THROW_HASTE             = auto()
     WARP_DURATION           = auto()
     WARP_HASTE              = auto()
-    WEAPON_DAMAGE           = auto()
 
 
 class AbilityLevel(Enum):

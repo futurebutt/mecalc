@@ -194,7 +194,7 @@ def summarize_Assassination(talents: Iterable[Talent]) -> str:
 def summarize_Assault_Rifle(talents: Iterable[Talent]) -> str:
 
     title = "Assault Rifles"
-    damage = calculate_bonus(talents, (Modifier.ASSAULT_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE, Modifier.ALL_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.ASSAULT_RIFLE_DAMAGE, Modifier.ALL_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.ASSAULT_RIFLE_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
@@ -579,7 +579,7 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
 def summarize_Pistol(talents: Iterable[Talent]) -> str:
 
     title = "Pistol"
-    damage = calculate_bonus(talents, (Modifier.PISTOL_DAMAGE, Modifier.WEAPON_DAMAGE, Modifier.ALL_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.PISTOL_DAMAGE, Modifier.ALL_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.PISTOL_ACCURACY, ))
     cooling = calculate_bonus(talents, (Modifier.PISTOL_COOLING, ))
     if damage == accuracy == cooling == 0:
@@ -696,7 +696,7 @@ def summarize_Shield_Boost(talents: Iterable[Talent]) -> str:
 def summarize_Shotgun(talents: Iterable[Talent]) -> str:
 
     title = "Shotgun"
-    damage = calculate_bonus(talents, (Modifier.SHOTGUN_DAMAGE, Modifier.WEAPON_DAMAGE, Modifier.ALL_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.SHOTGUN_DAMAGE, Modifier.ALL_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.SHOTGUN_ACCURACY, ))
     if damage == accuracy == 0:
         return ""
@@ -741,7 +741,7 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
 def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
 
     title = "Sniper Rifles"
-    damage = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_DAMAGE, Modifier.WEAPON_DAMAGE, Modifier.ALL_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_DAMAGE, Modifier.ALL_DAMAGE))
     accuracy = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_ACCURACY, ))
     cooling = calculate_bonus(talents, (Modifier.SNIPER_RIFLE_COOLING, ))
     if damage == accuracy == cooling == 0:

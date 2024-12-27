@@ -111,12 +111,16 @@ class AssaultRifles(Talent):
 class AssaultTraining(Talent):
 
     name = "Assault Training"
+    weapon_damage = {1: 0.01, 2: 0.02, 4: 0.03, 5: 0.04, 6: 0.05, 7: 0.06, 9: 0.07, 10: 0.08, 11: 0.09}
     ability_table = {
         AbilityLevel.ADRENALINE_BURST: {3: 1, 8: 2, 12: 3},
     }
     modifier_table = {
         Modifier.MELEE_DAMAGE:  {1: 0.30, 2: 0.35, 4: 0.40, 5: 0.44, 6: 0.48, 7: 0.52, 9: 0.56, 10: 0.60, 11: 0.64},
-        Modifier.WEAPON_DAMAGE: {1: 0.01, 2: 0.02, 4: 0.03, 5: 0.04, 6: 0.05, 7: 0.06, 9: 0.07, 10: 0.08, 11: 0.09},
+        Modifier.ASSAULT_RIFLE_DAMAGE: weapon_damage,
+        Modifier.PISTOL_DAMAGE: weapon_damage,
+        Modifier.SHOTGUN_DAMAGE: weapon_damage,
+        Modifier.SNIPER_RIFLE_DAMAGE: weapon_damage,
     }
 
 
@@ -275,13 +279,17 @@ class Infiltrator(Talent):
 class InfiltratorCommando(Infiltrator):
 
     name = "Commando"
+    weapon_damage = {7: 0.06, 8: 0.09, 9: 0.12, 10: 0.15, 11: 0.18, 12: 0.21}
     ability_table = {
         Specialization.IMMUNITY: {9: True},
         Specialization.ASSASSINATION: {12: True},
     }
     modifier_table = {
         **Infiltrator.modifier_table,
-        Modifier.WEAPON_DAMAGE: {7: 0.06, 8: 0.09, 9: 0.12, 10: 0.15, 11: 0.18, 12: 0.21},
+        Modifier.ASSAULT_RIFLE_DAMAGE: weapon_damage,
+        Modifier.PISTOL_DAMAGE: weapon_damage,
+        Modifier.SHOTGUN_DAMAGE: weapon_damage,
+        Modifier.SNIPER_RIFLE_DAMAGE: weapon_damage,
     }
 
 
@@ -416,13 +424,17 @@ class Soldier(Talent):
 class SoldierCommando(Soldier):
 
     name = "Commando"
+    weapon_damage = {7: 0.06, 8: 0.09, 9: 0.12, 10: 0.15, 11: 0.18, 12: 0.21}
     ability_table = {
         Specialization.IMMUNITY: {9: True},
         Specialization.ASSASSINATION: {12: True},
     }
     modifier_table = {
         **Soldier.modifier_table,
-        Modifier.WEAPON_DAMAGE: {7: 0.06, 8: 0.09, 9: 0.12, 10: 0.15, 11: 0.18, 12: 0.21},
+        Modifier.ASSAULT_RIFLE_DAMAGE: weapon_damage,
+        Modifier.PISTOL_DAMAGE: weapon_damage,
+        Modifier.SHOTGUN_DAMAGE: weapon_damage,
+        Modifier.SNIPER_RIFLE_DAMAGE: weapon_damage,
     }
 
 
