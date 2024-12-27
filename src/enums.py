@@ -1,6 +1,16 @@
 from enum import auto, Enum
 
 
+class BaseValue(Enum):
+    BARRIER_DURATION        = auto()
+    BARRIER_SHIELDING       = auto()
+    LIFT_DURATION           = auto()
+    SINGULARITY_DURATION    = auto()
+    STASIS_DURATION         = auto()
+    THROW_FORCE             = auto()
+    WARP_DURATION           = auto()
+
+
 class Modifier(Enum):
     ACCURACY_REGEN          = auto()
     ALL_DAMAGE              = auto()
@@ -29,7 +39,6 @@ class Modifier(Enum):
     MED_ARMOR_HARDENING     = auto()
     MEDIC_HASTE             = auto()
     MELEE_DAMAGE            = auto()
-    NEMESIS_BONUS           = auto()
     PISTOL_ACCURACY         = auto()
     PISTOL_COOLING          = auto()
     PISTOL_DAMAGE           = auto()
@@ -38,6 +47,7 @@ class Modifier(Enum):
     SHIELD_CAPACITY         = auto()
     SHOTGUN_ACCURACY        = auto()
     SHOTGUN_DAMAGE          = auto()
+    SINGULARITY_DURATION    = auto()
     SINGULARITY_HASTE       = auto()
     SINGULARITY_RADIUS      = auto()
     SNIPER_RIFLE_ACCURACY   = auto()
@@ -50,6 +60,7 @@ class Modifier(Enum):
     TECH_MINE_HASTE         = auto()
     TECH_MINE_RADIUS        = auto()
     TECH_PROTECTION         = auto()
+    THROW_DAMAGE            = auto()
     THROW_FORCE             = auto()
     THROW_HASTE             = auto()
     WARP_DURATION           = auto()

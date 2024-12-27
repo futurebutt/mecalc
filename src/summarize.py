@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 
-from enums import AbilityLevel, Specialization, Modifier
+from enums import AbilityLevel, BaseValue, Specialization, Modifier
 from talents import Talent
 
 
@@ -28,6 +28,17 @@ def get_ability_specialization(talents: Iterable[Talent], dependency: Specializa
             return True
     else:
         return False
+    
+
+def get_highest_value(talents, value_type, least_possible=0):
+
+    highest_value = least_possible
+
+    for talent in talents:
+        modifiers = talent.get_modifiers()
+        highest_value = max(highest_value, modifiers.get(value_type, 0))
+
+    return highest_value
 
 
 def truncate(value: float) -> int | float:
@@ -204,8 +215,8 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
 
     title = "Barrier"
 
-    duration = calculate_bonus(talents, (Modifier.BARRIER_DURATION, ))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
+    duration = get_highest_value(talents, BaseValue.BARRIER_DURATION)
+    duration_bonus = calculate_bonus(talents, (Modifier.BARRIER_DURATION, Modifier.ALL_DURATION))
     strength = calculate_bonus(talents, (Modifier.BARRIER_SHIELDING, ))
     strength_bonus = 0
     haste = calculate_bonus(talents, (Modifier.BARRIER_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
@@ -359,8 +370,8 @@ def summarize_Lift(talents: Iterable[Talent]) -> str:
 
     # TODO: This highlights need to distinguish ability base values from bonuses:
     # ----
-    duration = calculate_bonus(talents, (Modifier.LIFT_DURATION,))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
+    duration = get_highest_value(talents, BaseValue.LIFT_DURATION)
+    duration_bonus = calculate_bonus(talents, (Modifier.LIFT_DURATION, Modifier.ALL_DURATION))
     duration *= (1.00 + duration_bonus)
     # ----
     haste = calculate_bonus(talents, (Modifier.LIFT_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
@@ -708,7 +719,7 @@ def summarize_Singularity(talents: Iterable[Talent]) -> str:
 
     radius = calculate_bonus(talents, (Modifier.SINGULARITY_RADIUS, ))
     haste = calculate_bonus(talents, (Modifier.SINGULARITY_HASTE, ))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, ))
+    duration_bonus = calculate_bonus(talents, (Modifier.SINGULARITY_DURATION, ))
 
     duration = {1: 4, 2: 6, 3: 8}[level]
     duration *= (1.00 + duration_bonus)
@@ -753,8 +764,8 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
 
     title = "Stasis"
 
-    duration = calculate_bonus(talents, (Modifier.STASIS_DURATION, ))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
+    duration = get_highest_value(talents, BaseValue.STASIS_DURATION)
+    duration_bonus = calculate_bonus(talents, (Modifier.STASIS_DURATION, Modifier.ALL_DURATION))
     duration *= (1.00 + duration_bonus)
     haste = calculate_bonus(talents, (Modifier.STASIS_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
@@ -784,10 +795,10 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
 
     title = "Throw"
 
-    force = calculate_bonus(talents, (Modifier.THROW_FORCE, ))
-    force_bonus = calculate_bonus(talents, ( Modifier.NEMESIS_BONUS, ))
+    force = get_highest_value(talents, BaseValue.THROW_FORCE)
+    force_bonus = calculate_bonus(talents, ( Modifier.THROW_FORCE, ))
     force *= (1.00 + force_bonus)
-    damage = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DAMAGE))
+    damage = calculate_bonus(talents, (Modifier.THROW_DAMAGE, Modifier.ALL_DAMAGE))
     haste = calculate_bonus(talents, (Modifier.THROW_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
@@ -843,8 +854,8 @@ def summarize_Warp(talents: Iterable[Talent]) -> str:
 
     acc_cost = 0.80
 
-    duration = calculate_bonus(talents, (Modifier.WARP_DURATION, ))
-    duration_bonus = calculate_bonus(talents, (Modifier.NEMESIS_BONUS, Modifier.ALL_DURATION))
+    duration = get_highest_value(talents, BaseValue.WARP_DURATION)
+    duration_bonus = calculate_bonus(talents, (Modifier.WARP_DURATION, Modifier.ALL_DURATION))
     haste = calculate_bonus(talents, (Modifier.WARP_HASTE, ))
     dps_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
 
