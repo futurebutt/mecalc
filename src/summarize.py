@@ -280,9 +280,9 @@ def summarize_Damping(talents: Iterable[Talent]) -> str:
     tech_mine_damage *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, Modifier.ALL_DAMAGE)))
     stun_duration = 3 * (1 + calculate_bonus(talents, (Modifier.ALL_DURATION, )))
     radius = {1: 6, 2: 8, 3: 10}[level]
-    radius *= (1 + calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, )))
+    radius *= (1 + calculate_bonus(talents, (Modifier.DAMPING_RADIUS, )))
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.TECH_MINE_HASTE))
+    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.DAMPING_HASTE))
     recharge *= (1.00 - haste)
     accuracy_cost = 0.60
 
@@ -538,8 +538,8 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
     tmd_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, Modifier.ALL_DAMAGE))
     sd_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
     duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
-    radius_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, ))
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.TECH_MINE_HASTE, Modifier.SENTINEL_HASTE))
+    radius_bonus = calculate_bonus(talents, (Modifier.OVERLOAD_RADIUS, ))
+    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.OVERLOAD_HASTE, Modifier.SENTINEL_HASTE))
 
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
     shield_damage = {1: 200, 2: 400, 3: 600}[level]
@@ -604,9 +604,9 @@ def summarize_Sabotage(talents: Iterable[Talent]) -> str:
 
     tmd_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_DAMAGE, Modifier.ALL_DAMAGE))
     dps_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE))
-    radius_bonus = calculate_bonus(talents, (Modifier.TECH_MINE_RADIUS, ))
+    radius_bonus = calculate_bonus(talents, (Modifier.SABOTAGE_RADIUS, ))
     duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.TECH_MINE_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.SABOTAGE_HASTE, Modifier.SENTINEL_HASTE))
 
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
     radius = {1: 6, 2: 8, 3: 10}[level]

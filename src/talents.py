@@ -169,11 +169,14 @@ class CombatArmor(Talent):
 class Damping(Talent):
 
     name = "Damping"
+    radius = {2: 0.10, 3: 0.14, 4: 0.18, 5: 0.20, 7: 0.22, 8: 0.24, 9: 0.26, 10: 0.28, 11: 0.30}
     ability_table = {
         AbilityLevel.DAMPING: {1: 1, 6: 2, 12: 3},
     }
     modifier_table = {
-        Modifier.TECH_MINE_RADIUS: {2: 0.10, 3: 0.14, 4: 0.18, 5: 0.20, 7: 0.22, 8: 0.24, 9: 0.26, 10: 0.28, 11: 0.30},
+        Modifier.DAMPING_RADIUS: radius,
+        Modifier.OVERLOAD_RADIUS: radius,
+        Modifier.SABOTAGE_RADIUS: radius,
     }
 
 
@@ -258,11 +261,14 @@ class Fitness(Talent):
 class Hacking(Talent):
 
     name = "Hacking"
+    haste = {2: 0.06, 3: 0.09, 4: 0.12, 5: 0.15, 6: 0.18, 8: 0.21, 9: 0.24, 10: 0.27, 11: 0.30}
     ability_table = {
         AbilityLevel.AI_HACKING: {1: 1, 7: 2, 12: 3},
     }
     modifier_table = {
-        Modifier.TECH_MINE_HASTE: {2: 0.06, 3: 0.09, 4: 0.12, 5: 0.15, 6: 0.18, 8: 0.21, 9: 0.24, 10: 0.27, 11: 0.30},
+        Modifier.DAMPING_HASTE: haste,
+        Modifier.OVERLOAD_HASTE: haste,
+        Modifier.SABOTAGE_HASTE: haste,
     }
 
 
