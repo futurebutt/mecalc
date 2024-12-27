@@ -219,7 +219,7 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
     duration_bonus = calculate_bonus(talents, (Modifier.BARRIER_DURATION, Modifier.ALL_DURATION))
     strength = calculate_bonus(talents, (Modifier.BARRIER_SHIELDING, ))
     strength_bonus = 0
-    haste = calculate_bonus(talents, (Modifier.BARRIER_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
+    haste = calculate_bonus(talents, (Modifier.BARRIER_HASTE, ))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
 
@@ -302,7 +302,7 @@ def summarize_First_Aid(talents: Iterable[Talent]) -> str:
     title = "First Aid"
     # 40 = base heal
     healing = 40 + calculate_bonus(talents, (Modifier.FIRST_AID_HEALING, ))
-    haste = calculate_bonus(talents, (Modifier.FIRST_AID_HASTE, Modifier.MEDIC_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.FIRST_AID_HASTE, ))
     recharge = 20 * (1.00 - haste)
 
     if specialized := get_ability_specialization(talents, Specialization.FIRST_AID):
@@ -374,7 +374,7 @@ def summarize_Lift(talents: Iterable[Talent]) -> str:
     duration_bonus = calculate_bonus(talents, (Modifier.LIFT_DURATION, Modifier.ALL_DURATION))
     duration *= (1.00 + duration_bonus)
     # ----
-    haste = calculate_bonus(talents, (Modifier.LIFT_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
+    haste = calculate_bonus(talents, (Modifier.LIFT_HASTE, ))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]
@@ -477,7 +477,7 @@ def summarize_Neural_Shock(talents: Iterable[Talent]) -> str:
 
     title = "Neural Shock"
 
-    haste = calculate_bonus(talents, (Modifier.NEURAL_SHOCK_HASTE, Modifier.MEDIC_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.NEURAL_SHOCK_HASTE, ))
 
     toxic_damage = {1: 40, 2: 80, 3: 120}[level]
     toxic_damage_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
@@ -539,7 +539,7 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
     sd_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
     duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
     radius_bonus = calculate_bonus(talents, (Modifier.OVERLOAD_RADIUS, ))
-    haste = calculate_bonus(talents, (Modifier.OVERLOAD_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.OVERLOAD_HASTE, ))
 
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
     shield_damage = {1: 200, 2: 400, 3: 600}[level]
@@ -606,7 +606,7 @@ def summarize_Sabotage(talents: Iterable[Talent]) -> str:
     dps_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE))
     radius_bonus = calculate_bonus(talents, (Modifier.SABOTAGE_RADIUS, ))
     duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
-    haste = calculate_bonus(talents, (Modifier.SABOTAGE_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.SABOTAGE_HASTE, ))
 
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
     radius = {1: 6, 2: 8, 3: 10}[level]
@@ -767,7 +767,7 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
     duration = get_highest_value(talents, BaseValue.STASIS_DURATION)
     duration_bonus = calculate_bonus(talents, (Modifier.STASIS_DURATION, Modifier.ALL_DURATION))
     duration *= (1.00 + duration_bonus)
-    haste = calculate_bonus(talents, (Modifier.STASIS_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
+    haste = calculate_bonus(talents, (Modifier.STASIS_HASTE, ))
 
     recharge = {1: 60, 2: 50, 3: 40}[level]
     recharge *= (1.00 - haste)
@@ -799,7 +799,7 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
     force_bonus = calculate_bonus(talents, ( Modifier.THROW_FORCE, ))
     force *= (1.00 + force_bonus)
     damage = calculate_bonus(talents, (Modifier.THROW_DAMAGE, Modifier.ALL_DAMAGE))
-    haste = calculate_bonus(talents, (Modifier.THROW_HASTE, Modifier.SENTINEL_HASTE, Modifier.SENTINEL_BASTION_HASTE))
+    haste = calculate_bonus(talents, (Modifier.THROW_HASTE, ))
 
     radius = {1: 4, 2: 5, 3: 6}[level]
     recharge = {1: 60, 2: 50, 3: 40}[level]

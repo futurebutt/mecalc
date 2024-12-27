@@ -1,4 +1,4 @@
-from enums import AbilityLevel, Specialization, Modifier
+from enums import AbilityLevel, BaseValue, Specialization, Modifier
 
 # Rank -> Value at Rank
 Lookup = dict[int, float]
@@ -352,7 +352,7 @@ class Lift(Talent):
         AbilityLevel.LIFT: {1: 1, 7: 2, 12: 3},
     }
     modifier_table = {
-        Modifier.LIFT_DURATION: {1: 6.0, 2: 6.4, 3: 6.8, 4: 7.2, 5: 7.6, 6: 8.0, 7: 9.0, 8: 9.4, 9: 9.8, 10: 10.2, 11: 10.6, 12: 12.0},
+        BaseValue.LIFT_DURATION: {1: 6.0, 2: 6.4, 3: 6.8, 4: 7.2, 5: 7.6, 6: 8.0, 7: 9.0, 8: 9.4, 9: 9.8, 10: 10.2, 11: 10.6, 12: 12.0},
     }
 
 
@@ -382,19 +382,28 @@ class Medicine(Talent):
 class Sentinel(Talent):
 
     name = "Sentinel"
+    haste = {1: 0.03, 2: 0.05, 3: 0.07, 4: 0.08, 5: 0.09, 6: 0.10}
     ability_table ={
         AbilityLevel.MARKSMAN: {6: 1},
     }
     modifier_table = {
         Modifier.PISTOL_ACCURACY: {1: 0.04, 2: 0.07, 3: 0.10, 4: 0.13, 5: 0.16},
         Modifier.PISTOL_DAMAGE: {1: 0.02, 2: 0.04, 3: 0.06, 4: 0.08, 5: 0.10, 6: 0.12},
-        Modifier.SENTINEL_HASTE: {1: 0.03, 2: 0.05, 3: 0.07, 4: 0.08, 5: 0.09, 6: 0.10},
+        Modifier.BARRIER_HASTE: haste,
+        Modifier.LIFT_HASTE: haste,
+        Modifier.STASIS_HASTE: haste,
+        Modifier.THROW_HASTE: haste,
+        Modifier.FIRST_AID_HASTE: haste,
+        Modifier.NEURAL_SHOCK_HASTE: haste,
+        Modifier.OVERLOAD_HASTE: haste,
+        Modifier.SABOTAGE_HASTE: haste,
     }
 
 
 class SentinelBastion(Sentinel):
 
     name = "Bastion"
+    bastion_haste = {**Sentinel.haste, 7: 0.13, 8: 0.15, 9: 0.17, 10: 0.19, 11: 0.21, 12: 0.28}
     ability_table = {
         **Sentinel.ability_table,
         Specialization.BARRIER: {9: True},
@@ -403,13 +412,18 @@ class SentinelBastion(Sentinel):
     modifier_table = {
         **Sentinel.modifier_table,
         Modifier.PISTOL_ACCURACY: {**Sentinel.modifier_table[Modifier.PISTOL_ACCURACY], 12: 0.23},
-        Modifier.SENTINEL_BASTION_HASTE: {7: 0.13, 8: 0.15, 9: 0.17, 10: 0.19, 11: 0.21, 12: 0.28},
+        Modifier.BARRIER_HASTE: bastion_haste,
+        Modifier.LIFT_HASTE: bastion_haste,
+        Modifier.STASIS_HASTE: bastion_haste,
+        Modifier.THROW_HASTE: bastion_haste,
     }
 
 
 class SentinelMedic(Sentinel):
 
     name = "Medic"
+    haste = {**Sentinel.haste, 7: 0.15}
+    medic_haste = {**Sentinel.haste, 7: 0.15, 8: 0.18, 9: 0.21, 10: 0.24, 11: 0.27, 12: 0.30}
     ability_table = {
         **Sentinel.ability_table,
         Specialization.NEURAL_SHOCK: {9: True},
@@ -417,8 +431,14 @@ class SentinelMedic(Sentinel):
     }
     modifier_table = {
         **Sentinel.modifier_table,
-        Modifier.SENTINEL_HASTE: {**Sentinel.modifier_table[Modifier.SENTINEL_HASTE],  7: 0.15},
-        Modifier.MEDIC_HASTE: {7: 0.15, 8: 0.18, 9: 0.21, 10: 0.24, 11: 0.27, 12: 0.30},
+        Modifier.BARRIER_HASTE: haste,
+        Modifier.LIFT_HASTE: haste,
+        Modifier.STASIS_HASTE: haste,
+        Modifier.THROW_HASTE: haste,
+        Modifier.OVERLOAD_HASTE: haste,
+        Modifier.SABOTAGE_HASTE: haste,
+        Modifier.FIRST_AID_HASTE: medic_haste,
+        Modifier.NEURAL_SHOCK_HASTE: medic_haste,
     }
 
 
