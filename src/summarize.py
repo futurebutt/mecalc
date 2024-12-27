@@ -149,7 +149,7 @@ def summarize_AI_Hacking(talents: Iterable[Talent]) -> str:
 
     title = "AI Hacking"
 
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, ))
+    haste = calculate_bonus(talents, (Modifier.AI_HACKING_HASTE, ))
     duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
 
     duration = {1: 20, 2: 25, 3: 30}[level] * (1 + duration_bonus)
@@ -282,7 +282,7 @@ def summarize_Damping(talents: Iterable[Talent]) -> str:
     radius = {1: 6, 2: 8, 3: 10}[level]
     radius *= (1 + calculate_bonus(talents, (Modifier.DAMPING_RADIUS, )))
     recharge = {1: 60, 2: 50, 3: 40}[level]
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.DAMPING_HASTE))
+    haste = calculate_bonus(talents, (Modifier.DAMPING_HASTE, ))
     recharge *= (1.00 - haste)
     accuracy_cost = 0.60
 
@@ -302,7 +302,7 @@ def summarize_First_Aid(talents: Iterable[Talent]) -> str:
     title = "First Aid"
     # 40 = base heal
     healing = 40 + calculate_bonus(talents, (Modifier.FIRST_AID_HEALING, ))
-    haste = calculate_bonus(talents, (Modifier.FIRST_AID_HASTE, Modifier.TECH_HASTE, Modifier.MEDIC_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.FIRST_AID_HASTE, Modifier.MEDIC_HASTE, Modifier.SENTINEL_HASTE))
     recharge = 20 * (1.00 - haste)
 
     if specialized := get_ability_specialization(talents, Specialization.FIRST_AID):
@@ -477,7 +477,7 @@ def summarize_Neural_Shock(talents: Iterable[Talent]) -> str:
 
     title = "Neural Shock"
 
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.MEDIC_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.NEURAL_SHOCK_HASTE, Modifier.MEDIC_HASTE, Modifier.SENTINEL_HASTE))
 
     toxic_damage = {1: 40, 2: 80, 3: 120}[level]
     toxic_damage_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
@@ -539,7 +539,7 @@ def summarize_Overload(talents: Iterable[Talent]) -> str:
     sd_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE, ))
     duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
     radius_bonus = calculate_bonus(talents, (Modifier.OVERLOAD_RADIUS, ))
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.OVERLOAD_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.OVERLOAD_HASTE, Modifier.SENTINEL_HASTE))
 
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
     shield_damage = {1: 200, 2: 400, 3: 600}[level]
@@ -606,7 +606,7 @@ def summarize_Sabotage(talents: Iterable[Talent]) -> str:
     dps_bonus = calculate_bonus(talents, (Modifier.ALL_DAMAGE))
     radius_bonus = calculate_bonus(talents, (Modifier.SABOTAGE_RADIUS, ))
     duration_bonus = calculate_bonus(talents, (Modifier.ALL_DURATION, ))
-    haste = calculate_bonus(talents, (Modifier.TECH_HASTE, Modifier.SABOTAGE_HASTE, Modifier.SENTINEL_HASTE))
+    haste = calculate_bonus(talents, (Modifier.SABOTAGE_HASTE, Modifier.SENTINEL_HASTE))
 
     tech_mine_damage = {1: 50, 2: 100, 3: 150}[level]
     radius = {1: 6, 2: 8, 3: 10}[level]

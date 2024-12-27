@@ -206,8 +206,14 @@ class Electronics(Talent):
 class Engineer(Talent):
 
     name = "Engineer"
+    haste = {1: 0.04, 2: 0.06, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14}
     modifier_table = {
-        Modifier.TECH_HASTE: {1: 0.04, 2: 0.06, 3: 0.08, 4: 0.10, 5: 0.12, 6: 0.14},
+        Modifier.AI_HACKING_HASTE: haste,
+        Modifier.DAMPING_HASTE: haste,
+        Modifier.FIRST_AID_HASTE: haste,
+        Modifier.NEURAL_SHOCK_HASTE: haste,
+        Modifier.OVERLOAD_HASTE: haste,
+        Modifier.SABOTAGE_HASTE: haste,
         Modifier.TECH_PROTECTION: {1: 0.06, 2: 0.09, 3: 0.12, 4: 0.15, 5: 0.18, 6: 0.21},
     }
 
@@ -215,27 +221,39 @@ class Engineer(Talent):
 class EngineerMedic(Engineer):
 
     name = "Medic"
+    tech_haste = {**Engineer.haste, 7: 0.20}
+    medic_haste = {7: 0.20, 8: 0.23, 9: 0.26, 10: 0.29, 11: 0.32, 12: 0.35}
     ability_table = {
         Specialization.NEURAL_SHOCK: {9: True},
         Specialization.FIRST_AID: {12: True},
     }
     modifier_table = {
         **Engineer.modifier_table,
-        Modifier.TECH_HASTE: {**Engineer.modifier_table[Modifier.TECH_HASTE], 7: 0.20},
-        Modifier.MEDIC_HASTE: {7: 0.20, 8: 0.23, 9: 0.26, 10: 0.29, 11: 0.32, 12: 0.35},
+        Modifier.AI_HACKING_HASTE: tech_haste,
+        Modifier.DAMPING_HASTE: tech_haste,
+        Modifier.OVERLOAD_HASTE: tech_haste,
+        Modifier.SABOTAGE_HASTE: tech_haste,
+        Modifier.FIRST_AID_HASTE: medic_haste,
+        Modifier.NEURAL_SHOCK_HASTE: medic_haste,
     }
 
 
 class EngineerOperative(Engineer):
 
     name = "Operative"
+    haste = {**Engineer.haste, 7: 0.18, 8: 0.20, 9: 0.22, 10: 0.24, 11: 0.26, 12: 0.28}
     ability_table = {
         Specialization.OVERLOAD: {9: True},
         Specialization.SABOTAGE: {12: True},
     }
     modifier_table = {
         **Engineer.modifier_table,
-        Modifier.TECH_HASTE: {**Engineer.modifier_table[Modifier.TECH_HASTE], 7: 0.18, 8: 0.20, 9: 0.22, 10: 0.24, 11: 0.26, 12: 0.28},
+        Modifier.AI_HACKING_HASTE: haste,
+        Modifier.DAMPING_HASTE: haste,
+        Modifier.FIRST_AID_HASTE: haste,
+        Modifier.NEURAL_SHOCK_HASTE: haste,
+        Modifier.OVERLOAD_HASTE: haste,
+        Modifier.SABOTAGE_HASTE: haste,
     }
 
 
@@ -302,13 +320,22 @@ class InfiltratorCommando(Infiltrator):
 class InfiltratorOperative(Infiltrator):
 
     name = "Operative"
+    # TODO: It's unclear from language on wiki vs. that used for engineer whether
+    # this haste table applies to First Aid and Neural Shock as well as the strictly-
+    # "tech" abilities.
+    haste = {7: 0.04, 8: 0.06, 9: 0.08, 10: 0.10, 11: 0.12, 12: 0.14}
     ability_table = {
         Specialization.OVERLOAD: {9: True},
         Specialization.SABOTAGE: {12: True},
     }
     modifier_table = {
         **Infiltrator.modifier_table,
-        Modifier.TECH_HASTE: {7: 0.04, 8: 0.06, 9: 0.08, 10: 0.10, 11: 0.12, 12: 0.14},
+        Modifier.AI_HACKING_HASTE: haste,
+        Modifier.DAMPING_HASTE: haste,
+        Modifier.FIRST_AID_HASTE: haste,
+        Modifier.NEURAL_SHOCK_HASTE: haste,
+        Modifier.OVERLOAD_HASTE: haste,
+        Modifier.SABOTAGE_HASTE: haste,
     }
 
 

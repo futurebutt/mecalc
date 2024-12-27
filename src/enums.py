@@ -13,6 +13,7 @@ class BaseValue(Enum):
 
 class Modifier(Enum):
     ACCURACY_REGEN          = auto()
+    AI_HACKING_HASTE        = auto()
     ALL_DAMAGE              = auto()
     ALL_DURATION            = auto()
     ASSAULT_RIFLE_ACCURACY  = auto()
@@ -41,6 +42,7 @@ class Modifier(Enum):
     MED_ARMOR_HARDENING     = auto()
     MEDIC_HASTE             = auto()
     MELEE_DAMAGE            = auto()
+    NEURAL_SHOCK_HASTE      = auto()
     OVERLOAD_HASTE          = auto()
     OVERLOAD_RADIUS         = auto()
     PISTOL_ACCURACY         = auto()
@@ -61,7 +63,6 @@ class Modifier(Enum):
     SNIPER_RIFLE_DAMAGE     = auto()
     STASIS_DURATION         = auto()
     STASIS_HASTE            = auto()
-    TECH_HASTE              = auto()
     TECH_MINE_DAMAGE        = auto()
     TECH_PROTECTION         = auto()
     THROW_DAMAGE            = auto()
