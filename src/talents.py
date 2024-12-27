@@ -579,13 +579,18 @@ class Vanguard(Talent):
 class VanguardNemesis(Vanguard):
 
     name = "Nemesis"
+    nemesis_bonus = {7: 0.04, 8: 0.06, 9: 0.08, 10: 0.10, 11: 0.12, 12: 0.14}
     ability_table = {
         Specialization.WARP: {9: True},
         Specialization.LIFT: {12: True},
     }
     modifier_table = {
         **Vanguard.modifier_table,
-        Modifier.NEMESIS_BONUS: {7: 0.04, 8: 0.06, 9: 0.08, 10: 0.10, 11: 0.12, 12: 0.14},
+        Modifier.THROW_DAMAGE: nemesis_bonus,
+        Modifier.THROW_FORCE: nemesis_bonus,
+        Modifier.BARRIER_DURATION: nemesis_bonus,
+        Modifier.LIFT_DURATION: nemesis_bonus,
+        Modifier.WARP_DURATION: nemesis_bonus,        
     }
 
 
