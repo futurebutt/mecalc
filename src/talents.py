@@ -461,7 +461,7 @@ class Singularity(Talent):
         AbilityLevel.SINGULARITY: {1: 1, 7: 2, 12: 3},
     }
     modifier_table = {
-        Modifier.SINGULARITY_RADIUS: {1: 4, 2: 4.25, 3: 4.5, 4: 5.0, 6: 5.25, 7: 6.25, 8: 6.5, 9: 6.75, 10: 7.0, 11: 7.25, 12: 8.25},
+        BaseValue.SINGULARITY_RADIUS: {1: 4, 2: 4.25, 3: 4.5, 4: 5.0, 6: 5.25, 7: 6.25, 8: 6.5, 9: 6.75, 10: 7.0, 11: 7.25, 12: 8.25},
     }
 
 
