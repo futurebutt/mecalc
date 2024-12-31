@@ -1,7 +1,13 @@
+"""
+Lists of names to which Talents may refer in order to set base values, bonuses,
+or general features.
+"""
+
 from enum import auto, Enum
 
 
 class BaseValue(Enum):
+    """All ability attributes which talents may directly set the values of."""
     BARRIER_DURATION        = auto()
     BARRIER_SHIELDING       = auto()
     LIFT_DURATION           = auto()
@@ -13,6 +19,7 @@ class BaseValue(Enum):
 
 
 class Modifier(Enum):
+    """All bonuses to which talents may contribute."""
     ACCURACY_REGEN          = auto()
     AI_HACKING_HASTE        = auto()
     ALL_DAMAGE              = auto()
@@ -70,6 +77,7 @@ class Modifier(Enum):
 
 
 class AbilityLevel(Enum):
+    """All abilities that may have ranks of Advanced or Master."""
     ADRENALINE_BURST    = auto()
     AI_HACKING          = auto()
     ASSASSINATION       = auto()
@@ -92,6 +100,7 @@ class AbilityLevel(Enum):
 
 
 class Specialization(Enum):
+    """All abilities which may be specialized by advanced Shepard classes."""
     ADRENALINE_BURST    = auto()
     ASSASSINATION       = auto()
     BARRIER             = auto()
