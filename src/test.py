@@ -7,6 +7,7 @@ import summarize as sm
 
 
 class MainWidget(QWidget):
+    """Houses TalentTree, summarize button, and summary window."""
 
     def __init__(self, parent=None):
 

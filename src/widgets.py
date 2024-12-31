@@ -19,9 +19,16 @@ import talents as tl
 
 
 class TalentPoint(QLabel):
+    """
+    Represents a single talent point on a TalentBar. Turns green for allocated,
+    clear for unallocated.
+    """
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setupUi()
+    
+    def setupUi(self):
         sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
@@ -38,6 +45,12 @@ class TalentPoint(QLabel):
 
 
 class TalentBar(QWidget):
+    """
+    Holds 12 talent points and buttons to increment and decrement points allocated.
+
+    Besides that, houses a raw Talent and provides an interface between it and UI
+    functions.
+    """
 
     rankChanged = pyqtSignal()
 
@@ -45,11 +58,14 @@ class TalentBar(QWidget):
         super().__init__(parent)
         self.setupUi()
         self.talent = tl.Talent(0)
+        # Concern for "max rank" is left to the UI. Talents don't care what their rank is as long as it's a number.
+        # 2 is the default cap for a level 1 character.
         self._max_rank: int = 2
         self._update_buttons()
 
     @property
     def rank(self) -> int:
+        # Parent/calling objects don't need to care that a TalentBar *houses* a Talent rather than *is* one.
         return self.talent.rank
 
     @rank.setter
@@ -57,6 +73,7 @@ class TalentBar(QWidget):
         self.talent.rank = rank
 
     def setupUi(self):
+        # qt code ripped from Designer output
         self.resize(431, 47)
         self.horizontalLayout = QHBoxLayout(self)
         self.nameLabel = QLabel(self)
@@ -117,6 +134,7 @@ class TalentBar(QWidget):
 
     @pyqtSlot()
     def increment_clicked(self):
+        """Add a talent point."""
         self.rank += 1
         self.display_rank()
         self._update_buttons()
@@ -124,12 +142,14 @@ class TalentBar(QWidget):
 
     @pyqtSlot()
     def decrement_clicked(self):
+        """Remove a talent point."""
         self.rank -= 1
         self.display_rank()
         self._update_buttons()
         self.rankChanged.emit()
 
     def display_rank(self):
+        """Update talent point lights from left to right."""
         for i, tp in enumerate(self.tps, start=1):
             if i <= self.rank:
                 tp.set_on()
@@ -137,6 +157,10 @@ class TalentBar(QWidget):
                 tp.set_off()
 
     def _update_buttons(self):
+        """
+        Disable the decrement button at minimum rank or enable otherwise. Disable
+        the increment button at max rank or enable otherwise.
+        """
         self.decrementButton.setEnabled(self.rank != 0)
         self.incrementButton.setEnabled(self.rank != self._max_rank)
 
@@ -145,11 +169,13 @@ class TalentBar(QWidget):
         self._update_buttons()
     
     def set_talent(self, talent: tl.Talent):
-        assert talent.rank == 0
+        # This hasn't really been implemented except for setup. Later it'll be used in UI class selection.
+        assert talent.rank == 0, "I don't care about replacing a talent with points in it yet."
         self.talent = talent
         self.nameLabel.setText(talent.name)
 
 
+# Classic levels rather than LE.
 # 1-5: 3 points per level
 # 6-35: 2 points per level
 # 36-60: 1 point per level
@@ -159,6 +185,11 @@ pts_to_lvl: dict[int, int] = {pts: lvl for lvl, pts in lvl_to_pts.items()}
 
 
 class TalentTree(QWidget):
+
+    """
+    Holds TalentBars. Tracks and displays values for allocated points, unallocated
+    points, total points. Allows level to be set. Later, allow classes to be set.
+    """
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -277,19 +308,26 @@ class TalentTree(QWidget):
 
         self.levelSpin.valueChanged.connect(self.levelSpin_valueChanged)        
     
+    @property
+    def bars(self) -> list[TalentBar]:
+        return self.findChildren(TalentBar)
+
     def add_talent_bar(self, talent: tl.Talent):
-        num_bars = len(self.findChildren(TalentBar))
+        num_bars = len(self.bars)
         bar = TalentBar(self)
         bar.setObjectName(f"talentbar_{num_bars + 1}")
         bar.set_talent(talent)
         bar.rankChanged.connect(self.talent_bars_rankChanged)
         self.verticalLayout.insertWidget(num_bars + 1, bar)
     
-    def delete_all_talent_bars(self):
-        for bar in self.findChildren(TalentBar):
+    def reset(self):
+        """Blank slate for adding or switching to a new Talent set."""
+        # Getting rid of everything is easier to do than changing Talents in-place (I think).
+        for bar in self.bars:
             self.verticalLayout.removeWidget(bar)
             bar.deleteLater()
-        self.levelSpin.setValue(1)
+        # Reflect deallocated points.
+        self.update_unallocated_point_display()
 
     @property
     def total_points(self) -> int:
@@ -297,7 +335,7 @@ class TalentTree(QWidget):
 
     @property
     def allocated_points(self) -> int:
-        return sum(bar.rank for bar in self.findChildren(TalentBar))
+        return sum(bar.rank for bar in self.bars)
 
     @property
     def unallocated_points(self) -> int:
@@ -310,7 +348,7 @@ class TalentTree(QWidget):
         self.unallocatedPointLabel.setText(str(self.unallocated_points))
 
     def update_TalentBar_max_ranks(self):
-        for bar in self.findChildren(TalentBar):
+        for bar in self.bars:
             # Lowest of: 12, level + 1, talent rank + remaining points
             rank = min((12, self.levelSpin.value() + 1, bar.rank + self.unallocated_points))
             bar.set_max_rank(rank)
@@ -323,34 +361,39 @@ class TalentTree(QWidget):
 
     @pyqtSlot()
     def talent_bars_rankChanged(self):
+        """Slot for TalentBar.rankChanged for every bar."""
         self.update_levelSpin_min()
         self.update_TalentBar_max_ranks()
         self.update_unallocated_point_display()
         self.update_total_point_display()
 
     def update_levelSpin_min(self):
+        """Prevent Shepard's level from being set below the minimum required for current point allocation."""
         # 1) Make sure there's at least as many total points as allocated
         zero_indexed_level = bisect.bisect_left(point_totals, self.allocated_points)
         min_lvl_by_total = zero_indexed_level + 1
         # 2) Make sure ranks are not greater than level + 1
-        highest_rank = max([bar.rank for bar in self.findChildren(TalentBar)])
+        highest_rank = max([bar.rank for bar in self.bars])
         min_lvl_by_rank = highest_rank - 1
         # Use high
         min_level = max((min_lvl_by_total, min_lvl_by_rank))
         self.levelSpin.setMinimum(min_level)
 
     def set_class_soldier(self):
-        self.delete_all_talent_bars()
+        # Eventually there'll be one of these functions for each class; for now I've just
+        # been using it to hard code talents for testing.
+        self.reset()
         self.add_talent_bar(tl.Pistols(0))
-        # self.add_talent_bar(tl.AssaultRifles(0))
+        self.add_talent_bar(tl.AssaultRifles(0))
         self.add_talent_bar(tl.Shotguns(0))
-        # self.add_talent_bar(tl.SniperRifles(0))
+        self.add_talent_bar(tl.SniperRifles(0))
         self.add_talent_bar(tl.AssaultTraining(0))
-        # self.add_talent_bar(tl.Fitness(0))
+        self.add_talent_bar(tl.Fitness(0))
+        self.add_talent_bar(tl.CombatArmor(0))
+        self.add_talent_bar(tl.FirstAid(0))
+        self.add_talent_bar(tl.SpectreTraining(0))
         # self.add_talent_bar(tl.BasicArmor(0))
-        # self.add_talent_bar(tl.CombatArmor(0))
         # self.add_talent_bar(tl.TacticalArmor(0))
-        # self.add_talent_bar(tl.FirstAid(0))
         # self.add_talent_bar(tl.Adept(0))
         # self.add_talent_bar(tl.AdeptBastion(0))
         # self.add_talent_bar(tl.AdeptNemesis(0))
@@ -370,19 +413,18 @@ class TalentTree(QWidget):
         # self.add_talent_bar(tl.Hacking(0))
         # self.add_talent_bar(tl.Damping(0))
         # self.add_talent_bar(tl.Medicine(0))
-        self.add_talent_bar(tl.Barrier(0))
-        self.add_talent_bar(tl.Lift(0))
+        # self.add_talent_bar(tl.Barrier(0))
+        # self.add_talent_bar(tl.Lift(0))
         # self.add_talent_bar(tl.Singularity(0))
         # self.add_talent_bar(tl.Stasis(0))
-        self.add_talent_bar(tl.Throw(0))
-        self.add_talent_bar(tl.Warp(0))
+        # self.add_talent_bar(tl.Throw(0))
+        # self.add_talent_bar(tl.Warp(0))
         # self.add_talent_bar(tl.Vanguard(0))
-        self.add_talent_bar(tl.VanguardNemesis(0))
-        self.add_talent_bar(tl.SpectreTraining(0))
+        # self.add_talent_bar(tl.VanguardNemesis(0))
         # self.add_talent_bar(tl.VanguardShockTrooper(0))
     
     def get_talents(self):
-        return [bar.talent for bar in self.findChildren(TalentBar)]
+        return [bar.talent for bar in self.bars]
     
 
 if __name__ == "__main__":
