@@ -539,7 +539,7 @@ class Stasis(Talent):
         AbilityLevel.STASIS: {1: 1, 6: 2, 12: 3},
     }
     modifier_table = {
-        Modifier.STASIS_DURATION: {1: 12.5, 2: 13, 3: 13.5, 4: 14, 5: 14.5, 6: 17, 7: 17.5, 8: 18, 9: 18.5, 10: 19, 11: 19.5, 12: 21},
+        BaseValue.STASIS_DURATION: {1: 12.5, 2: 13, 3: 13.5, 4: 14, 5: 14.5, 6: 17, 7: 17.5, 8: 18, 9: 18.5, 10: 19, 11: 19.5, 12: 21},
     }
 
 
@@ -562,7 +562,7 @@ class Throw(Talent):
         AbilityLevel.THROW: {1: 1, 8: 2, 12: 3},
     }
     modifier_table = {
-        Modifier.THROW_FORCE: {1: 600, 2: 650, 3: 700, 4: 750, 5: 800, 6: 850, 7: 900, 8: 1000, 9: 1050, 10: 1100, 11: 1150, 12: 1250},
+        BaseValue.THROW_FORCE: {1: 600, 2: 650, 3: 700, 4: 750, 5: 800, 6: 850, 7: 900, 8: 1000, 9: 1050, 10: 1100, 11: 1150, 12: 1250},
     }
 
 
@@ -615,5 +615,5 @@ class Warp(Talent):
         AbilityLevel.WARP: {1: 1, 6: 2, 12: 3},
     }
     modifier_table = {
-        Modifier.WARP_DURATION: {1: 7, 2: 8, 3: 9, 4: 10, 5: 11, 6: 13, 7: 14, 8: 15, 9: 16, 10: 17, 11: 18, 12: 20},
+        BaseValue.WARP_DURATION: {1: 7, 2: 8, 3: 9, 4: 10, 5: 11, 6: 13, 7: 14, 8: 15, 9: 16, 10: 17, 11: 18, 12: 20},
     }
