@@ -1,10 +1,9 @@
 import json
 import string
 from collections.abc import Callable
-from enum import Enum
 from typing import Any
 
-from venums import AbsoluteBonus, PercentBonus, Specialization, TalentDataType
+from venums import AbsoluteBonus, BaseValue, PercentBonus, Specialization, TalentDataType
 
 
 MIN_NAME_LENGTH = 1
@@ -56,23 +55,27 @@ def validate_name(name: Any) -> bool:
     return True
 
 
+def validate_base_value(base_value: Any) -> bool:
+    return validate_stats(base_value, BaseValue)
+
+
 def validate_percent_bonus(percent_bonus: Any) -> bool:
-    return validate_numeric_bonus(percent_bonus, PercentBonus)
+    return validate_stats(percent_bonus, PercentBonus)
 
 
 def validate_absolute_bonus(absolute_bonus: Any) -> bool:
-    return validate_numeric_bonus(absolute_bonus, AbsoluteBonus)
+    return validate_stats(absolute_bonus, AbsoluteBonus)
 
 
-def validate_numeric_bonus(bonus_data: Any, bonus_enum: Enum) -> bool:
-    if not isinstance(bonus_data, dict) or not bonus_data:
+def validate_stats(data: Any, data_enum: BaseValue | AbsoluteBonus | PercentBonus) -> bool:
+    if not isinstance(data, dict) or not data:
         return False
-    if any(k not in bonus_enum or not validate_bonus_lookup(v) for k, v in bonus_data.items()):
+    if any(k not in data_enum or not validate_stat_lookup(v) for k, v in data.items()):
         return False
     return True
 
 
-def validate_bonus_lookup(lookup: Any) -> bool:
+def validate_stat_lookup(lookup: Any) -> bool:
     if not isinstance(lookup, dict) or not lookup:
         return False
 

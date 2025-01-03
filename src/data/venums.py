@@ -11,6 +11,10 @@ class TalentDataType(StrEnum):
     SPECIALIZATION = "specialization"
 
 
+class BaseValue(StrEnum):
+    ...
+
+
 class AbsoluteBonus(StrEnum):
     ...
 
@@ -22,6 +26,14 @@ class PercentBonus(StrEnum):
 
 
 class Specialization(StrEnum):
-    ...
-
-
+    ADRENALINE_BURST = "ADRENALINE_BURST"
+    ASSASSINATION = "ASSASSINATION"
+    BARRIER = "BARRIER"
+    FIRST_AID = "FIRST_AID"
+    IMMUNITY = "IMMUNITY"
+    LIFT = "LIFT"
+    NEURAL_SHOCK = "NEURAL_SHOCK"
+    OVERLOAD = "OVERLOAD"
+    SABOTAGE = "SABOTAGE"
+    STASIS = "STASIS"
+    WARP = "WARP"

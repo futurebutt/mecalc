@@ -19,7 +19,7 @@
         "MARKSMAN": {"6": 1}
     },
     "specialization": {
-        "NEURAL_SHOCK": {"9": true},
-        "FIRST_AID": {"12": true}
+        "9": "NEURAL_SHOCK",
+        "12": "FIRST_AID"
     }
 }

@@ -13,7 +13,7 @@
         "TECH_PROTECTION": {"1": 0.06, "2": 0.09, "3": 0.12, "4": 0.15, "5": 0.18, "6": 0.21}
     },
     "specialization": {
-        "NEURAL_SHOCK": {"9": true},
-        "FIRST_AID": {"12": true}
+        "9": "NEURAL_SHOCK",
+        "12": "FIRST_AID"
     }
 }

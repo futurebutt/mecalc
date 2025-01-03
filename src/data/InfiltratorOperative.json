@@ -14,7 +14,7 @@
         "SABOTAGE_HASTE":     {"7": 0.04, "8": 0.06, "9": 0.08, "10": 0.10, "11": 0.12, "12": 0.14}
     },
     "specialization": {
-        "OVERLOAD": {"9": true},
-        "SABOTAGE": {"12": true}
+        "9": "OVERLOAD",
+        "12": "SABOTAGE"
     }
 }

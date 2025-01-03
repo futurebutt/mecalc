@@ -12,7 +12,7 @@
         "SNIPER_RIFLE_DAMAGE":  {"7": 0.06, "8": 0.09, "9": 0.12, "10": 0.15, "11": 0.18, "12": 0.21}
     },
     "specialization": {
-        "IMMUNITY": {"9": true},
-        "ASSASSINATION": {"12": true}
+        "9": "IMMUNITY",
+        "12": "ASSASSINATION"
     }
 }

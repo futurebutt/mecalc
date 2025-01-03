@@ -19,7 +19,7 @@
         "MARKSMAN": {"6": 1}
     },
     "specialization": {
-        "BARRIER": {"9": true},
-        "STASIS": {"12": true}
+        "9": "BARRIER",
+        "12": "STASIS"
     }
 }
