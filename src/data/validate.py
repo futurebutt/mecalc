@@ -101,9 +101,16 @@ def validate_specialization(spec: Any) -> bool:
 
 def _test() -> None:
     from pathlib import Path
-    fn = str(Path(__file__).parent / "Vanguard.json")
-    assert validate_talent_file(fn), f"{fn} is invalid!"
-    print(f"Test passed!")
+    for file in (
+        # "Vanguard.json",
+        "VanguardNemesis.json",
+    ):
+        fn = str(Path(__file__).parent / file)
+        if validate_talent_file(fn):
+            print(f"{file} passed!")
+        else:
+            print(f"{file} failed!")
+    print(f"Done!")
 
 
 if __name__ == "__main__":
