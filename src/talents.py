@@ -1,4 +1,6 @@
 from collections.abc import Iterable
+from enum import Enum
+
 from enums import (
     AbilityRank,
     AbsoluteBonus,
@@ -11,50 +13,50 @@ from enums import (
 class Talent:
 
     name = "<TALENT>"
-    abilities:   dict[str, dict[int, int]] = {}
-    base_values: dict[str, dict[int, float]] = {}
-    bonuses:     dict[str, dict[int, float]] = {}
-    unlocks:     dict[str, int] = {}
+    abilities:   dict[Enum, dict[int, int]] = {}
+    base_values: dict[Enum, dict[int, float]] = {}
+    bonuses:     dict[Enum, dict[int, float]] = {}
+    unlocks:     dict[Enum, int] = {}
 
     def __init__(self, rank: int = 0) -> None:
         self.rank = rank
 
-    def _get_ranked_value(self, data: dict[str, dict], name: str) -> int | float:
+    def _get_ranked_value(self, data: dict[str, dict], name: Enum) -> int | float:
         lookup: dict = data.get(name, {})
         for rank, value in reversed(lookup.items()):
             if self.rank >= rank:
                 return value
         return 0
 
-    def get_ability_rank(self, name: str) -> int:
+    def get_ability_rank(self, name: Enum) -> int:
         return self._get_ranked_value(self.abilities, name)
 
-    def get_base_value(self, name: str) -> float:
+    def get_base_value(self, name: Enum) -> float:
         return self._get_ranked_value(self.base_values, name)
 
-    def get_bonus(self, name: str) -> float:
+    def get_bonus(self, name: Enum) -> float:
         return self._get_ranked_value(self.bonuses, name)
 
-    def get_unlocked(self, name: str) -> bool:
+    def get_unlocked(self, name: Enum) -> bool:
         unlock_rank: int = self.unlocks.get(name)
         if unlock_rank is None:
             return False
         return self.rank >= unlock_rank
 
 
-def find_highest_ability_rank(talents: Iterable[Talent], name: str) -> int:
+def get_ability_rank(talents: Iterable[Talent], name: Enum) -> int:
     return max(talent.get_ability_rank(name) for talent in talents)
 
 
-def find_highest_base_value(talents: Iterable[Talent], name: str) -> float:
+def get_base_value(talents: Iterable[Talent], name: Enum) -> float:
     return max(talent.get_base_value(name) for talent in talents)
 
 
-def sum_bonuses(talents: Iterable[Talent], names: Iterable[str]) -> float:
+def get_bonus_sum(talents: Iterable[Talent], *names: Iterable[Enum]) -> float:
     return sum(talent.get_bonus(name) for name in names for talent in talents)
 
 
-def find_unlocked(talents: Iterable[Talent], name: str) -> bool:
+def get_unlocked(talents: Iterable[Talent], name: Enum) -> bool:
     return any(talent.get_unlocked(name) for talent in talents)
 
 
