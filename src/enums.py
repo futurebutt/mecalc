@@ -4,7 +4,7 @@ Names for ranks, bonuses, unlocks, etc.
 from enum import auto, Enum
 
 
-class AbilityRank(Enum):
+class Ability(Enum):
     ADRENALINE_BURST    = auto()
     AI_HACKING          = auto()
     ASSASSINATION       = auto()
@@ -36,6 +36,8 @@ class BaseValue(Enum):
     """Values set directly by talents."""
     BARRIER_DURATION        = auto()
     BARRIER_SHIELDING       = auto()
+    CHARM_RANK              = auto()
+    INTIMIDATE_RANK         = auto()
     LIFT_DURATION           = auto()
     SINGULARITY_DURATION    = auto()
     SINGULARITY_RADIUS      = auto()

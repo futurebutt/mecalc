@@ -1,62 +1,91 @@
 from collections.abc import Iterable
-from enum import Enum
+from enum import Enum, EnumType
 
 from enums import (
-    AbilityRank,
+    Ability,
     AbsoluteBonus,
     BaseValue,
     Specialization,
-    PercentBonus
+    PercentBonus,
+    Unlock
 )
+
+
+def validate_enum(en: Enum, entype: EnumType) -> None:
+    if en not in entype:
+        raise ValueError(f"Not in {entype}: {en}")
 
 
 class Talent:
 
     name = "<TALENT>"
-    abilities:   dict[Enum, dict[int, int]] = {}
-    base_values: dict[Enum, dict[int, float]] = {}
-    bonuses:     dict[Enum, dict[int, float]] = {}
-    unlocks:     dict[Enum, int] = {}
+    abilities = dict[Enum, dict[int, int]]
+    stats = dict[Enum, dict[int, float]]
+    traits = dict[Enum, int]
 
     def __init__(self, rank: int = 0) -> None:
         self.rank = rank
 
-    def _get_ranked_value(self, data: dict[str, dict], name: Enum) -> int | float:
-        lookup: dict = data.get(name, {})
+    def _get_ranked_value(self, en: Enum) -> float | int:
+        lookup: dict = stats.get(en)
+        if lookup is None:
+            return 0
         for rank, value in reversed(lookup.items()):
             if self.rank >= rank:
                 return value
-        return 0
 
-    def get_ability_rank(self, name: Enum) -> int:
-        return self._get_ranked_value(self.abilities, name)
-
-    def get_base_value(self, name: Enum) -> float:
-        return self._get_ranked_value(self.base_values, name)
-
-    def get_bonus(self, name: Enum) -> float:
-        return self._get_ranked_value(self.bonuses, name)
-
-    def get_unlocked(self, name: Enum) -> bool:
-        unlock_rank: int = self.unlocks.get(name)
+    def _get_ranked_trait(self, en: Enum) -> bool:
+        unlock_rank: int = self.lookups.get(en)
         if unlock_rank is None:
             return False
         return self.rank >= unlock_rank
 
+    def get_ability_rank(self, en: Enum) -> int:
+        validate_enum(en, Ability)
+        return self._get_ranked_value(en)
+    
+    def get_absolute_bonus(self, en: Enum) -> float:
+        validate_enum(en, AbsoluteBonus)
+        return self._get_ranked_value(en)
 
-def get_ability_rank(talents: Iterable[Talent], name: Enum) -> int:
+    def get_base_value(self, en: Enum) -> float:
+        validate_enum(en, BaseValue)
+        return self._get_ranked_value(en)
+
+    def get_percent_bonus(self, en: Enum) -> float:
+        validate_enum(en, PercentBonus)
+        return self._get_ranked_value(en)
+
+    def get_specialized(self, en: Enum) -> bool:
+        validate_enum(en, Specialization)
+        return self._get_ranked_unlock(en)
+
+    def get_unlocked(self, en: Unlock) -> bool:
+        validate_enum(en, Unlock)
+        return self._get_ranked_unlock(en)
+
+
+def get_ability_rank(talents: Iterable[Talent], name: Ability) -> int:
     return max(talent.get_ability_rank(name) for talent in talents)
 
 
-def get_base_value(talents: Iterable[Talent], name: Enum) -> float:
+def get_base_value(talents: Iterable[Talent], name: BaseValue) -> float:
     return max(talent.get_base_value(name) for talent in talents)
 
 
-def get_bonus_sum(talents: Iterable[Talent], *names: Iterable[Enum]) -> float:
-    return sum(talent.get_bonus(name) for name in names for talent in talents)
+def get_specialized(talents: Iterable[Talent], name: Specialization) -> bool:
+    return any(talent.get_specialized(name) for talent in talents)
 
 
-def get_unlocked(talents: Iterable[Talent], name: Enum) -> bool:
+def get_total_absolute_bonus(talents: Iterable[Talent], names: Iterable[AbsoluteBonus]) -> float:
+    return sum(talent.get_absolute_bonus(name) for name in names for talent in talents)
+
+
+def get_total_percent_bonus(talents: Iterable[Talent], names: Iterable[PercentBonus]) -> float:
+    return sum(talent.get_percent_bonus(name) for name in names for talent in talents)
+
+
+def get_unlocked(talents: Iterable[Talent], name: Unlock) -> bool:
     return any(talent.get_unlocked(name) for talent in talents)
 
 
@@ -118,7 +147,7 @@ class AssaultRifles(Talent):
 
     name = "Assault Rifles"
     abilities = {
-        AbilityRank.OVERKILL: {1: 1, 8: 2, 12: 3},
+        Ability.OVERKILL: {1: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.ASSAULT_RIFLE_ACCURACY: {2: 0.10, 3: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
@@ -131,7 +160,7 @@ class AssaultTraining(Talent):
     name = "Assault Training"
     weapon_damage = {1: 0.01, 2: 0.02, 4: 0.03, 5: 0.04, 6: 0.05, 7: 0.06, 9: 0.07, 10: 0.08, 11: 0.09}
     abilities = {
-        AbilityRank.ADRENALINE_BURST: {3: 1, 8: 2, 12: 3},
+        Ability.ADRENALINE_BURST: {3: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.MELEE_DAMAGE:  {1: 0.30, 2: 0.35, 4: 0.40, 5: 0.44, 6: 0.48, 7: 0.52, 9: 0.56, 10: 0.60, 11: 0.64},
@@ -146,7 +175,7 @@ class Barrier(Talent):
 
     name = "Barrier"
     abilities = {
-        AbilityRank.BARRIER: {1: 1, 7: 2, 12: 3},
+        Ability.BARRIER: {1: 1, 7: 2, 12: 3},
     }
     base_values = {
         BaseValue.BARRIER_DURATION: {1: 10.0, 2: 10.5, 3: 11.0, 4: 11.5, 5: 12.0, 6: 12.5, 7: 16.5, 8: 17.0, 9: 17.5, 10: 18.0, 11: 18.5, 12: 23.0},
@@ -158,7 +187,7 @@ class BasicArmor(Talent):
 
     name = "Basic Armor"
     abilities = {
-        AbilityRank.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
+        Ability.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.LIGHT_ARMOR_DR:        {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
@@ -169,14 +198,17 @@ class BasicArmor(Talent):
 class Charm(Talent):
 
     name = "Charm"
-    base_values = {}
+    base_values = {
+        BaseValue.CHARM_RANK: {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12}
+    }
+    bonuses = {}
 
 
 class CombatArmor(Talent):
 
     name = "Combat Armor"
     abilities = {
-        AbilityRank.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
+        Ability.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.HEAVY_ARMOR_DR:        {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
@@ -189,7 +221,7 @@ class Damping(Talent):
     name = "Damping"
     radius = {2: 0.10, 3: 0.14, 4: 0.18, 5: 0.20, 7: 0.22, 8: 0.24, 9: 0.26, 10: 0.28, 11: 0.30}
     abilities = {
-        AbilityRank.DAMPING: {1: 1, 6: 2, 12: 3},
+        Ability.DAMPING: {1: 1, 6: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.DAMPING_RADIUS: radius,
@@ -202,7 +234,7 @@ class Decryption(Talent):
     
     name = "Decryption"
     abilities = {
-        AbilityRank.SABOTAGE: {1: 1, 5: 2, 9: 3},
+        Ability.SABOTAGE: {1: 1, 5: 2, 9: 3},
     }
     bonuses = {
         PercentBonus.TECH_MINE_DAMAGE: {2: 0.10, 3: 0.14, 4: 0.18, 6: 0.20, 7: 0.22, 8: 0.24, 10: 0.26, 11: 0.28, 12: 0.30},
@@ -213,7 +245,7 @@ class Electronics(Talent):
 
     name = "Electronics"
     abilities = {
-        AbilityRank.OVERLOAD: {1: 1, 5: 2, 9: 3},
+        Ability.OVERLOAD: {1: 1, 5: 2, 9: 3},
     }
     bonuses = {
         AbsoluteBonus.HULL_REPAIR: {2: 400, 3: 600, 4: 800, 6: 1200, 7: 1400, 8: 1600, 10: 2000, 11: 2200, 12: 2400},
@@ -287,7 +319,7 @@ class Fitness(Talent):
 
     name = "Fitness"
     abilities = {
-        AbilityRank.IMMUNITY: {4: 1, 8: 2, 12: 3},
+        Ability.IMMUNITY: {4: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.HEALTH: {1: 0.10, 2: 0.14, 3: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30},
@@ -299,7 +331,7 @@ class Hacking(Talent):
     name = "Hacking"
     haste = {2: 0.06, 3: 0.09, 4: 0.12, 5: 0.15, 6: 0.18, 8: 0.21, 9: 0.24, 10: 0.27, 11: 0.30}
     abilities = {
-        AbilityRank.AI_HACKING: {1: 1, 7: 2, 12: 3},
+        Ability.AI_HACKING: {1: 1, 7: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.DAMPING_HASTE: haste,
@@ -367,7 +399,7 @@ class Lift(Talent):
 
     name = "Lift"
     abilities = {
-        AbilityRank.LIFT: {1: 1, 7: 2, 12: 3},
+        Ability.LIFT: {1: 1, 7: 2, 12: 3},
     }
     base_values = {
         BaseValue.LIFT_DURATION: {1: 6.0, 2: 6.4, 3: 6.8, 4: 7.2, 5: 7.6, 6: 8.0, 7: 9.0, 8: 9.4, 9: 9.8, 10: 10.2, 11: 10.6, 12: 12.0},
@@ -378,7 +410,7 @@ class Pistols(Talent):
 
     name = "Pistols"
     abilities = {
-        AbilityRank.MARKSMAN: {3: 1, 8: 2, 12: 3},
+        Ability.MARKSMAN: {3: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.PISTOL_ACCURACY: {1: 0.10, 2: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
@@ -390,7 +422,7 @@ class Medicine(Talent):
 
     name = "Medicine"
     abilities = {
-        AbilityRank.NEURAL_SHOCK: {1: 1, 7: 2, 12: 3},
+        Ability.NEURAL_SHOCK: {1: 1, 7: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.FIRST_AID_HASTE: {2: 0.10, 3: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 8: 0.24, 9: 0.26, 10: 0.28, 11: 0.30},
@@ -402,7 +434,7 @@ class Sentinel(Talent):
     name = "Sentinel"
     haste = {1: 0.03, 2: 0.05, 3: 0.07, 4: 0.08, 5: 0.09, 6: 0.10}
     ability_table ={
-        AbilityRank.MARKSMAN: {6: 1},
+        Ability.MARKSMAN: {6: 1},
     }
     bonuses = {
         PercentBonus.PISTOL_ACCURACY: {1: 0.04, 2: 0.07, 3: 0.10, 4: 0.13, 5: 0.16},
@@ -462,7 +494,7 @@ class Shotguns(Talent):
 
     name = "Shotguns"
     abilities = {
-        AbilityRank.CARNAGE: {4: 1, 8: 2, 12: 3},
+        Ability.CARNAGE: {4: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.SHOTGUN_ACCURACY: {1: 0.10, 2: 0.14, 3: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
@@ -474,7 +506,7 @@ class Singularity(Talent):
 
     name = "Singularity"
     abilities = {
-        AbilityRank.SINGULARITY: {1: 1, 7: 2, 12: 3},
+        Ability.SINGULARITY: {1: 1, 7: 2, 12: 3},
     }
     base_values = {
         BaseValue.SINGULARITY_RADIUS: {1: 4, 2: 4.25, 3: 4.5, 4: 5.0, 6: 5.25, 7: 6.25, 8: 6.5, 9: 6.75, 10: 7.0, 11: 7.25, 12: 8.25},
@@ -525,7 +557,7 @@ class SniperRifles(Talent):
 
     name = "Sniper Rifles"
     abilities = {
-        AbilityRank.ASSASSINATION: {4: 1, 8: 2, 12: 3},
+        Ability.ASSASSINATION: {4: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.SNIPER_RIFLE_ACCURACY: {1: 0.10, 2: 0.14, 4: 0.17, 5: 0.20, 6: 0.22, 7: 0.24, 9: 0.26, 10: 0.28, 11: 0.30,},
@@ -537,7 +569,7 @@ class SpectreTraining(Talent):
 
     name = "Spectre Training"
     abilities = {
-        AbilityRank.UNITY: {4: 1, 8: 2, 12: 3},
+        Ability.UNITY: {4: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.ACCURACY_REGEN: {1: 0.004, 2: 0.006, 3: 0.008, 5: 0.01, 6: 0.012, 7: 0.014, 9: 0.016, 10: 0.018, 11: 0.02},
@@ -552,7 +584,7 @@ class Stasis(Talent):
 
     name = "Stasis"
     abilities = {
-        AbilityRank.STASIS: {1: 1, 6: 2, 12: 3},
+        Ability.STASIS: {1: 1, 6: 2, 12: 3},
     }
     base_values = {
         BaseValue.STASIS_DURATION: {1: 12.5, 2: 13, 3: 13.5, 4: 14, 5: 14.5, 6: 17, 7: 17.5, 8: 18, 9: 18.5, 10: 19, 11: 19.5, 12: 21},
@@ -563,7 +595,7 @@ class TacticalArmor(Talent):
 
     name = "Tactical Armor"
     abilities = {
-        AbilityRank.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
+        Ability.SHIELD_BOOST: {3: 1, 8: 2, 12: 3},
     }
     bonuses = {
         PercentBonus.MED_ARMOR_DR:        {1: 0.05, 2: 0.08, 4: 0.10, 5: 0.12, 6: 0.14, 7: 0.16, 9: 0.18, 10: 0.19, 11: 0.20},
@@ -575,7 +607,7 @@ class Throw(Talent):
 
     name = "Throw"
     abilities = {
-        AbilityRank.THROW: {1: 1, 8: 2, 12: 3},
+        Ability.THROW: {1: 1, 8: 2, 12: 3},
     }
     base_values = {
         BaseValue.THROW_FORCE: {1: 600, 2: 650, 3: 700, 4: 750, 5: 800, 6: 850, 7: 900, 8: 1000, 9: 1050, 10: 1100, 11: 1150, 12: 1250},
@@ -628,7 +660,7 @@ class Warp(Talent):
 
     name = "Warp"
     abilities = {
-        AbilityRank.WARP: {1: 1, 6: 2, 12: 3},
+        Ability.WARP: {1: 1, 6: 2, 12: 3},
     }
     base_values = {
         BaseValue.WARP_DURATION: {1: 7, 2: 8, 3: 9, 4: 10, 5: 11, 6: 13, 7: 14, 8: 15, 9: 16, 10: 17, 11: 18, 12: 20},

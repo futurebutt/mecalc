@@ -1,86 +1,120 @@
 from collections.abc import Iterable
 
-from enums import AbilityRank, BaseValue, Specialization, PercentBonus
-from talents import (
-    get_ability_rank,
-    get_base_value,
-    get_bonus_sum,
-    get_unlocked,
-    Talent
-)
+from enums import Ability, AbsoluteBonus, BaseValue, Specialization, PercentBonus
+from talents import Talent
 
 
-def truncate(value: float) -> int | float:
+def format_ability_title(name: str, rank: int, spec: bool = False) -> str:
+    elements: list[str] = [name]
+    if rank == 2:
+        elements.append("(Advanced)")
+    elif rank == 3:
+        elements.append("(Master)")
+    if spec:
+        elements.append("(Specialized)")
+    return " ".join(elements)
+
+
+def format_number(value: float) -> str:
     if value % 1 == 0:
-        value = int(value)
+        return str(int(value))
     else:
-        value = round(value, 3)
-    return value
+        return str(round(value, 3))
 
 
-def format_title(name: str, level: int) -> str:
-    fstr = name + {1: "", 2: " (Advanced)", 3: " (Master)"}[level]
-    return fstr
+def format_percent(name: str, dec: float) -> str:
+    return f"{name} {format_number(100 * dec)}%"
 
 
-def format_accuracy_cost(value: float) -> str:
-    fstr = f"Accuracy Cost {truncate(value * 100)}%"
-    return fstr
+def format_plus_percent(name: str, dec: float) -> str:
+    return f"{name} + {format_number(100 * dec)}%"
 
 
-def format_accuracy_bonus(value: float) -> str:
-    if value == 0:
-        return ""
-    fstr = f"Accuracy + {truncate(value * 100)}%"
-    return fstr
+# def format_percent(dec: float) -> str:
+#     return f"{format_value(100 * dec)}%"
 
 
-def format_damage_bonus(value: float) -> str:
-    if value == 0:
-        return ""
-    fstr = f"Damage + {truncate(value * 100)}%"
-    return fstr
+# def display_value(name: str, value: float) -> str:
+#     return f"{name} {value}"
 
 
-def format_damage_reduction(value: float) -> str:
-    if value == 0:
-        return ""
-    fstr = f"Damage Protection + {truncate(value * 100)}%"
-    return fstr
+# def display_percent(name: str, dec: float):
+#     return f"{name} {format_percent(dec)}"
 
 
-def format_duration(value: int | float) -> str:
-    fstr = f"Duration {truncate(value)} sec"
-    return fstr
+# def display_percent_bonus(name: str, dec: float):
+#     return f"{name} + {format_percent(dec)}"
 
 
-def format_hardening(value: float) -> str:
-    if value == 0:
-        return ""
-    fstr = f"Hardening + {truncate(value * 100)}%"
-    return fstr
+# def format_absolute(name: str, value: float):
+#     return f"{name} {format_value(value)}"
 
 
-def format_health_bonus(value: float) -> str:
-    if value == 0:
-        return ""
-    fstr = f"Health + {truncate(value * 100)}%"
-    return fstr
+# def format_percent(name: str, value: float):
+#     return f"{name} {format_value(100 * value)}%"
 
 
-def format_percent_dps(value: float):
-    fstr = f"Damage {truncate(value * 100)}% DPS"
-    return fstr
+# def format_plus_percent(name: str, value: float):
+#     return f"{name} + {format_value(100 * value)}%"
 
 
-def format_radius(value: int | float) -> str:
-    fstr = f"Radius {truncate(value)}m"
-    return fstr
+# def format_accuracy_cost(value: float) -> str:
+#     return format_percent("Accuracy Cost", value)
 
 
-def format_recharge(seconds: int | float) -> str:
-    fstr = f"Recharge {truncate(seconds)} sec"
-    return fstr
+# def format_accuracy_bonus(value: float) -> str:
+#     if value == 0:
+#         return ""
+#     fstr = f"Accuracy + {truncate(value * 100)}%"
+#     return fstr
+
+
+# def format_damage_bonus(value: float) -> str:
+#     if value == 0:
+#         return ""
+#     fstr = f"Damage + {truncate(value * 100)}%"
+#     return fstr
+
+
+# def format_damage_reduction(value: float) -> str:
+#     if value == 0:
+#         return ""
+#     fstr = f"Damage Protection + {truncate(value * 100)}%"
+#     return fstr
+
+
+# def format_duration(value: int | float) -> str:
+#     fstr = f"Duration {truncate(value)} sec"
+#     return fstr
+
+
+# def format_hardening(value: float) -> str:
+#     if value == 0:
+#         return ""
+#     fstr = f"Hardening + {truncate(value * 100)}%"
+#     return fstr
+
+
+# def format_health_bonus(value: float) -> str:
+#     if value == 0:
+#         return ""
+#     fstr = f"Health + {truncate(value * 100)}%"
+#     return fstr
+
+
+# def format_percent_dps(value: float):
+#     fstr = f"Damage {truncate(value * 100)}% DPS"
+#     return fstr
+
+
+# def format_radius(value: int | float) -> str:
+#     fstr = f"Radius {truncate(value)}m"
+#     return fstr
+
+
+# def format_recharge(seconds: int | float) -> str:
+#     fstr = f"Recharge {truncate(seconds)} sec"
+#     return fstr
 
 
 def summarize(title: str, *desc: str, indent: int = 4) -> str:
@@ -89,7 +123,7 @@ def summarize(title: str, *desc: str, indent: int = 4) -> str:
 
 def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.ADRENALINE_BURST)
+    level = get_ability_rank(talents, Ability.ADRENALINE_BURST)
     if level == 0:
         return ""
 
@@ -115,7 +149,7 @@ def summarize_Adrenaline_Burst(talents: Iterable[Talent]) -> str:
 
 def summarize_AI_Hacking(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.AI_HACKING)
+    level = get_ability_rank(talents, Ability.AI_HACKING)
     if level == 0:
         return ""
 
@@ -141,7 +175,7 @@ def summarize_AI_Hacking(talents: Iterable[Talent]) -> str:
 
 def summarize_Assassination(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.ASSASSINATION)
+    level = get_ability_rank(talents, Ability.ASSASSINATION)
     if level == 0:
         return ""
 
@@ -186,7 +220,7 @@ def summarize_Assault_Rifle(talents: Iterable[Talent]) -> str:
 
 def summarize_Barrier(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.BARRIER)
+    level = get_ability_rank(talents, Ability.BARRIER)
     if level == 0:
         return ""
     
@@ -224,7 +258,7 @@ def summarize_Barrier(talents: Iterable[Talent]) -> str:
 
 def summarize_Carnage(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.CARNAGE)
+    level = get_ability_rank(talents, Ability.CARNAGE)
     if level == 0:
         return ""
 
@@ -250,7 +284,7 @@ def summarize_Carnage(talents: Iterable[Talent]) -> str:
 
 def summarize_Damping(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.DAMPING)
+    level = get_ability_rank(talents, Ability.DAMPING)
     if level == 0:
         return ""
 
@@ -327,7 +361,7 @@ def summarize_Heavy_Armor(talents: Iterable[Talent]) -> str:
 
 def summarize_Immunity(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.IMMUNITY)
+    level = get_ability_rank(talents, Ability.IMMUNITY)
     if level == 0:
         return ""
 
@@ -358,7 +392,7 @@ def summarize_Immunity(talents: Iterable[Talent]) -> str:
 
 def summarize_Lift(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.LIFT)
+    level = get_ability_rank(talents, Ability.LIFT)
     if level == 0:
         return ""
 
@@ -425,7 +459,7 @@ def summarize_Mako(talents: Iterable[Talent]) -> str:
 
 def summarize_Marksman(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.MARKSMAN)
+    level = get_ability_rank(talents, Ability.MARKSMAN)
     if level == 0:
         return ""
 
@@ -474,7 +508,7 @@ def summarize_Medium_Armor(talents: Iterable[Talent]) -> str:
 
 def summarize_Neural_Shock(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.NEURAL_SHOCK)
+    level = get_ability_rank(talents, Ability.NEURAL_SHOCK)
     if level == 0:
         return ""
 
@@ -510,7 +544,7 @@ def summarize_Neural_Shock(talents: Iterable[Talent]) -> str:
 
 def summarize_Overkill(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.OVERKILL)
+    level = get_ability_rank(talents, Ability.OVERKILL)
     if level == 0:
         return ""
 
@@ -536,7 +570,7 @@ def summarize_Overkill(talents: Iterable[Talent]) -> str:
 
 def summarize_Overload(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.OVERLOAD)
+    level = get_ability_rank(talents, Ability.OVERLOAD)
     if level == 0:
         return ""
 
@@ -607,7 +641,7 @@ def summarize_Pistol(talents: Iterable[Talent]) -> str:
 
 def summarize_Sabotage(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.SABOTAGE)
+    level = get_ability_rank(talents, Ability.SABOTAGE)
     if level == 0:
         return ""
 
@@ -685,7 +719,7 @@ def summarize_Shepard(talents: Iterable[Talent]) -> str:
 
 def summarize_Shield_Boost(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.SHIELD_BOOST)
+    level = get_ability_rank(talents, Ability.SHIELD_BOOST)
     if level == 0:
         return ""
 
@@ -723,7 +757,7 @@ def summarize_Shotgun(talents: Iterable[Talent]) -> str:
 
 def summarize_Singularity(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.SINGULARITY)
+    level = get_ability_rank(talents, Ability.SINGULARITY)
     if level == 0:
         return ""
 
@@ -770,7 +804,7 @@ def summarize_Sniper_Rifles(talents: Iterable[Talent]) -> str:
 
 def summarize_Stasis(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.STASIS)
+    level = get_ability_rank(talents, Ability.STASIS)
     if level == 0:
         return ""
 
@@ -800,7 +834,7 @@ def summarize_Stasis(talents: Iterable[Talent]) -> str:
 
 def summarize_Throw(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.THROW)
+    level = get_ability_rank(talents, Ability.THROW)
     if level == 0:
         return ""
 
@@ -830,7 +864,7 @@ def summarize_Throw(talents: Iterable[Talent]) -> str:
 
 def summarize_Unity(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.UNITY)
+    level = get_ability_rank(talents, Ability.UNITY)
     if level == 0:
         return ""
 
@@ -851,7 +885,7 @@ def summarize_Unity(talents: Iterable[Talent]) -> str:
 
 def summarize_Warp(talents: Iterable[Talent]) -> str:
 
-    level = get_ability_rank(talents, AbilityRank.WARP)
+    level = get_ability_rank(talents, Ability.WARP)
     if level == 0:
         return ""
 
